@@ -1,0 +1,10 @@
+D:\Projects\DCReader\DC.Reader-Development\Model\bin\Release\WFModel.dll
+D:\Projects\DCReader\DC.Reader-Development\Model\bin\Release\AutoMapper.dll
+D:\Projects\DCReader\DC.Reader-Development\Model\bin\Release\System.ValueTuple.dll
+D:\Projects\DCReader\DC.Reader-Development\Model\bin\Release\AutoMapper.pdb
+D:\Projects\DCReader\DC.Reader-Development\Model\bin\Release\AutoMapper.xml
+D:\Projects\DCReader\DC.Reader-Development\Model\bin\Release\System.ValueTuple.xml
+D:\Projects\DCReader\DC.Reader-Development\Model\obj\Release\Model.csprojAssemblyReference.cache
+D:\Projects\DCReader\DC.Reader-Development\Model\obj\Release\Model.csproj.CoreCompileInputs.cache
+D:\Projects\DCReader\DC.Reader-Development\Model\obj\Release\Model.csproj.CopyComplete
+D:\Projects\DCReader\DC.Reader-Development\Model\obj\Release\WFModel.dll

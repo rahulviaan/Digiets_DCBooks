@@ -1,0 +1,93 @@
+﻿@model DC.SchoolModel
+@{
+    Layout = null;
+}
+<div class="row">
+    <div class="col-lg-12 " style="background-color:#fff; ">
+        <table class="table table-bordered table-responsive">
+            <tr>
+                <th width="29%"> @Html.LabelFor(model => model.vTitle)</th>
+                <th width="1%">:</th>
+                <td width="79%"> @Html.DisplayFor(model => model.vTitle)</td>
+            </tr>
+
+          
+            <tr>
+                <th>  @Html.Label("Contact Detail")</th>
+                <th>:</th>
+                <td>
+                    @{
+
+                        var cont = !string.IsNullOrEmpty(Model.ContactNo) ? Model.ContactNo : "";
+                        cont = !string.IsNullOrEmpty(Model.AlterNateContactNo) ? cont + " / " + Model.AlterNateContactNo : "";
+                        cont = "Mobile No: " + cont;
+                        var email = !string.IsNullOrEmpty(Model.EmailId) ? ", Email: " + Model.EmailId : "";
+                        var add = "Address: " + Model.AddressLine1 + " " + Model.AddressLine2 + " " + Model.AddressLine3;
+                        var pin = !string.IsNullOrEmpty(Model.Pincode) ? ", Pincode: " + Model.Pincode : "";
+                        var city = !string.IsNullOrEmpty(Model.City) ? ", City: " + Model.City : "";
+                        var state = !string.IsNullOrEmpty(Model.State) ? ", State: " + Model.State : "";
+
+                    } @cont @email<br />
+                    @add @pin @city @state
+
+                </td>
+            </tr>
+
+            <tr>
+                <th>@Html.LabelFor(m => m.SchoolCode)</th>
+                <th>:</th>
+                <td>@Html.DisplayFor(m => m.SchoolCode)  </td>
+            </tr>
+            <tr>
+                <th> @Html.Label("Credential")</th>
+                <th> :</th>
+                <td>
+                    Username: @Html.DisplayFor(m => m.UserName) / Password: @{
+                        var pwd = Model.Password.Substring(0, 1);
+                        foreach (var item in Model.Password.Substring(2, Model.Password.Length - 2).ToCharArray())
+                        {
+                            pwd = pwd + "*";
+                        }
+                        pwd += Model.Password.Substring(Model.Password.Length - 1, 1);
+
+                    } @pwd
+                </td>
+            </tr>
+            <tr>
+                <th> @Html.LabelFor(m => m.Principle)</th>
+                <th>:</th>
+                <td> @Html.DisplayFor(m => m.Principle) @Html.DisplayFor(m => m.PrincipleContactNo)</td>
+            </tr>
+
+            <tr>
+                <th> @Html.LabelFor(m => m.Logo)</th>
+                <th>:</th>
+                <td>
+                    <img style="max-height: 100px; max-width: 80px; " onerror="SetImage(this,'/images/0image.jpeg')" id="imgFileCoverImage" src="/Attatchments/@Model.Logo" class="jsImg img-thumbnail" />
+                </td>
+            </tr>
+            <tr>
+                <th> @Html.LabelFor(m => m.Description)</th>
+                <th>:</th>
+                <td> @Html.Raw(Model.Description)</td>
+            </tr>
+        </table>
+    </div>
+</div>
+
+
+<style type="text/css">
+    .modal-dialog {
+        max-width: 80% !important;
+        margin: 1.75rem auto;
+    }
+
+    .modal-body {
+        max-height: 80Vh !important;
+        overflow-y: auto;
+    }
+
+    .modal-footer {
+        text-align: center;
+    }
+</style>

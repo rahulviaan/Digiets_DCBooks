@@ -1,0 +1,184 @@
+﻿@model List<Database.USP_CustomerCartDetails_Result>
+@{
+    ViewBag.Title = "Cart Detail";
+
+    if (User.IsInRole("Admin") || User.IsInRole("SuperAdmin"))
+    {
+        Layout = "~/Areas/CP/Views/Shared/_LayoutM.cshtml";
+    }
+    if (User.IsInRole("User"))
+    {
+        Layout = "~/Areas/MyLibrary/Views/Shared/_LayoutM.cshtml";
+    }
+    if (User.IsInRole("School"))
+    {
+        Layout = "~/Areas/MySchool/Views/Shared/_LayoutM.cshtml";
+    }
+    if (User.IsInRole("Student"))
+    {
+        Layout = "~/Areas/Student/Views/Shared/_LayoutM.cshtml";
+    }
+}
+<style>
+    .detailLeft {
+        width: 20% !important;
+        position: relative;
+    }
+
+    .detailRight {
+        width: 80%;
+    }
+
+    .DservicesImg img {
+        width: 140px;
+    }
+
+    .FilterBox {
+        max-height: 200px;
+        overflow: auto;
+    }
+
+    .RemoveCartBtn {
+        background-color: #005faa;
+        color: white;
+        padding: 10px 0;
+        width: 100%;
+        cursor: pointer;
+        max-width: 160px;
+        margin: 22px;
+        display: table;
+        border: 1px solid transparent;
+        text-align: center;
+        text-decoration: none;
+        font-family: 'Open Sans';
+        text-transform: capitalize;
+        position: absolute;
+        right: 0;
+        top: 0;
+    }
+
+    .innerDetails {
+        height: auto !important;
+        position: relative;
+    }
+
+    .detailservicesBox {
+        border: none !important;
+    }
+</style>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.2/css/bootstrap.min.css" integrity="sha384-y3tfxAZXuh4HwSYylfB+J125MxIs6mR5FOHamPBG064zB+AFeWH94NdvaCBm8qnd" crossorigin="anonymous">
+<div id="dvFilterSearch" style="margin-top:30px;">
+    <div class="mainServices clearfix">
+        <div class="container">
+            <h2 style="margin:20px;text-align:center;font-weight:bold; padding-top:40px">My Cart Details               </h2>
+            @if (Model.Count() > 0)
+            {
+                <p style="text-align:end"> <a href="@Url.RouteUrl("check-out")" class="btn btn-primary" style="background:green;color:white;">Proceed to Checkout</a></p>
+                <!-- Start servicesRight-->
+            }
+                <br />
+                <div class="servicesRight">
+                    @if (Model.Count() > 0)
+                    {
+                        <!--Start pricelowHigh-->
+                        <div class="pricelowHigh clearfix">
+                            <!--Start Services Man-->
+                            <div class="tabContent" id="tab2">
+                                <!--Start Services Man-->
+                                <div class="servicesPerson clearfix">
+                                    @foreach (var item in Model)
+                                    {
+                                        <!--Start detailServicesBox-->
+
+                                        <div class="row" style="border:solid">
+                                            <div class="col-md-3">
+
+
+                                                <img src="~/Attatchments/Book/@item.Image" style="width:226px;height:221px;padding-top:8px;" />
+
+                                            </div>
+
+                                            <div class="col-md-9">
+                
+                                                <h5 style="padding-top:8px"><a title="View Product Detail" href="@Url.Action("BookDetail","Dashboard",new {area="MyLibrary",BookId=item.BookId})">@item.BookName</a></h5>
+                                                <p><b>Category </b>: @(item.Catagory)</p>
+                                                <p><b>Class</b> : @item.Class</p>
+                                                <p><b>Subject</b> :  @item.Subject</p>
+                                                <p><b>Series</b> : @item.Series</p>
+                                                <p><b><b>Price</b> : </b><b>@item.EbookPrice</b></p>
+                                                <p><a href="javascript:void(0);" data-cartId="@item.CartId" onclick="RemoeFromCart(this);" class="RemoveCartBtn">Remove from cart</a></p>
+
+                                            </div>
+                                        </div>
+
+
+                                    }
+                                </div>
+                            </div>
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="tabContent" id="tab3">
+                            <div class="clearfix">
+                                <div class="detailservicesBox clearfix">
+                                    <div style="background-color: #fff; text-align: center; padding: 15% 0; ">
+                                        <h2>Your Cart Is Empty</h2>
+                                       
+                                        <img src="~/images/emptyCart.jpg"  style="height:100px"/>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                </div>
+            </div>
+    </div>
+</div>
+
+@section Scripts {
+    <link href="~/Content/my_library.css" rel="stylesheet" />
+    <script src="~/Scripts/jquery.toaster.js"></script>
+    <script src="~/Scripts/bootbox.min.js"></script>
+    <script src="~/Scripts/Common.js"></script>
+    <script src="~/Scripts/jquery.toaster.js"></script>
+
+    <script>
+     function RemoeFromCart(obj) {
+            $("#toaster").remove();
+            AddLoader();
+
+         var cartId = $(obj).attr("data-cartId");
+            var html = $(obj).html();
+            $(obj).html("<span class='fa fa-spin fa-spinner'></span>");
+             $.ajax({
+                type: 'POST',
+                url: '@Url.Action("RemoveFromCart", "Dashboard", new {area= "MyLibrary" })',
+                 data: { CartId: cartId},
+                dataType: "json",
+                success: function (data) {
+                    if (data.StatusCode == 200) {
+                        //$.toaster({ priority: 'success', title: "Added to Cart", message: data.Message });
+
+                        //alert("item removed from cart..")
+                        //RemoveLoader();
+                        location.reload(true)
+
+                    }
+                    else
+                    {
+                        //$.toaster({ priority: 'danger', title: '', message: data.Message });
+                        RemoveLoader();
+                    }
+                },
+                complete: function (data) {
+                    RemoveLoader();
+                },
+                error: function (data) {
+                    RemoveLoader();
+                }
+
+            });
+        }
+    </script>
+}

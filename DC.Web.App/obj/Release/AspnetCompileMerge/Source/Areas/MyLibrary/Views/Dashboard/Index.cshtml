@@ -1,0 +1,109 @@
+﻿@model IEnumerable<Database.GetLibraryBooks_Result>
+@*@model IEnumerable<Database.MyLibrary>*@
+@{
+    ViewBag.Title = "My Library";
+
+    if (User.IsInRole("Admin") || User.IsInRole("SuperAdmin"))
+    {
+        Layout = "~/Areas/CP/Views/Shared/_LayoutM.cshtml";
+    }
+    if (User.IsInRole("User"))
+    {
+        Layout = "~/Areas/MyLibrary/Views/Shared/_LayoutM.cshtml";
+    }
+    if (User.IsInRole("School"))
+    {
+        Layout = "~/Areas/MySchool/Views/Shared/_LayoutM.cshtml";
+    }
+    if (User.IsInRole("Student"))
+    {
+        Layout = "~/Areas/Student/Views/Shared/_LayoutM.cshtml";
+    }
+}
+<div class="container">
+    <div class="row">
+        <div class="col-lg-12">
+            <ol class="breadcrumb" id="olBredcrumb">
+                <li class="breadcrumb-item">
+                    <a href="@Url.Action("Index","Dashboard",new {area="MyLibrary" })">Home</a>
+                </li>
+                <li class="breadcrumb-item active ">   My Library </li>
+            </ol>
+        </div>
+    </div>
+
+
+
+    <div class="row">
+        <div class="col-md-12">
+            <div class="row">
+                @foreach (var item in Model)
+                {
+                    <div class="col-lg-3 col-md-4 col-sm-6 col-xs-6">
+                        <div class="productbox2">
+                            <div class="imgcontainer zoom">
+                                <a href="@Url.Action("BookDetail","Dashboard",new {area="MyLibrary",BookId=item.Id})">
+                                    <img src="~/Attatchments/Book/@item.Image" class="img-responsive  " alt="">
+                                </a>
+                            </div>
+                            <div class="descriptiomsec">
+                                @item.Title
+                                <p>
+                                    ISBN: @item.ISBN | Author: @item.Author
+                                </p>
+                            </div>
+                            <div class="pricingsec">
+                                @*<span>
+                                        <i class="fa fa-inr"></i>@item.EbookPrice
+                                    </span>*@
+                                <i class="fa fa-inr"></i>@item.EbookPrice
+                            </div>
+                            <div class="clearfix">
+                            </div>
+                            <div class="addtocartsec">
+                                @if (item.CartStatusId == DC.CartCurrentStatus.Removed.GetHashCode() || item.CartStatusId ==0)
+                                {
+                                    <a data-bookid="@item.Id" href="javascript:void(0);" onclick="AddToCart(this)" class="viewmorebutton">
+                                        Add To Cart
+                                    </a>
+                                }
+                                else if (item.CartStatusId == DC.CartCurrentStatus.Purchased.GetHashCode())
+                                {
+                                    <a href="~/library/@item.SlugUrl" class="viewmorebutton" style="background-color:green;color:white">
+                                        READ BOOK
+                                    </a>
+                                }
+                                else if (item.CartStatusId == DC.CartCurrentStatus.Added.GetHashCode())
+                                {
+                                    <a href="javascript:void(0)" class="viewmorebutton" style="background-color:red;color:white">
+                                        Added
+                                    </a>
+                                }
+                            </div>
+                        </div>
+                    </div>
+
+
+                }
+            </div>
+        </div>
+    </div>
+</div>
+@section Scripts {
+    <link href="~/Content/my_library.css" rel="stylesheet" />
+    <script src="~/Scripts/jquery.toaster.js"></script>
+    <script src="~/Scripts/bootbox.min.js"></script>
+    <script src="~/Scripts/Common.js"></script>
+    <script src="~/Scripts/jquery.toaster.js"></script>
+    <script>
+     
+        $(function () {
+            $(document).ajaxSend(function (event, xhr, settings) {
+                $(".jsLoading").attr("disabled", "disabled");
+            });
+            $(document).ajaxComplete(function (event, xhr, settings) {
+                $(".jsLoading").removeAttr("disabled");
+            });
+        });
+    </script>
+}

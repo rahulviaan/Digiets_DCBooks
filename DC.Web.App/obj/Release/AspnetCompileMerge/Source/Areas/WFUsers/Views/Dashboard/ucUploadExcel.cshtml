@@ -1,0 +1,129 @@
+﻿@model DC.Web.App.Models.ValidateStudentExcel
+@{
+    Layout = null;
+
+    var width = $"{Model.ExcelCols.Count() * 130}px";
+}
+<style>
+    .modal-body {
+        min-height: 80vh !important;
+    }
+
+    .modal {
+        display: block;
+    }
+
+
+
+    .modal-dialog {
+        margin: 0px auto;
+    }
+
+    .modal-footer {
+        text-align: center !important;
+    }
+
+    .modal-title {
+        text-align: center !important;
+    }
+
+    .tblData {
+        border: 1px solid #ddd;
+        width: 100%;
+    }
+
+        .tblData tr td {
+            border: 1px solid #ddd;
+            padding: 2px;
+        }
+
+        .tblData tr th {
+            border: 2px solid #ddd;
+            padding: 2px;
+        }
+</style>
+<div class="row">
+    <div class="col-lg-12 " style="border-left: 1px solid #ddd; overflow:auto;  height:80vh; ">
+        <table border="1" class="tblData table-striped">
+            <tr>
+                @foreach (var item in Model.ExcelCols)
+                {
+                    <th id="tr_@item.Id">
+                        @item.Col
+                    </th>
+                }
+            </tr>
+            @foreach (var item in Model.ExcelRows)
+            {
+                <tr>
+                    @foreach (var row in item.Data)
+                    {
+                        <td>
+                            @row.Value
+                        </td>
+                    }
+                </tr>
+            }
+        </table>
+    </div>
+
+</div>
+<script>
+    function ClosePopup() {
+        bootbox.hideAll();
+        $.ajax({
+                type: "POST",
+                url: '@Url.Action("DeleteExcelFile", "Dashboard", new {area="WFUsers"})',
+                data: { File:'@Model._FilePath' },
+                success: function (data) {
+
+                },
+                complete: function (data) {
+                },
+                error: function (data) {
+                }
+            });
+
+    }
+
+
+    function SubmitData() {
+        AddLoader();
+        $(".tblData").html("<tr><td class='h4 text-center'>Please wait we are processing data rows:@Model.Rows it may take some time</td></tr>");
+        $.ajax({
+            type: "POST",
+            url: '@Url.Action("SubmitUploadedExcelData", "Dashboard", new { area = "WFUsers" })',
+            data: { File: '@Model._FilePath', UploadedFileName:'@Model.UploadedFileName',  SheetName :'@Model.SheetName'},
+            success: function (data) {
+                console.log(data)
+                if (data.StatusCode == 200) {
+                    $(".tblData").html("<tr><td class='h4 text-center text-success'> " + data.Message + "</td></tr>"); 
+
+                    RemoveLoader()
+                }
+                else if (data.StatusCode == 204) {
+                    $(".tblData").html("<tr><td class='h4 text-center text-info'><b>" + data.Title+"</b>  " + data.Message+"</td></tr>");
+                    RemoveLoader()
+                }
+                else { 
+                    $.toaster({ priority: 'danger', title: data.Title, message: data.Message })
+                    RemoveLoader()
+                }
+            },
+            complete: function (data) {
+                RemoveLoader()
+            },
+            error: function (data) {
+
+                $(".tblData").html("<tr><td class='h4 text-center text-danger'>Please try  again later some problem occur</td></tr>");
+                RemoveLoader()
+            }
+        });
+    }
+    $(function () {
+        $(".close").removeClass("bootbox-close-button")
+        $(".close").removeAttr("data-dismiss")
+        $(".close").addClass("jsClose")
+        $(".close").attr("onclick","ClosePopup()")
+       })
+</script>

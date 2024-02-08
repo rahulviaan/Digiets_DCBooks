@@ -1,0 +1,392 @@
+﻿@model DC.Web.App.Models.ValidateStudentExcel
+@{
+    Layout = null;
+
+    var width = $"{Model.ExcelCols.Count() * 130}px";
+}
+<style>
+    .modal-body {
+        min-height: 80vh !important;
+    }
+
+    .modal {
+        display: block;
+    }
+
+
+
+    .modal-dialog {
+        margin: 0px auto;
+    }
+
+    .modal-footer {
+        text-align: center !important;
+    }
+
+    .modal-title {
+        text-align: center !important;
+    }
+
+    .tblData {
+        border: 1px solid #ddd;
+        width: 100%;
+    }
+
+        .tblData tr td {
+            border: 1px solid #ddd;
+            padding: 2px;
+        }
+
+        .tblData tr th {
+            border: 2px solid #ddd;
+            padding: 2px;
+        }
+</style>
+<div class="row">
+    <div class="col-lg-12 " style="border-left: 1px solid #ddd; overflow:auto;  max-height:80VH; ">
+        <table border="1" class="tblData table-striped">
+            <tr>
+                @foreach (var item in Model.ExcelCols)
+                {
+                    <th id="tr_@item.Id">
+                        @item.Col
+                    </th>
+                }
+            </tr>
+            @foreach (var item in Model.ExcelRows)
+            {
+                <tr>
+                    @foreach (var row in item.Data)
+                    {
+                        <td>
+                            @row.Value
+                        </td>
+                    }
+                </tr>
+            }
+        </table>
+
+    </div>
+
+</div>
+<script>
+    var Loop = 1
+    var counter = 1
+    var Percent = .16
+    function ClosePopup() {
+        bootbox.hideAll();
+        $.ajax({
+                type: "POST",
+                url: '@Url.Action("deleteexcelfile", "school_student", new {area=""})',
+                data: { File:'@Model._FilePath' },
+                success: function (data) {
+
+                },
+                complete: function (data) {
+                },
+                error: function (data) {
+                }
+            });
+
+    }
+
+    //-----------------Begin All steps for insert students
+    function Update1(userExcelMetaDataId, Loop, Percent) {
+
+        var schoolId = $("#hdSchoolId").val();
+        $.ajax({
+            type: "POST",
+            url: '@Url.Action("update1", "school_student", new {area=""})',
+            data: { userExcelMetaDataId: userExcelMetaDataId, schoolId: schoolId },
+            success: function (data) {
+                    if (data.StatusCode == 200) {
+                        var html = "<style>.modal-body {min-height: 30VH !important;}  .modal-dialog {margin-top: 10% !important; }</style>"
+                            + '<div class="col-lg-12">'
+                            + '<div class="h4 text-center">'
+                            + '<h3>Data upload is in progress</h3>'
+                            + '</div>'
+                            + '<div>'
+                            + '<p>Please wait  <b>user class</b> is in progress it may take some time dont refresh or close  browser screen   </p>'
+                            + '</div>'
+                            + '<div class="progress">'
+                            + '<div class="progress-bar progress-bar-striped active" role="progressbar" aria-valuenow="15" aria-valuemin="0" aria-valuemax="100" style="width: 15%;">'
+                            + '15% |   ' + data.Message + ''
+                            + '</div>'
+                            + '</div>'
+                            + '<img src="/images/preloader.gif">'
+                            + '</div>';
+                        $(".tblData").html("<tr><td class='text-center '> " + html + "</td></tr>");
+
+                        Update2(userExcelMetaDataId, schoolId, Loop, Percent)
+                    }
+                    else if (data.StatusCode == 204) {
+                        var html = "<style>.modal-body {min-height: 30VH !important;}  .modal-dialog {margin-top: 10% !important; }</style>"
+                            + "<div class='h4 text-center'>" + data.Message + "</div>";
+                        $(".tblData").html("<tr><td class='h3 text-center text-danger'> " + html + "</td></tr>");
+                        $(".jsClose").removeClass("hidden")
+                        $(".modal-footer").removeClass("hidden")
+                        RemoveLoader()
+                    }
+                    else {
+                        var html = "<style>.modal-body {min-height: 30VH !important;}  .modal-dialog {margin-top: 10% !important; }</style>"
+                            + "<div class='h4 text-center'>" + data.Message + "</div>";
+                        $(".tblData").html("<tr><td class='h3 text-center text-danger'> " + html + "</td></tr>");
+                        $(".jsClose").removeClass("hidden")
+                        $(".modal-footer").removeClass("hidden")
+                        RemoveLoader()
+                    }
+            },
+            complete: function (data) {
+
+                },
+            error: function (data) {
+                   var html = "<style>.modal-body {min-height: 30VH !important;}  .modal-dialog {margin-top: 10% !important; }</style>"
+                       + "<div class='h4 text-center'>Please try  again later some problem occur</div>";
+                $(".tblData").html("<tr><td class='h4 text-center text-danger'> " + html + "</td></tr>");
+                $(".jsClose").removeClass("hidden")
+                $(".modal-footer").removeClass("hidden")
+                }
+            });
+    }
+
+    function Update2(userExcelMetaDataId, Loop, Percent) {
+
+        var schoolId = $("#hdSchoolId").val();
+        $.ajax({
+            type: "POST",
+            url: '@Url.Action("update2", "school_student", new {area=""})',
+            data: { userExcelMetaDataId: userExcelMetaDataId, schoolId: schoolId },
+            success: function (data) {
+                    if (data.StatusCode == 200) {
+                        var html = "<style>.modal-body {min-height: 30VH !important;}  .modal-dialog {margin-top: 10% !important; }</style>"
+                            + '<div class="col-lg-12">'
+                            + '<div class="h4 text-center">'
+                            + '<h3>Data upload is in progress</h3>'
+                            + '</div>'
+                            + '<div>'
+                            + '<p>Please wait  <b>user insertion</b> is in progress it may take some time dont refresh or close  browser screen   </p>'
+                            + '</div>'
+                            + '<div class="progress">'
+                            + '<div class="progress-bar progress-bar-striped active" role="progressbar" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100" style="width: 20%;">'
+                            + '20% |   ' + data.Message + ''
+                            + '</div>'
+                            + '</div>'
+                            + '<img src="/images/preloader.gif">'
+                            + '</div>';
+                        $(".tblData").html("<tr><td class='text-center '> " + html + "</td></tr>");
+
+                        Update3(userExcelMetaDataId, schoolId, Loop, Percent)
+                    }
+                    else if (data.StatusCode == 204) {
+                        var html = "<style>.modal-body {min-height: 30VH !important;}  .modal-dialog {margin-top: 10% !important; }</style>"
+                            + "<div class='h4 text-center'>" + data.Message + "</div>";
+                        $(".tblData").html("<tr><td class='h3 text-center text-danger'> " + html + "</td></tr>");
+                        $(".jsClose").removeClass("hidden")
+                        $(".modal-footer").removeClass("hidden")
+                        RemoveLoader()
+                    }
+                    else {
+                        var html = "<style>.modal-body {min-height: 30VH !important;}  .modal-dialog {margin-top: 10% !important; }</style>"
+                            + "<div class='h4 text-center'>" + data.Message + "</div>";
+                        $(".tblData").html("<tr><td class='h3 text-center text-danger'> " + html + "</td></tr>");
+                        $(".jsClose").removeClass("hidden")
+                        $(".modal-footer").removeClass("hidden")
+                        RemoveLoader()
+                    }
+            },
+            complete: function (data) {
+
+                },
+            error: function (data) {
+                   var html = "<style>.modal-body {min-height: 30VH !important;}  .modal-dialog {margin-top: 10% !important; }</style>"
+                       + "<div class='h4 text-center'>Please try  again later some problem occur</div>";
+                $(".tblData").html("<tr><td class='h4 text-center text-danger'> " + html + "</td></tr>");
+                $(".jsClose").removeClass("hidden")
+                $(".modal-footer").removeClass("hidden")
+                }
+            });
+    }
+
+    function Update3(userExcelMetaDataId) {
+        var schoolId = $("#hdSchoolId").val();
+        $.ajax({
+            type: "POST",
+            url: '@Url.Action("update3", "school_student", new {area=""})',
+            data: { userExcelMetaDataId: userExcelMetaDataId, schoolId: schoolId },
+            success: function (data) {
+                if (data.StatusCode == 200) {
+                        var percentval = (20 + parseFloat(parseFloat(Percent) * parseFloat(counter))).toFixed(2);
+                        counter = parseFloat(counter) + 1;
+                        var html = "<style>.modal-body {min-height: 30VH !important;}  .modal-dialog {margin-top: 10% !important; }</style>"
+                            + '<div class="col-lg-12">'
+                            + '<div class="h4 text-center">'
+                            + '<h3>Data upload is in progress</h3>'
+                            + '</div>'
+                            + '<div>'
+                            + '<p>Please wait  <b>students insertion</b> is in progress it may take some time dont refresh or close  browser screen   </p>'
+                            + '</div>'
+                            + '<div class="progress">'
+                            + '<div class="progress-bar progress-bar-striped active" role="progressbar" aria-valuenow="' + percentval + '" aria-valuemin="0" aria-valuemax="100" style="width: ' + percentval+'%;">'
+                            + '' + percentval+'% |   ' + data.Message + ''
+                            + '</div>'
+                            + '</div>'
+                            + '<img src="/images/preloader.gif">'
+                        + '</div>';
+                    $(".tblData").html("<tr><td class='text-center'> " + html + "</td></tr>");
+                          if (parseInt(data.RowCount) > 0) {
+                                Update3(userExcelMetaDataId)
+                            }
+                          if (parseInt(data.RowCount) == 0) {
+                              var html = "<style>.modal-body {min-height: 30VH !important;}  .modal-dialog {margin-top: 10% !important; }</style>"
+                                  + '<div class="col-lg-12">'
+                                  + '<div class="h4 text-center">'
+                                  + '<h3>Data upload is in progress</h3>'
+                                  + '</div>'
+                                  + '<div>'
+                                  + '<p>Please wait  <b>students insertion</b> is in progress it may take some time dont refresh or close  browser screen   </p>'
+                                  + '</div>'
+                                  + '<div class="progress">'
+                                  + '<div class="progress-bar progress-bar-striped active" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width: 100%;">'
+                                  + '100 |   data cleaning is in process.'
+                                  + '</div>'
+                                  + '</div>'
+                                  + '<img src="/images/preloader.gif">'
+                                  + '</div>';
+                              $(".tblData").html("<tr><td class='text-center'> " + html + "</td></tr>");
+                              CleanData(userExcelMetaDataId)
+                        }
+                        /*Update3(userExcelMetaDataId, schoolId)*/
+                    }
+                    else if (data.StatusCode == 204) {
+                        var html = "<style>.modal-body {min-height: 30VH !important;}  .modal-dialog {margin-top: 10% !important; }</style>"
+                            + "<div class='h4 text-center'>" + data.Message + "</div>";
+                        $(".tblData").html("<tr><td class='h3 text-center text-danger'> " + html + "</td></tr>");
+                        $(".jsClose").removeClass("hidden")
+                        $(".modal-footer").removeClass("hidden")
+                        RemoveLoader()
+                    }
+                    else {
+                        var html = "<style>.modal-body {min-height: 30VH !important;}  .modal-dialog {margin-top: 10% !important; }</style>"
+                            + "<div class='h4 text-center'>" + data.Message + "</div>";
+                        $(".tblData").html("<tr><td class='h3 text-center text-danger'> " + html + "</td></tr>");
+                        $(".jsClose").removeClass("hidden")
+                        $(".modal-footer").removeClass("hidden")
+                        RemoveLoader()
+                    }
+            },
+            complete: function (data) {
+
+                },
+            error: function (data) {
+                   var html = "<style>.modal-body {min-height: 30VH !important;}  .modal-dialog {margin-top: 10% !important; }</style>"
+                       + "<div class='h4 text-center'>Please try  again later some problem occur</div>";
+                $(".tblData").html("<tr><td class='h4 text-center text-danger'> " + html + "</td></tr>");
+                $(".jsClose").removeClass("hidden")
+                $(".modal-footer").removeClass("hidden")
+                }
+            });
+    }
+    function CleanData(userExcelMetaDataId) {
+        var schoolId = $("#hdSchoolId").val();
+        $.ajax({
+            type: "POST",
+            url: '@Url.Action("CleanData", "school_student", new {area=""})',
+            data: { userExcelMetaDataId: userExcelMetaDataId, schoolId: schoolId },
+            success: function (data) {
+                if (data.StatusCode == 200) {
+                        html = "<style>.modal-body {min-height: 30VH !important;}  .modal-dialog {margin-top: 10% !important; }</style>"
+                        + "<div style=margin-top:15px;' class='text-center text-success'><h3>" + data.Message + "<br/></h3></div>"
+                        + "<span style='font-size:20rem;'><i class='fa fa-check-circle text-success'></i></span>  ";
+                        $(".tblData").html("<tr><td class='text-center'> " + html + "</td></tr>");
+                        $(".jsClose").removeClass("hidden")
+                        $(".modal-footer").removeClass("hidden")
+                        RemoveLoader()
+
+                    }
+                    else if (data.StatusCode == 204) {
+                        var html = "<style>.modal-body {min-height: 30VH !important;}  .modal-dialog {margin-top: 10% !important; }</style>"
+                            + "<div class='h4 text-center'>" + data.Message + "</div>";
+                        $(".tblData").html("<tr><td class='h3 text-center text-danger'> " + html + "</td></tr>");
+                        $(".jsClose").removeClass("hidden")
+                        $(".modal-footer").removeClass("hidden")
+                        RemoveLoader()
+                    }
+                    else {
+                        var html = "<style>.modal-body {min-height: 30VH !important;}  .modal-dialog {margin-top: 10% !important; }</style>"
+                            + "<div class='h4 text-center'>" + data.Message + "</div>";
+                        $(".tblData").html("<tr><td class='h3 text-center text-danger'> " + html + "</td></tr>");
+                        $(".jsClose").removeClass("hidden")
+                        $(".modal-footer").removeClass("hidden")
+                        RemoveLoader()
+                    }
+            },
+            complete: function (data) {
+
+                },
+            error: function (data) {
+                   var html = "<style>.modal-body {min-height: 30VH !important;}  .modal-dialog {margin-top: 10% !important; }</style>"
+                       + "<div class='h4 text-center'>Please try  again later some problem occur</div>";
+                $(".tblData").html("<tr><td class='h4 text-center text-danger'> " + html + "</td></tr>");
+                $(".jsClose").removeClass("hidden")
+                $(".modal-footer").removeClass("hidden")
+                }
+            });
+    }
+
+     
+    //-----------------End All steps for insert students
+
+    function SubmitData() {
+        AddLoader();
+        $(".tblData").html("<tr><td class='h4 text-center'>Please wait we are processing data rows:@Model.Rows it may take some time</td></tr>");
+        $.ajax({
+            type: "POST",
+            url: '@Url.Action("submituploadedexceldata", "school_student", new { area = "" })',
+            data: { File: '@Model._FilePath', UploadedFileName:'@Model.UploadedFileName',  SheetName :'@Model.SheetName'},
+            success: function (data) {
+
+                if (data.StatusCode == 200) {
+                    var html = "<style> .modal-body {min-height: 30VH !important;}  .modal-dialog {margin-top: 10% !important; }</style>"
+                        +"<div class='h4 text-center'><h3>Data upload is in progress</h3></div>"
+                        + '<div> <p>Please wait user board mapping is in progress it may take some time dont refresh or close  browser screen   </p></div>'
+                        + '<div class="progress">'
+                        + '<div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" aria-valuenow="10" aria-valuemin="0" aria-valuemax="100" style="width: 10%"></div>'
+                        + '10%</div>'
+                        + '<img src="/images/preloader.gif" />'
+                    $(".tblData").html("<tr><td class='h4 text-center'> " + html + "</td></tr>");
+                    $(".modal-footer").html('<button data-bb-handler="cancel" type="button" class="btn btnbtn-outline-primary btn-lg"><i class="fa fa-times"></i> Close</button>');
+                    $(".jsClose").addClass("hidden")
+                    $(".modal-footer").addClass("hidden")
+                    Loop = data.Loop;
+                    Percent = data.Percent;
+
+                    Update1(data.Id, Loop, Percent)
+                    RemoveLoader()
+                }
+                else if (data.StatusCode == 204) {
+                    $(".tblData").html("<tr><td class='h4 text-center text-info'><style> .modal-body {min-height: 30VH !important;}  .modal-dialog {margin-top: 10% !important; }</style><b>Error </b>  " + data.Message + "</td></tr>");
+                    RemoveLoader()
+                }
+                else {
+                    $.toaster({ priority: 'danger', title: data.Title, message: data.Message })
+                    $(".tblData").html("<tr><td class='h4 text-center text-info'><style> .modal-body {min-height: 30VH !important;}  .modal-dialog {margin-top: 10% !important; }</style><b>Error </b>  " + data.Message + "</td></tr>");
+                    RemoveLoader()
+                }
+            },
+            complete: function (data) {
+                RemoveLoader()
+            },
+            error: function (data) {
+
+                $(".tblData").html("<tr><td class='h4 text-center text-danger'><style> .modal-body {min-height: 30VH !important;}  .modal-dialog {margin-top: 10% !important; }</style>Please try  again later some problem occur</td></tr>");
+                RemoveLoader()
+            }
+        });
+    }
+    $(function () {
+        $(".close").removeClass("bootbox-close-button")
+        $(".close").removeAttr("data-dismiss")
+        $(".close").addClass("jsClose")
+        $(".close").attr("onclick","ClosePopup()")
+       })
+</script>

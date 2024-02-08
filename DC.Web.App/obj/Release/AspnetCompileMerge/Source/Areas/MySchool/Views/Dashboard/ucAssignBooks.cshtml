@@ -1,0 +1,299 @@
+﻿@model DC.UserBookModel
+@{
+
+    Layout = null;
+    ViewBag.Title = "Assign Books";
+    var genderList = DC.Web.App.Models.EnumHelper.ToSelectLists<DC.Gender>().Where(m => m.Value != "-1");
+
+
+    var classes = new Database.Repository.MasterRepository.ClassRepository().SelectList();
+    var lstclasses = new List<SelectListItem>();
+    if (classes != null && classes.Count() > 0)
+    {
+        lstclasses = (from item in classes
+                      select new SelectListItem
+                      {
+                          Text = item.Title,
+                          Value = item.Id.ToString(),
+                      }).ToList();
+    }
+
+    var subjects = new Database.Repository.MasterRepository.SubjectRepository().SelectList();
+    var lstsubjects = new List<SelectListItem>();
+    if (subjects != null && subjects.Count() > 0)
+    {
+        lstsubjects = (from item in subjects
+                       select new SelectListItem
+                       {
+                           Text = item.Title,
+                           Value = item.Id.ToString(),
+                       }).ToList();
+    }
+
+}
+
+<style>
+    .form-control-feedback {
+        position: absolute;
+        right: 18px;
+        z-index: 2;
+        width: 34px;
+        height: 34px;
+        text-align: center;
+        pointer-events: none;
+    }
+
+    label {
+        margin-bottom: 3px;
+        font-weight: 600;
+        color: #6c757d;
+    }
+
+    .form-group {
+        margin-bottom: 5px;
+    }
+    /*.dvMapCSS {
+        pointer-events: none;
+        opacity: .3;
+    }*/
+    #infowindow {
+        align: left;
+        font-size: 90%;
+    }
+
+    .Markerlabels {
+        color: #ffffff;
+        background-color: #000000;
+        font-size: 10px;
+        font-weight: bold;
+        text-align: center;
+        width: 60px;
+        border: 2px solid black;
+        border-radius: 4px;
+        padding: 4px;
+        width: 50%;
+        display: none;
+    }
+
+    .gm-style-cc {
+        display: none;
+    }
+
+    .gm-fullscreen-control {
+        display: none;
+    }
+
+    .gm-svpc {
+        display: none;
+    }
+
+    .gm-style-mtc {
+        display: none;
+    }
+
+    a[href^="http://maps.google.com/maps"] {
+        display: none !important
+    }
+
+    a[href^="https://maps.google.com/maps"] {
+        display: none !important
+    }
+
+    .gmnoprint a, .gmnoprint span, .gm-style-cc {
+        display: none;
+    }
+
+    .gmnoprint div {
+        background: none !important;
+    }
+
+    hr {
+        margin-top: 10px;
+        margin-bottom: 10px;
+        border: 0;
+        border-top: 1px solid #eee;
+    }
+
+    textarea {
+        resize: none;
+        height: 80px !important;
+    }
+</style>
+<div class="col-lg-12" style="background-color:#fff; padding:15px;">
+
+    @using (Html.BeginForm(null, null, FormMethod.Post, new { role = "form", autocomplete = "off", name = "frmAssignBooks", id = "frmAssignBooks", }))
+    {
+        @Html.ValidationSummary(true, "", new { @class = "text-danger small" })
+        @Html.AntiForgeryToken()
+        @Html.HiddenFor(m => m.Id)
+        @Html.HiddenFor(m => m.AspNetUserId)
+
+        <div class="row ">
+            <div class="col-lg-7" style="border-right:#e6e6e6 2px solid;">
+                <div class="form-group">
+
+
+                    <h4 style="margin-bottom: 3px;" id="h3Title">Books </h4>
+                    <div>@Model.Name    @Model.AdmissionNo | @Model.AccountCode </div>
+                    <hr />
+                </div>
+                <div class="row">
+
+                    <div class="col-lg-6">
+                        <div class="row">
+                            <div class="col-lg-12">
+                                @Html.LabelFor(m => m.MasterSubjectId)
+                                @Html.ValidationMessageFor(m => m.MasterSubjectId, "", new { @class = "small text-danger pull-right" })
+                            </div>
+                            <div class="col-lg-12">
+
+                                <div class="form-group has-feedback " title="* @Html.DisplayNameFor(model => model.MasterSubjectId) reuired.">
+                                    @Html.DropDownListFor(t => t.MasterSubjectId, lstsubjects, Html.SelectText(Html.DisplayNameFor(model => model.MasterSubjectId).ToString()), new { @class = "form-control" })
+                                    <span class="text-danger fa fa-star-o form-control-feedback"></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-6">
+                        <div class="row">
+                            <div class="col-lg-12">
+                                @Html.LabelFor(m => m.MasterClassId)
+                                @Html.ValidationMessageFor(m => m.MasterClassId, "", new { @class = "small text-danger pull-right" })
+                            </div>
+                            <div class="col-lg-12">
+
+                                <div class="form-group has-feedback " title="* @Html.DisplayNameFor(model => model.MasterClassId) reuired.">
+                                    @Html.DropDownListFor(t => t.MasterClassId, lstclasses, Html.SelectText(Html.DisplayNameFor(model => model.MasterClassId).ToString()), new { @class = "form-control" })
+                                    <span class="text-danger fa fa-star-o form-control-feedback"></span>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+
+ 
+
+                </div>
+
+                <div class="row">
+                    <div class="col-lg-12">
+                        <hr />
+                    </div>
+                </div>
+                <div class="row csslast">
+                    <div class="col-lg-2">
+
+                    </div>
+                    <div class="col-lg-2">
+
+
+                    </div>
+                    <div class="col-lg-6">
+                        
+                    </div>
+                    <div class="col-lg-2">
+
+
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-5">
+                <div class="form-group">
+                    <h4 style="margin-bottom: 3px;" id="h3Title">Books </h4>
+                    <div>@Model.Name    @Model.AdmissionNo | @Model.AccountCode </div>
+                    <hr />
+                </div>
+                <div class="form-group  img-thumbnail dvMapCSS" id="dvMap" style="background:#e6e6e6;height: 60%; width: 100%">
+
+
+                    <table class="table table-bordered" style="background:#fff;">
+                         
+                    
+                    </table>
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <hr />
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+
+    }
+</div>
+
+@Scripts.Render("~/bundles/jqueryval")
+<script src="~/Scripts/Common.js"></script>
+<script>
+
+    function AddUser() {
+        var btnhtml = $("#btnSubmit").html();
+        $("#btnSubmit").html("Wait.. <i class='fa fa-spinner fa-spin'></i>");
+        $("#btnSubmit").attr("disabled", "disabled");
+        var Id = $.trim($("#Id").val());
+        var FirstName = $.trim($("#FirstName").val());
+        var LastName = $.trim($("#LastName").val());
+        var PhoneNumber = $.trim($("#PhoneNumber").val());
+        var Email = $.trim($("#Email").val());
+        var Password = $.trim($("#Password").val());
+
+        var DOB = $.trim($("#DOB").val());
+        var Gender = $.trim($("#Gender option:selected").val());
+
+        var MasterClassId = $.trim($("#MasterClassId option:selected").val());
+        var MasterBoardId = $.trim($("#MasterBoardId option:selected").val());
+        var Session = $.trim($("#Session option:selected").val());
+        var Address = $.trim($("#Address").val());
+        var RollNo = $.trim($("#RollNo").val());
+        var SchoolId = $.trim($("#SchoolId").val());
+        var AccountCode = $.trim($("#AccountCode").val());
+        var AdmissionNo = $.trim($("#AdmissionNo").val());
+        var ParentName = $.trim($("#ParentName").val());
+
+        Gender = Gender == "" ? -1 :  parseInt(Gender);
+        var RoleId = $.trim($("#RoleId").val());
+        AddLoader();
+        $.ajax({
+            type: "POST",
+            url: '@Url.Action("addstudent", "school_student", new {area= "" })',
+            data: {
+                Id: Id, RoleId: RoleId, FirstName: FirstName, LastName: LastName, MobNo: PhoneNumber, PhoneNumber: PhoneNumber, EmailId:Email,
+                Password: Password, DOB: DOB, iGender: Gender, MasterClassId: MasterClassId, MasterBoardId: MasterBoardId,
+                Session: Session, Address: Address, SchoolId: SchoolId, RollNo: RollNo,
+                AccountCode: AccountCode, AdmissionNo: AdmissionNo, ParentName: ParentName
+                },
+            success: function (data) {
+                $("#btnSubmit").html(btnhtml);
+                $("#btnSubmit").removeAttr("disabled");
+                if (data.StatusCode == 200) {
+                    $.toaster({ priority: 'success', title: " Success! ", message: data.Message });
+                    FillData();
+                    CancelAdd();
+                    RemoveLoader();
+                }
+                else {
+                    $.toaster({ priority: 'danger', title: " Error! ", message: data.Message });
+                    RemoveLoader();
+                }
+            },
+            error: function (data) {
+                $("#btnSubmit").html(btnhtml);
+                $("#btnSubmit").removeAttr("disabled");
+                RemoveLoader();
+            },
+            complete: function (data) {
+                $("#btnSubmit").html(btnhtml);
+                $("#btnSubmit").removeAttr("disabled");
+                RemoveLoader();
+            }
+        });
+    }
+    $(function () {
+         
+    });
+</script>
+
+

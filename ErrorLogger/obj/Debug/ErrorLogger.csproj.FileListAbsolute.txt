@@ -1,0 +1,6 @@
+D:\Projects\DCReader\DC.Reader-Development\ErrorLogger\bin\Debug\ErrorLogger.dll
+D:\Projects\DCReader\DC.Reader-Development\ErrorLogger\bin\Debug\ErrorLogger.pdb
+D:\Projects\DCReader\DC.Reader-Development\ErrorLogger\obj\Debug\ErrorLogger.csprojAssemblyReference.cache
+D:\Projects\DCReader\DC.Reader-Development\ErrorLogger\obj\Debug\ErrorLogger.csproj.CoreCompileInputs.cache
+D:\Projects\DCReader\DC.Reader-Development\ErrorLogger\obj\Debug\ErrorLogger.dll
+D:\Projects\DCReader\DC.Reader-Development\ErrorLogger\obj\Debug\ErrorLogger.pdb

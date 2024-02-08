@@ -1,0 +1,75 @@
+﻿@model DC.SeriesModel
+@{
+    Layout = null;
+     
+     var subjectid = Model.MasterSubjectId == 0 ? "" : Model.MasterSubjectId.ToString();
+
+}
+<div class="col-lg-12">
+
+    @using (Html.BeginForm(null, null, FormMethod.Post, new { role = "form", autocomplete = "off", name = "frmAdd", id = "frmAdd", }))
+    {
+        @Html.AntiForgeryToken()
+        @Html.HiddenFor(m => m.Id)
+        @Html.ValidationSummary(true)
+        <div class="panel panel-default bg-color">
+            <div class="panel-heading">
+                <h4 id="h3Title">Create Series</h4>
+            </div>
+            <div class="panel-body">
+            <div class="form-group text-danger" id="dvMessage">
+            </div>
+            <div class=" form-group ">
+                @Html.LabelFor(m => m.Title1) <strong title="Required." class="text-danger ">*&nbsp; </strong> @Html.ValidationMessageFor(t => t.Title1, "", new { @class = "small text-danger pull-right" })
+                @Html.TextBoxFor(t => t.Title1, new { @class = "form-control", @placeholder = Html.DisplayNameFor(model => model.Title1) })
+            </div>
+            <div class="row">
+                
+                <div class="col-lg-6 form-group ">
+                    @Html.LabelFor(m => m.MasterSubjectId) <strong title="Required." class="text-danger ">*&nbsp; </strong> @Html.ValidationMessageFor(t => t.MasterSubjectId, "", new { @class = "small text-danger pull-right" })
+                    @Html.DropDownListFor(m => m.MasterSubjectId, Enumerable.Empty<SelectListItem>(), "Select Subject", new { @class = "form-control" })
+                </div>
+                <div class="col-lg-6 form-group ">
+                    @Html.LabelFor(m => m.DisplayOrder) <strong title="Required." class="text-danger ">&nbsp; </strong> @Html.ValidationMessageFor(t => t.DisplayOrder, "", new { @class = "small text-danger pull-right" })
+                    @Html.TextBoxFor(t => t.DisplayOrder, new { maxlength = "3", @class = "form-control", @placeholder = Html.DisplayNameFor(model => model.DisplayOrder) })
+
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-12 form-group ">
+                    @Html.LabelFor(m => m.Description) <strong title="Required." class="text-danger ">&nbsp; </strong> @Html.ValidationMessageFor(t => t.Description, "", new { @class = "small text-danger pull-right" })
+                    @Html.TextAreaFor(t => t.Description, new { maxlength = "500", @class = "form-control", @placeholder = Html.DisplayNameFor(model => model.Description) })
+
+                </div>
+
+
+            </div>
+            <div class="row">
+                <div class="col-lg-12 text-center">
+                  <button   id="btnCancel" type="button" class="btn btn-default btn-lg" onclick="CancelAdd()"> Cancel</button>
+
+                    @if (Model.Id > 0)
+                    {
+                        <button id="btnSubmit" type="submit" class="btn btn-primary btn-lg">Update Series</button>
+                    }
+                    else
+                    {
+                        <button id="btnSubmit" type="submit" class="btn btn-primary btn-lg">Create Series</button>
+                    }
+                </div>
+            </div>
+            </div>
+        </div>
+    }
+</div>
+@Scripts.Render("~/bundles/jqueryval")
+<script>
+     
+    CopyDropDown("ddnSubject", "MasterSubjectId", '@subjectid')
+    $("#MasterSubjectId option:first").text("Select subject")
+    
+</script>
+
+
+
+

@@ -1,0 +1,8 @@
+﻿@{
+    Layout = "~/Areas/MyLibrary/Views/Shared/_LayoutM.cshtml";
+
+    if (User.IsInRole("School"))
+    {
+        Layout = "~/Areas/Myschool/Views/Shared/_LayoutM.cshtml";
+    }
+}

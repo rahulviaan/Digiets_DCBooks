@@ -1,0 +1,146 @@
+﻿@model DC.Web.App.Models.RegisterStudentModel
+@{
+    var DOB = Model.DOB != null ? ((DateTime)Model.DOB).ToString("yyyy-MM-dd") : "";
+    var strDOB = Model.DOB != null && ((DateTime)Model.DOB).ToString("dd-MMM-yyyy") != "01-Jan-1900" ? ((DateTime)Model.DOB).ToString("dd-MMM-yyyy") : "";
+    Layout = null;
+    ViewBag.Title = "View Sturebt";
+    var genderList = DC.Web.App.Models.EnumHelper.ToSelectLists<DC.Gender>().Where(m => m.Value != "-1");
+    var gender = genderList.FirstOrDefault(m => m.Value == Convert.ToString(Model.Gender.GetHashCode()));
+    var sgender = gender == null ? "" : gender.Text;
+    var status = DC.Web.App.Models.EnumHelper.GetEnumDescription(Model.Status);
+
+    var css = Model.Status == DC.Status.Active ? "" : "td-inactive";
+}
+ 
+    <div class="row ">
+        <div class="col-lg-12"  >
+            <table class="table table-bordered">
+                <tr class="@css">
+                    <th width="15%">@Html.Label("Name")</th>
+                    <th width="1%" class="text-center">:</th>
+                    <td width="84%"> @Html.DisplayFor(t => t.FirstName) @Html.DisplayFor(t => t.LastName)</td>
+                </tr>
+                <tr class="@css">
+                    <th>@Html.LabelFor(m => m.AdmissionNo)</th>
+                    <th class="text-center">:</th>
+                    <td>   @Model.AdmissionNo</td>
+                </tr>
+                <tr class="@css">
+                    <th>@Html.LabelFor(m => m.AccountCode)</th>
+                    <th class="text-center">:</th>
+                    <td>   @Model.AccountCode</td>
+                </tr>
+                <tr class="@css">
+                    <th>@Html.LabelFor(m => m.ParentName)</th>
+                    <th class="text-center">:</th>
+                    <td>   @Model.ParentName</td>
+                </tr>
+
+                <tr class="@css">
+                    <th>@Html.LabelFor(m => m.Class)</th>
+                    <th class="text-center">:</th>
+                    <td>   @Model.Class</td>
+                </tr>
+                <tr class="@css">
+                    <th>@Html.LabelFor(m => m.Board)</th>
+                    <th class="text-center">:</th>
+                    <td>   @Model.Board</td>
+                </tr>
+                <tr class="@css">
+                    <th>@Html.LabelFor(m => m.Session)</th>
+                    <th class="text-center">:</th>
+                    <td>   @Model.Session</td>
+                </tr>
+                <tr class="@css">
+                    <th>@Html.LabelFor(m => m.RollNo)</th>
+                    <th class="text-center">:</th>
+                    <td>   @Model.RollNo</td>
+                </tr>
+
+
+
+                <tr class="@css">
+                    <th> @Html.LabelFor(m => m.PhoneNumber)</th>
+                    <th class="text-center">:</th>
+                    <td> @Html.DisplayFor(t => t.PhoneNumber)</td>
+                </tr>
+                <tr class="@css">
+                    <th>  @Html.LabelFor(m => m.Email)</th>
+                    <th class="text-center">:</th>
+                    <td>@Html.DisplayFor(t => t.Email)</td>
+                </tr>
+                <tr class="@css">
+                    <th> @Html.LabelFor(m => m.Password)</th>
+                    <th class="text-center">:</th>
+                    <td>
+                        @{var pwd = Model.Password.Substring(0, 1);
+                            foreach (var item in Model.Password.Substring(2, Model.Password.Length - 2).ToCharArray())
+                            {
+                                pwd = pwd + "*";
+                            }
+                            pwd += Model.Password.Substring(Model.Password.Length - 1, 1);
+
+                        }
+                        <span data-pwd="@Model.Password" data-user="@Model.UserName" name="@Model.FirstName @Model.LastName" onclick="return CopyData(this)" title="click for copy credentials." class="fa fa-lock btn "> @pwd</span>
+                    </td>
+                </tr>
+                <tr class="@css">
+                    <th>@Html.LabelFor(m => m.DOB)</th>
+                    <th class="text-center">:</th>
+                    <td>@strDOB</td>
+                </tr>
+                <tr class="@css">
+                    <th> @Html.LabelFor(m => m.Gender)</th>
+                    <th class="text-center">:</th>
+                    <td id="txtGender">@sgender</td>
+                </tr>
+
+
+                <tr class="@css">
+                    <th>@Html.LabelFor(m => m.Address)</th>
+                    <th class="text-center">:</th>
+                    <td>   @Model.Address</td>
+                </tr>
+
+                <tr class="@css">
+                    <th> @Html.LabelFor(m => m.Status)</th>
+                    <th class="text-center">:</th>
+                    <td>@status</td>
+                </tr>
+            </table>
+        </div>
+    </div>
+ 
+<style type="text/css">
+    .modal-dialog {
+        max-width: 80% !important;
+        margin: 1.75rem auto;
+    }
+
+    .modal-footer {
+        text-align: center;
+    }
+</style>
+@Scripts.Render("~/bundles/jqueryval")
+<script src="~/Scripts/Common.js"></script>
+<script>
+    $("#pageAdd").html("");
+    var title = $(".modal-title");
+    var header = $(".modal-header");
+    var html = '<h4 class="modal-title">' + title[0].innerHTML + '</h4> <button type="button" class="bootbox-close-button close" onclick=" bootbox.hideAll();" aria-hidden="true">×</button>';
+    $(header[0]).html(html);
+
+
+    $("#txtRole").text($("#DatatId option[value='@Model.RoleId']").text())   
+    function CopyData(obj) {        
+        var uname = $(obj).attr("data-user")
+        var pwd = $(obj).attr("data-pwd")
+        var copyText = "User name: " + uname + " , Password: " + pwd + "";
+        $(obj).removeClass("fa fa-lock btn")
+        $(obj).html(copyText);
+        $(obj).select()
+        return false;
+    }
+</script>
+
+

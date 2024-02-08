@@ -1,0 +1,348 @@
+﻿@model DC.LibraryVM
+@{
+    Layout = null;
+    var title = string.IsNullOrWhiteSpace(ViewBag.Title) ? "Malyalam Padavali" : ViewBag.Title;
+}
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link href="~/Content/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
+    <script src="~/Content/bootstrap/js/popper.js"></script>
+    <script src="~/Scripts/jquery-3.3.1.min.js"></script>
+    <script src="~/Content/bootstrap/js/bootstrap.min.js"></script>
+    @*<script src="~/Scripts/eBook/aie_textsound.js"></script>
+        <script src="~/Scripts/eBook/LAB.min.js"></script>*@
+    <script src="~/Scripts/eBook/zuriets.audio.js"></script>
+    <script src="~/Scripts/jquery.toaster.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css">
+
+    <link href="~/Content/viewer.css" rel="stylesheet" />
+    <link href="~/Content/my_library.css" rel="stylesheet" />
+    <link rel="icon" type="image/png" href="~/images/favicon.png" sizes="32x32" />
+    <title>@title</title>
+    <style>
+        .prevent-select {
+            -webkit-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+        }
+
+    </style>
+</head>
+<body id="fullscreen" onselectstart='return false' oncontextmenu='return false' oncopy='return false' onpaste='return false' class='prevent-select'>
+    <div class="container">
+        <div class="panel-body">
+            <div class="row">
+                @Html.Hidden("CurrentIndex", Model.startindex + 1)
+                <div class="col-lg-12 col-md-12 col-sm-12 topNav">
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-xs-12 col-sm-6 col-md-2">
+                                <button type="button" class="btn btn-header mrg-right" id="idback" onclick="history.go(-1)" title="Back">
+                                    <i class="fa fa-backward"></i>&nbsp;Back
+                                </button>
+                            </div>
+                            <div class="col-xs-12 col-sm-6 col-md-7">
+                                <h3 class="text-center">
+                                    <span id="title" style="font-size:x-large;"></span>
+                                    @*<span class="pull-right">
+                                            <a href="#" class="btn btn-secondary btn-lg" onclick="openNav_1()"><i class="fa fa-book" title="BookMark" aria-hidden="true"></i></a>
+                                            <a href="#" class="btn btn-secondary btn-lg" onclick="openNav()"><i class="fa fa-file-text-o" title="Notes" aria-hidden="true"></i></a>
+                                        </span>*@
+                                </h3>
+                            </div>
+                            <div class="col-xs-12 col-sm-6 col-md-3 text-right">
+                                @*<a href="#" class="btn btn-secondary" onclick="openNav()"><i class="fa fa-file-text-o" title="Notes" aria-hidden="true"></i></a>*@
+
+                                <div class="btn-group" style="display:none">
+                                    <button class="btn btn-header dropdown-toggle" data-toggle="dropdown" data-hover="dropdown"><i class="fa fa-bookmark"></i></button>
+                                    <ul class="dropdown-menu">
+                                        <li>
+                                            <a href="JavaScript:Void(0)" onclick="BookMarkValidity()">Add BookMark</a>
+                                        </li>
+                                        <li>
+                                            <a href="JavaScript:Void(0)" onclick="GetBookMarks()">View BookMarks</a>
+                                        </li>
+                                    </ul>
+                                </div>
+                                <div class="btn-group" style="display:none">
+                                    <button class="btn btn-header dropdown-toggle" data-toggle="dropdown" data-hover="dropdown"> <i class="fa fa-clipboard"></i></button>
+                                    <ul class="dropdown-menu">
+                                        <li>
+                                            <a href="JavaScript:Void(0)" data-toggle="modal" data-target="#DetailsModal">Add Notes</a>
+                                        </li>
+                                        <li>
+                                            <a href="JavaScript:Void(0)" onclick="GetNotes()">View Notes</a>
+                                        </li>
+                                    </ul>
+                                </div>
+
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-12 ">
+                    <div id="resultDiv" style="margin-top: 7%;">
+                        @*@Html.Raw(System.Web.HttpUtility.HtmlDecode(ViewBag.Ebook))*@
+                    </div>
+                </div>
+                <div class="col-lg-12 col-md-12 col-sm-12 footNav">
+                    <div class="container" style="width:100%; margin:0 auto;text-align: center;">
+                        <div class="col-xs-12 col-sm-12 col-md-12">
+                            <span style="font-size:16px;">Page :</span> @Html.DropDownList("PageList", ViewBag.PageList as SelectList)
+                            <button type="button" class="btn button btn-sm" id="previous" title="Previous">
+                                <i class="fa fa-backward" aria-hidden="true"></i>
+                            </button>
+                            <button type="button" class="btn button btn-sm" id="next" title="Next">
+                                <i class="fa fa-forward" aria-hidden="true"></i>
+                            </button>
+                            <button type="button" class="btn button btn-sm" id="Zoom-In" title="Zoom-In">
+                                <i class="fa fa-plus" aria-hidden="true"></i>
+                            </button>
+                            <button type="button" class="btn button btn-sm" id="Zoom-Out" title="Zoom-Out">
+                                <i class="fa fa-minus" aria-hidden="true"></i>
+                            </button>
+                            <span style="display: inline-flex;height: 13px;"><input type="range" id="idslider" class="custom-range" onchange="ZoomInOut(this.value)" min="25" max="200" value="100" style="display: inline-flex;width:200px;" /> <span id="idspanslider">100%</span></span>
+                            <button type="button" class="btn button btn-sm" title="Full Screen" onclick="openFullscreen();">
+
+                                <i class="fa fa-maximize" aria-hidden="true"></i>
+                            </button>
+
+                            <button type="button" class="btn button btn-sm" title="Fit Width" onclick="resizeWin()">
+                                <i class="fa fa-minimize" aria-hidden="true"></i>
+                            </button>
+                            <button onclick="PlayPauseAudio(this)" type="button" class="btn button btn-sm play" id="playAudio" title="Play">
+                                <i class="fa fa-play" aria-hidden="true"></i>
+                            </button>
+                            <button onclick="StopAudio(this)" type="button" class="btn button btn-sm stop" id="stopAudio" title="Stop">
+                                <i class="fa fa-stop" aria-hidden="true"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+</body>
+</html>
+
+
+<script>
+    var PgNumber = 1;
+    OpenPage(PgNumber)
+    var elem = document.getElementById("fullscreen");
+    function openFullscreen() {
+        if (elem.requestFullscreen) {
+            elem.requestFullscreen();
+        } else if (elem.mozRequestFullScreen) { /* Firefox */
+            elem.mozRequestFullScreen();
+        } else if (elem.webkitRequestFullscreen) { /* Chrome, Safari & Opera */
+            elem.webkitRequestFullscreen();
+        } else if (elem.msRequestFullscreen) { /* IE/Edge */
+            elem.msRequestFullscreen();
+        }
+    }
+    function ZoomInOut(id) {
+            //var pagesize = $("resultDiv").css("zoom",id/100);
+            $("#resultDiv").css("zoom", id / 100);
+            //$("#resultDiv").addClass("zoom");
+            $("#idspanslider").text(id + "%");
+    }
+    function IsAudio() {
+        $("#dvAudio").html("");
+        $.ajax({
+            type: "Get",
+            url: '@Url.Action("IsAudio", "Dashboard")',
+            success: function (data) {
+                if (data.IsAudio) {
+                    $("#playAudio").removeAttr("disabled");
+                    $("#stopAudio").removeAttr("disabled");
+
+                }
+                else {
+                    $("#playAudio").attr("disabled", "disabled");
+                    $("#stopAudio").attr("disabled", "disabled");
+                }
+                
+            }
+        });
+    }
+    function updateDropdownList(pageid) {
+        $("#PageList").val(pageid)
+    }
+    function EnableDisableNextPrev(id) {
+        //var currentindex = parse.parseInt($("#CurrentIndex").val());
+
+        if (@Model.startindex == id || id==1) {
+            $("#previous").attr("disabled", true);
+        }
+                else {
+            $("#previous").attr("disabled", false);
+        }
+
+
+        if (@Model.endindex == id) {
+            $("#next").attr("disabled", true);
+        }
+                else {
+            $("#next").attr("disabled", false);
+        }
+    }
+    function LoadPage(id) {
+        $.ajax({
+            url: '@Url.Action("Loadpage", "Dashboard")',
+            type: 'Get',
+            data: { PageId: id },
+            success: function (data) {
+                IsAudio();
+                 
+                $("#resultDiv").html( data);
+                try {
+                    AIE.TextSound.launchTextandSound();
+                } catch (e) {
+
+                }
+            },
+    });
+    }
+
+    function Loadpagewihthtml(obj) {
+        if ($(obj).attr("data-href")) {
+            var hmtlpage = $(obj).attr("data-href")
+            $.ajax({
+                url: '@Url.Action("Loadpagewihthtml", "Dashboard")',
+                type: 'Get',
+                data: { hmtlpage: hmtlpage },
+                success: function (data) {
+                    IsAudio();
+                   
+                    $("#resultDiv").html(data);
+
+                    $("#PageList").val($("#hdCurrentpage").val())
+                },
+            });
+        }
+    }
+
+
+    function OpenPage(pageNumber) {
+        //documentViewer.setCurrentPageNumber(pageNumber);
+        //LoadPage(pageNumber)
+        LoadPage(pageNumber);
+        if (pageNumber !=@Model.startindex) {
+            pageNumber = pageNumber - 1
+        }
+
+        if (pageNumber !=@Model.endindex) {
+            pageNumber = pageNumber + 1
+        }
+
+        updateDropdownList(pageNumber);
+        EnableDisableNextPrev(pageNumber);
+        $("#CurrentIndex").val(pageNumber);
+        PgNumber = pageNumber;
+
+    }
+    function resizeWin() {
+        const cancellFullScreen = document.exitFullscreen || document.mozCancelFullScreen || document.webkitExitFullscreen || document.msExitFullscreen;
+        cancellFullScreen.call(document);
+    }
+    $(function () {
+        try {
+            AIE.TextSound.launchTextandSound();
+        } catch (e) {
+
+        }
+        //$(document).on("click", ".audio", function (e) {
+        //    alert("ASD")
+        //    var wordid = $(this).id;
+        //    $.each(allData, function (key, item) {
+        //        if (item.id == wordid) {
+        //            WordClick(42.287783)
+
+        //        }
+        //    });
+        //});
+            $(document).ajaxSend(function (event, xhr, settings) {
+                $(".jsLoading").attr("disabled", "disabled");
+            });
+            $(document).ajaxComplete(function (event, xhr, settings) {
+                $(".jsLoading").removeAttr("disabled");
+            });
+
+            $("#title").text('@ViewBag.Title');
+            IsAudio();
+            //$("#previous").attr("disabled", true);
+            EnableDisableNextPrev(1)
+
+            $("#PageList").change(function () {
+
+                var id = parseInt($(this).val());
+                $("#CurrentIndex").val(id);
+                LoadPage(id);
+                EnableDisableNextPrev(id);
+                pageNumber = id;
+            })
+            $('#ContentBtn').click(function (e) {
+                $('#Content').fadeIn('slow');
+
+            });
+            $("#playAudio").click(function () {
+                var audioPlayer = document.getElementById('audioPlayer1');
+                //audioPlayer.play();
+                $("#play1").click();
+
+            })
+            $("#stopAudio").click(function () {
+                var audioPlayer = document.getElementById('audioPlayer1');
+                audioPlayer.pause();
+            })
+            $("#previous").click(function () {
+                var index = parseInt($("#CurrentIndex").val());
+                if (index !=@Model.startindex) {
+                index = index - 1
+            }
+            LoadPage(index);
+            updateDropdownList(index);
+            EnableDisableNextPrev(index);
+            $("#CurrentIndex").val(index);
+            PgNumber = index;
+            })
+            $("#next").click(function () {
+                var index = parseInt($("#CurrentIndex").val());
+
+                if (index !=@Model.endindex) {
+                    index = index + 1
+
+            }
+            LoadPage(index);
+            updateDropdownList(index);
+            EnableDisableNextPrev(index);
+            $("#CurrentIndex").val(index);
+            PgNumber = index;
+            })
+            $("#Zoom-In").click(function () {
+                var val = parseInt($("#idslider").val());
+                val = val + 1;
+                $("#idslider").val(val)
+                ZoomInOut(val)
+            })
+            $("#Zoom-Out").click(function () {
+                var val = parseInt($("#idslider").val());
+                val = val - 1;
+                $("#idslider").val(val)
+                ZoomInOut(val)
+            })
+
+        })
+
+</script>
+
+

@@ -1,0 +1,539 @@
+﻿@model DC.CategoryModel
+@{
+    Layout = null;
+    var indx = 1;
+}
+<style>
+    .img-thumbnail {
+        padding: .25rem;
+        background-color: #fff;
+        border: 1px solid #dee2e6;
+        border-radius: .25rem;
+        max-width: 100%;
+        height: 50px;
+    }
+
+    .inputfile1 {
+        height: auto;
+        width: 90%;
+        /* opacity: 0; */
+        overflow: hidden;
+        position: absolute;
+      /*  margin-left: -45%;*/
+        display: inline-block;
+        z-index: 1;
+        cursor: pointer;
+    }
+</style>
+<div class="col-lg-12">
+
+    @using (Html.BeginForm(null, null, FormMethod.Post, new { role = "form", autocomplete = "off", name = "frmCategory", id = "frmCategory", }))
+    {
+        @Html.AntiForgeryToken()
+        @Html.HiddenFor(m => m.Id)
+        @Html.HiddenFor(m => m.CreateDate)
+        @Html.Hidden("Status", Model.Status.GetHashCode())
+        @Html.HiddenFor(m => m.IPaddress)
+      
+        @*@Html.HiddenFor(m => m.Image)*@
+        @Html.HiddenFor(m => m.DisplayOrder)
+        @Html.HiddenFor(m => m.UpdateDate)
+        @Html.HiddenFor(m => m.OldImage)
+        @Html.HiddenFor(m => m.Image)
+        @Html.ValidationSummary(true)
+      <div class="row">
+         <div class="col-lg-12">
+            <div class="form-group"><h4 id="h3Title">Create New Category</h4></div>
+         </div>
+         <div class="col-lg-12">
+           <div class="form-group text-danger" id="dvMessage"></div>
+         </div>
+
+        <div class="col-lg-12">
+        <div class="form-group">
+            @Html.LabelFor(m => m.vTitle) <strong title="Required." class="text-danger ">*&nbsp; </strong> @Html.ValidationMessageFor(t => t.vTitle, "", new { @class = "small text-danger pull-right" })
+            @Html.TextBoxFor(t => t.vTitle, new { @class = "form-control", @placeholder = Html.DisplayNameFor(model => model.vTitle) })
+        </div>
+        </div>
+        <div class="col-lg-12">
+        <div class="form-group">
+            @Html.LabelFor(m => m.Description) <strong title="Required." class="text-danger ">&nbsp; </strong> @Html.ValidationMessageFor(t => t.Description, "", new { @class = "small text-danger pull-right" })
+            @Html.TextAreaFor(t => t.Description, new { @class = "form-control", @placeholder = Html.DisplayNameFor(model => model.Description) })
+        </div>
+        </div>
+        
+     </div>      
+        <div class="row">
+            <div class="col-lg-12">@Html.ValidationMessageFor(t => t.Image, "", new { @class = "small text-danger " })</div>
+            <div class="col-lg-3">
+                <div class="form-group">
+                    @if (Model.Id > 0)
+                    {
+                        <input data-index="@indx" id="Image" name="Image" type="file" onchange="UploadImage(event,this)" class="btn btn-info btn-block form-control jsloader jsFileUpload inputfile1" />
+
+                    }
+                    else
+                    {
+                        <input data-index="@indx" id="Image" name="Image" type="file" onchange="UploadImage(event,this)" class="btn btn-info btn-block form-control jsloader jsFileUpload inputfile1" />
+
+                    }
+                    <center>
+                        <label class="  jsloader  text-center text-nowrap " for="flUpload">
+                            <i class="fa fa-upload"></i>  Upload Category Image
+
+                        </label>
+                    </center>
+                </div>
+
+            </div>
+            <div class="col-lg-3">
+                <div class="form-group">
+                <div id="dvPreviewPrescription">
+                @if (Model.Id > 0 && !string.IsNullOrWhiteSpace(Model.Image))
+                {
+
+                    var dv = "dvImage" + indx;
+                    <div class="col-lg-12 text-center" id="@dv">
+                        <img data-id="" onerror="SetSquareImageDefault(this)" data-file="@Model.Image" src="~/Attatchments/Category/th_@Model.Image" img-height="0" img-width="0" title="Click to view uploaded image #@indx." id="@string.Format("img{0}",indx)"
+                             class="jsImg img-thumbnail"><br />
+                        <a data-id="@Model.Id" data-file="@Model.Image" data-index="@indx" style="font-weight:normal;"
+                           title="Click for delete uploaded image #@indx." data-img="@string.Format("dvImage{0}",indx)" onclick="return RemoveImage(this)"
+                           class="jsDeleteImage btn btn-sm btn-outline-danger" href="javascript:void(0);">
+                            &nbsp;<i class="fa fa-trash"></i> Category Image
+                        </a>
+                        <hr />
+                    </div>
+                    indx = indx + 1;
+                }
+            </div>
+            </div>
+            </div>
+
+            <div class="col-lg-3">
+               <div class="form-group">
+                    @if (Model.Id > 0)
+                    {
+                        <input data-index="2" id="BannerImage" name="BannerImage" type="file" onchange="UploadBImage(event,this)" class="btn btn-info btn-block form-control jsloader jsFileUpload inputfile1" />
+
+                    }
+                    else
+                    {
+                        <input data-index="2" id="BannerImage" name="BannerImage" type="file" onchange="UploadBImage(event,this)" class="btn btn-info btn-block form-control jsloader jsFileUpload inputfile1" />
+
+                    } <center>
+                        <label class="  jsloader  text-center text-nowrap " for="flUpload">
+                            <i class="fa fa-upload"></i>  Upload Category Banner Image
+
+                        </label>
+                    </center>
+                
+            </div>
+            </div>
+            <div class="col-lg-3">
+                 <div class="form-group">
+                <div id="dvPreviewPrescription1">
+                @if (Model.Id > 0 && !string.IsNullOrWhiteSpace(Model.BannerImage))
+                {
+
+                    var dv = "dvImage2";
+                    <div id="@dv">
+                        <img data-id="" onerror="SetSquareImageDefault(this)" data-file="@Model.BannerImage" src="~/Attatchments/Category/th_@Model.BannerImage" img-height="0" img-width="0" title="Click to view uploaded image #@indx." id="@string.Format("img{0}",indx)"
+                             class="jsImg img-thumbnail"><br />
+                        <a data-id="@Model.Id" data-file="@Model.BannerImage" data-index="2" style="font-weight:normal;"
+                           title="Click for delete uploaded image #@indx." data-img="@string.Format("dvImage{0}",indx)" onclick="return RemoveImage(this)"
+                           class="jsDeleteImage btn btn-sm btn-outline-danger" href="javascript:void(0);">
+                            &nbsp;<i class="fa fa-trash"></i> Banner Image
+                        </a>
+                        <hr />
+                    </div>
+                }
+            </div>
+            </div>
+            </div>
+
+        </div>
+
+         <div class="clearfix"></div>
+        <div class="row">
+            <div class="col-lg-4">
+                <div class="form-group">
+                    @Html.LabelFor(m => m.PageTitle) <strong title="Required." class="text-danger ">&nbsp; </strong> @Html.ValidationMessageFor(t => t.PageTitle, "", new { @class = "small text-danger pull-right" })
+                    @Html.TextBoxFor(t => t.PageTitle, new { @class = "form-control", @placeholder = Html.DisplayNameFor(model => model.PageTitle) })
+                </div>
+            </div>
+            <div class="col-lg-4">
+                <div class="form-group">
+                    @Html.LabelFor(m => m.MetaDescription) <strong title="Required." class="text-danger ">&nbsp; </strong> @Html.ValidationMessageFor(t => t.MetaDescription, "", new { @class = "small text-danger pull-right" })
+                    @Html.TextBoxFor(t => t.MetaDescription, new { @class = "form-control", @placeholder = Html.DisplayNameFor(model => model.MetaDescription) })
+                </div>
+            </div>
+            <div class="col-lg-4">
+                <div class="form-group">
+                    @Html.LabelFor(m => m.OgTitle) <strong title="Required." class="text-danger ">&nbsp; </strong> @Html.ValidationMessageFor(t => t.OgTitle, "", new { @class = "small text-danger pull-right" })
+                    @Html.TextBoxFor(t => t.OgTitle, new { @class = "form-control", @placeholder = Html.DisplayNameFor(model => model.OgTitle) })
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-4">
+                <div class="form-group">
+                    @Html.LabelFor(m => m.OgDescription) <strong title="Required." class="text-danger ">&nbsp; </strong> @Html.ValidationMessageFor(t => t.OgDescription, "", new { @class = "small text-danger pull-right" })
+                    @Html.TextBoxFor(t => t.OgDescription, new { @class = "form-control", @placeholder = Html.DisplayNameFor(model => model.OgDescription) })
+                </div>
+            </div>
+            <div class="col-lg-4">
+                <div class="form-group">
+                    @Html.LabelFor(m => m.TwitterTitle) <strong title="Required." class="text-danger ">&nbsp; </strong> @Html.ValidationMessageFor(t => t.TwitterTitle, "", new { @class = "small text-danger pull-right" })
+                    @Html.TextBoxFor(t => t.TwitterTitle, new { @class = "form-control", @placeholder = Html.DisplayNameFor(model => model.TwitterTitle) })
+                </div>
+            </div>
+            <div class="col-lg-4">
+                <div class="form-group">
+                    @Html.LabelFor(m => m.TwitterDescription) <strong title="Required." class="text-danger ">&nbsp; </strong> @Html.ValidationMessageFor(t => t.TwitterDescription, "", new { @class = "small text-danger pull-right" })
+                    @Html.TextBoxFor(t => t.TwitterDescription, new { @class = "form-control", @placeholder = Html.DisplayNameFor(model => model.TwitterDescription) })
+                </div>
+            </div>
+            <div class="col-lg-4">
+                <div class="form-group">
+                    @Html.LabelFor(m => m.Author) <strong title="Required." class="text-danger ">&nbsp; </strong> @Html.ValidationMessageFor(t => t.Author, "", new { @class = "small text-danger pull-right" })
+                    @Html.TextBoxFor(t => t.Author, new { @class = "form-control", @placeholder = Html.DisplayNameFor(model => model.Author) })
+                </div>
+            </div>
+            <div class="col-lg-4">
+                <div class="form-group">
+                    @Html.LabelFor(m => m.KeyWords) <strong title="Required." class="text-danger ">&nbsp; </strong> @Html.ValidationMessageFor(t => t.KeyWords, "", new { @class = "small text-danger pull-right" })
+                    @Html.TextBoxFor(t => t.KeyWords, new { @class = "form-control", @placeholder = Html.DisplayNameFor(model => model.KeyWords) })
+                </div>
+            </div>
+        </div>
+        <div class="form-group text-center">
+            <a href="javascript:void(0);" id="btnCancel" class="btn btn-default btn-lg" onclick="CancelAdd()"> Cancel</a>
+            @if (Model.Id > 0)
+            {
+                <button id="btnSubmit" type="submit" class="btn btn-lg btn-primary ">Update Category</button>
+
+            }
+            else
+            {
+                <button id="btnSubmit" type="submit" class="btn btn-primary btn-lg">Create Category</button>}
+
+        </div>
+    }
+</div>
+
+@Scripts.Render("~/bundles/jqueryval")
+<script src="~/Scripts/tinymce/tinymce.min.js"></script>
+<script>
+    var files = [];
+    var files1 = [];
+    function UploadImage(evt, objFile) {
+
+        $("span[data-valmsg-for='Data.Image']").removeClass("field-validation-error");
+        $("span[data-valmsg-for='Data.Image']").addClass("field-validation-valid");
+        $("span[data-valmsg-for='Data.Image']").html('');
+        $("#dvPreviewPrescription").html("");
+        var maxsize = 10485760;//10 MB
+        var imageType = /image.*/;
+        //if (objFile.files.length > 5) {
+        //    $.toaster({ priority: 'danger', title: 'Error', message: '* You can upload only five images.' });
+        //    return false;
+        //}
+        var FileSize = 0;
+
+        for (var i = 0; i < objFile.files.length; i++) {
+            var selectedFile = objFile.files[i];
+            if (selectedFile.type.match(imageType)) {
+                files.push(selectedFile);
+                FileSize += selectedFile.size;
+            }
+        }
+
+        if (FileSize == 0 || FileSize > maxsize) {
+            $("span[data-valmsg-for='Image']").removeClass("field-validation-valid");
+            $("span[data-valmsg-for='Image']").addClass("field-validation-error");
+            $("span[data-valmsg-for='Image']").html('<span id="Image-error" class="">* Oops! You can only upload .jpeg, .jpg, .png or .gif files that are less than 10MB in size.</span>');
+            return;
+        }
+        else {
+            $("span[data-valmsg-for='Image']").removeClass("field-validation-error");
+            $("span[data-valmsg-for='Image']").addClass("field-validation-valid");
+            $("span[data-valmsg-for='Image']").html('');
+        }
+        for (var i = 0; i < files.length; i++) {
+            var selectedFile = files[i];
+            if (selectedFile.type.match(imageType)) {
+                SetImageShow(selectedFile, (i + 1));
+            }
+        }
+
+    }
+    function SetImageShow(selectedFile, ctrlid) {
+        if (selectedFile) {
+            var FileSize = 0;
+            var html = '<div class="col-lg-12 text-center" id="dvImage' + ctrlid + '"> '
+                + '<img  data-id=""  data-file="" title="Click to view uploaded image #' + ctrlid + '."  style="height:70px;width:70px;cursor:pointer;"  id="img' + ctrlid + '"  class="jsImg img-thumbnail" />'
+                + '<br/><a  data-id=""  data-file=""  data-index="' + ctrlid + '" style="font-weight:normal;" title="Click for delete uploaded image #' + ctrlid + '" data-img="dvImage' + ctrlid + '" onclick="return RemoveImage(this)" class="jsDeleteImage btn btn-sm btn-outline-danger" href="javascript:void(0);">&nbsp;<i class="fa fa-trash"></i> Image #' + ctrlid + '</a>'
+                + '<hr/></div>';
+            $("#dvPreviewPrescription").append(html);
+            var ctrlimg = "img" + ctrlid;
+
+            var _URL = window.URL || window.webkitURL;
+            img = new Image();
+            img.onload = function () {
+                document.getElementById(ctrlimg).src = this.src;
+                $("#" + ctrlimg + "").attr("img-height", this.height)
+                $("#" + ctrlimg + "").attr("img-width", this.width)
+                //imageHeight = this.height;
+                //imageWidth = this.width;
+            };
+            img.onerror = function () {
+
+                $.toaster({ priority: 'danger', title: 'Error', message: '* You are uploading invalid image file type.' });
+                return false;
+            };
+            img.src = _URL.createObjectURL(selectedFile);
+            return false;
+
+        }
+    }
+    function UploadBImage(evt, objFile) {
+        files1 = [];
+        $("span[data-valmsg-for='BannerImage.Image']").removeClass("field-validation-error");
+        $("span[data-valmsg-for='BannerImage.Image']").addClass("field-validation-valid");
+        $("span[data-valmsg-for='BannerImage.Image']").html('');
+        $("#dvPreviewPrescription1").html("");
+        var maxsize = 10485760;//10 MB
+        var imageType = /image.*/;
+        //if (objFile.files.length > 5) {
+        //    $.toaster({ priority: 'danger', title: 'Error', message: '* You can upload only five images.' });
+        //    return false;
+        //}
+        var FileSize = 0;
+
+        for (var i = 0; i < objFile.files.length; i++) {
+            var selectedFile = objFile.files[i];
+            if (selectedFile.type.match(imageType)) {
+                files1.push(selectedFile);
+                FileSize += selectedFile.size;
+            }
+        }
+
+        if (FileSize == 0 || FileSize > maxsize) {
+            $("span[data-valmsg-for='BannerImage']").removeClass("field-validation-valid");
+            $("span[data-valmsg-for='BannerImage']").addClass("field-validation-error");
+            $("span[data-valmsg-for='BannerImage']").html('<span id="Image-error" class="">* Oops! You can only upload .jpeg, .jpg, .png or .gif files that are less than 10MB in size.</span>');
+            return;
+        }
+        else {
+            $("span[data-valmsg-for='BannerImage']").removeClass("field-validation-error");
+            $("span[data-valmsg-for='BannerImage']").addClass("field-validation-valid");
+            $("span[data-valmsg-for='BannerImage']").html('');
+        }
+        for (var i = 0; i < files1.length; i++) {
+            var selectedFile = files1[i];
+            if (selectedFile.type.match(imageType)) {
+                SetImageShowBanner(selectedFile, 2);
+            }
+        }
+
+    }
+    function SetImageShowBanner(selectedFile, ctrlid) {
+        if (selectedFile) {
+            var FileSize = 0;
+            var html = '<div class="col-lg-12 text-center" id="dvImage' + ctrlid + '"> '
+                + '<img  data-id=""  data-file="" title="Click to view uploaded image #' + ctrlid + '."  style="height:70px;width:70px;cursor:pointer;"  id="img' + ctrlid + '"  class="jsImg img-thumbnail" />'
+                + '<br/><a  data-id=""  data-file=""  data-index="' + ctrlid + '" style="font-weight:normal;" title="Click for delete uploaded image #' + ctrlid + '" data-img="dvImage' + ctrlid + '" onclick="return RemoveBannerImage(this)" class="jsDeleteImage btn btn-sm btn-outline-danger" href="javascript:void(0);">&nbsp;<i class="fa fa-trash"></i> Banner Image #' + ctrlid + '</a>'
+                + '<hr/></div>';
+            $("#dvPreviewPrescription1").append(html);
+            var ctrlimg = "img" + ctrlid;
+
+            var _URL = window.URL || window.webkitURL;
+            img = new Image();
+            img.onload = function () {
+                document.getElementById(ctrlimg).src = this.src;
+                $("#" + ctrlimg + "").attr("img-height", this.height)
+                $("#" + ctrlimg + "").attr("img-width", this.width)
+                //imageHeight = this.height;
+                //imageWidth = this.width;
+            };
+            img.onerror = function () {
+
+                $.toaster({ priority: 'danger', title: 'Error', message: '* You are uploading invalid image file type.' });
+                return false;
+            };
+            img.src = _URL.createObjectURL(selectedFile);
+            return false;
+        }
+    }
+    function RemoveBannerImage(ctrl) {
+        var index = $(ctrl).attr("data-index");
+        var dataid = $(ctrl).attr("data-id");
+        var datafile = $(ctrl).attr("data-file");
+        bootbox.confirm({
+            title: "<style>.modal-body {min-height: 100px;background: #f2dede; }  .modal-header { background: #a94442; color: #fff; }</style>Delete uploaded : image #" + index + " ?",
+            message: "You are about to delete uploaded image #" + index + " <br/>Once deleted can not undo action. <hr/>  ",
+            buttons: {
+                cancel: {
+                    label: '<i class="fa fa-times"></i> Cancel',
+                    className: "bootbox-close-button",
+                },
+                confirm: {
+                    className: 'btn-primary jsConfirmDeleteNote',
+                    label: '<i class="fa fa-check"></i> Confirm'
+                }
+            },
+            callback: function (result) {
+                if (result) {
+                    if (files.length > 0) {
+                        var imageType = /image.*/;
+                        //var array = [1, 2, 3, 4, 5, 6, 7, 8, 9, 0];
+                        //var removed = array.splice(2, 2); //removed === [3, 4]
+                        files.splice((parseInt(index) - 1), 1)
+                        //var img = $(ctrl).attr("data-img");
+                        //$("#" + img + "").remove()
+                        $("#dvPreviewPrescription1").html("");
+                        for (var i = 0; i < files.length; i++) {
+                            var selectedFile = files[i];
+                            if (selectedFile.type.match(imageType)) {
+                                SetImageShow(selectedFile, (i + 1));
+                            }
+                        } bootbox.hideAll();
+                    }
+                    else {
+                        DeleteBannerImage(dataid, datafile, index);
+                    }
+                }
+            }
+        });
+        var title = $(".modal-title");
+        var header = $(".modal-header");
+        var html = '<h4 class="modal-title">' + title[1].innerHTML + '</h4> <button type="button" class="bootbox-close-button close" onclick=" bootbox.hideAll();" aria-hidden="true">×</button>';
+        $(header[1]).html(html);
+    }
+    function RemoveImage(ctrl) {
+        var index = $(ctrl).attr("data-index");
+        var dataid = $(ctrl).attr("data-id");
+        var datafile = $(ctrl).attr("data-file");
+        bootbox.confirm({
+            title: "<style>.modal-body {min-height: 100px;background: #f2dede; }  .modal-header { background: #a94442; color: #fff; }</style>Delete uploaded : image #" + index + " ?",
+            message: "You are about to delete uploaded image #" + index + " <br/>Once deleted can not undo action. <hr/>  ",
+            buttons: {
+                cancel: {
+                    label: '<i class="fa fa-times"></i> Cancel',
+                    className: "bootbox-close-button",
+                },
+                confirm: {
+                    className: 'btn-primary jsConfirmDeleteNote',
+                    label: '<i class="fa fa-check"></i> Confirm'
+                }
+            },
+            callback: function (result) {
+                if (result) {
+                    if (files.length > 0) {
+                        var imageType = /image.*/;
+                        //var array = [1, 2, 3, 4, 5, 6, 7, 8, 9, 0];
+                        //var removed = array.splice(2, 2); //removed === [3, 4]
+                        files.splice((parseInt(index) - 1), 1)
+                        //var img = $(ctrl).attr("data-img");
+                        //$("#" + img + "").remove()
+                        $("#dvPreviewPrescription").html("");
+                        for (var i = 0; i < files.length; i++) {
+                            var selectedFile = files[i];
+                            if (selectedFile.type.match(imageType)) {
+                                SetImageShow(selectedFile, (i + 1));
+                            }
+                        } bootbox.hideAll();
+                    }
+                    else {
+                        DeleteCategoryImage(dataid, datafile, index);
+                    }
+                }
+            }
+        });
+        var title = $(".modal-title");
+        var header = $(".modal-header");
+        var html = '<h4 class="modal-title">' + title[1].innerHTML + '</h4> <button type="button" class="bootbox-close-button close" onclick=" bootbox.hideAll();" aria-hidden="true">×</button>';
+        $(header[1]).html(html);
+    }
+    function DeleteBannerImage(dataid, fileName, index) {
+            AddLoader()
+                $.ajax({
+                type: 'POST',
+                url: '@Url.Action("DeleteBannerImage", "Category", new {area="Master" })',
+                data: { Id: dataid, fileName: fileName},
+                dataType: "json",
+                success: function (data) {
+                    if (data.StatusCode == 200) {
+                        $.toaster({ priority: 'success', title: "Success", message: data.Message });
+                        $("#dvImage" + index + "").remove();
+                        HidePopup();
+                        RemoveLoader();
+                    }
+                    else {
+                        $.toaster({ priority: 'danger', title: "Error", message: data.Message });
+                        HidePopup();
+                        RemoveLoader();
+                    }
+                },
+                complete: function (data) {
+                    HidePopup();
+                    RemoveLoader();
+                },
+                error: function (data) {
+                        $.toaster({ priority: 'danger', title: "Error", message: "Some error occur try later." });
+                        HidePopup();
+                        RemoveLoader();
+                }
+            });
+    }
+    function DeleteCategoryImage(dataid, fileName, index) {
+            AddLoader()
+                $.ajax({
+                type: 'POST',
+                url: '@Url.Action("DeleteImage", "Category", new {area="Master" })',
+                data: { Id: dataid, fileName: fileName},
+                dataType: "json",
+                success: function (data) {
+                    if (data.StatusCode == 200) {
+                        $.toaster({ priority: 'success', title: "Success", message: data.Message });
+                        $("#dvImage" + index + "").remove();
+                        HidePopup();
+                        RemoveLoader();
+                    }
+                    else {
+                        $.toaster({ priority: 'danger', title: "Error", message: data.Message });
+                        HidePopup();
+                        RemoveLoader();
+                    }
+                },
+                complete: function (data) {
+                    HidePopup();
+                    RemoveLoader();
+                },
+                    error: function (data) {
+                        $.toaster({ priority: 'danger', title: "Error", message: "Some error occur try later." });
+                        HidePopup();
+                        RemoveLoader();
+                }
+            });
+    }
+    $(function () {
+        tinyMCE.init({
+                theme_advanced_toolbar_location: "bottom",
+                selector: "#Description",
+                theme: "modern",
+                plugins: [
+                    "advlist autolink lists link image charmap print preview hr anchor pagebreak",
+                    "searchreplace wordcount visualblocks visualchars code fullscreen",
+                    "insertdatetime media nonbreaking save table contextmenu directionality",
+                    "emoticons template paste textcolor colorpicker textpattern imagetools"
+                ],
+                toolbar1: "insertfile undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent  | forecolor backcolor ",
+                image_advtab: true,
+                templates: [
+                    { title: 'Book 1', content: 'Book 1' },
+                    { title: 'Book 2', content: 'Book 2' }
+                ]
+            });
+    })
+</script>

@@ -1,0 +1,1778 @@
+USE [master]
+GO
+/****** Object:  Database [DC]    Script Date: 8/18/2022 1:44:00 PM ******/
+CREATE DATABASE [DC]
+ CONTAINMENT = NONE
+ ON  PRIMARY 
+( NAME = N'WaterFord', FILENAME = N'C:\Program Files\Microsoft SQL Server\MSSQL11.SQLEXPRESS\MSSQL\DATA\dc.mdf' , SIZE = 47104KB , MAXSIZE = UNLIMITED, FILEGROWTH = 1024KB )
+ LOG ON 
+( NAME = N'WaterFord_log', FILENAME = N'C:\Program Files\Microsoft SQL Server\MSSQL11.SQLEXPRESS\MSSQL\DATA\dc_log.ldf' , SIZE = 26816KB , MAXSIZE = 2048GB , FILEGROWTH = 10%)
+GO
+ALTER DATABASE [DC] SET COMPATIBILITY_LEVEL = 110
+GO
+IF (1 = FULLTEXTSERVICEPROPERTY('IsFullTextInstalled'))
+begin
+EXEC [DC].[dbo].[sp_fulltext_database] @action = 'enable'
+end
+GO
+ALTER DATABASE [DC] SET ANSI_NULL_DEFAULT OFF 
+GO
+ALTER DATABASE [DC] SET ANSI_NULLS OFF 
+GO
+ALTER DATABASE [DC] SET ANSI_PADDING OFF 
+GO
+ALTER DATABASE [DC] SET ANSI_WARNINGS OFF 
+GO
+ALTER DATABASE [DC] SET ARITHABORT OFF 
+GO
+ALTER DATABASE [DC] SET AUTO_CLOSE OFF 
+GO
+ALTER DATABASE [DC] SET AUTO_SHRINK OFF 
+GO
+ALTER DATABASE [DC] SET AUTO_UPDATE_STATISTICS ON 
+GO
+ALTER DATABASE [DC] SET CURSOR_CLOSE_ON_COMMIT OFF 
+GO
+ALTER DATABASE [DC] SET CURSOR_DEFAULT  GLOBAL 
+GO
+ALTER DATABASE [DC] SET CONCAT_NULL_YIELDS_NULL OFF 
+GO
+ALTER DATABASE [DC] SET NUMERIC_ROUNDABORT OFF 
+GO
+ALTER DATABASE [DC] SET QUOTED_IDENTIFIER OFF 
+GO
+ALTER DATABASE [DC] SET RECURSIVE_TRIGGERS OFF 
+GO
+ALTER DATABASE [DC] SET  DISABLE_BROKER 
+GO
+ALTER DATABASE [DC] SET AUTO_UPDATE_STATISTICS_ASYNC OFF 
+GO
+ALTER DATABASE [DC] SET DATE_CORRELATION_OPTIMIZATION OFF 
+GO
+ALTER DATABASE [DC] SET TRUSTWORTHY OFF 
+GO
+ALTER DATABASE [DC] SET ALLOW_SNAPSHOT_ISOLATION OFF 
+GO
+ALTER DATABASE [DC] SET PARAMETERIZATION SIMPLE 
+GO
+ALTER DATABASE [DC] SET READ_COMMITTED_SNAPSHOT OFF 
+GO
+ALTER DATABASE [DC] SET HONOR_BROKER_PRIORITY OFF 
+GO
+ALTER DATABASE [DC] SET RECOVERY SIMPLE 
+GO
+ALTER DATABASE [DC] SET  MULTI_USER 
+GO
+ALTER DATABASE [DC] SET PAGE_VERIFY CHECKSUM  
+GO
+ALTER DATABASE [DC] SET DB_CHAINING OFF 
+GO
+ALTER DATABASE [DC] SET FILESTREAM( NON_TRANSACTED_ACCESS = OFF ) 
+GO
+ALTER DATABASE [DC] SET TARGET_RECOVERY_TIME = 0 SECONDS 
+GO
+USE [DC]
+GO
+/****** Object:  User [waterford]    Script Date: 8/18/2022 1:44:01 PM ******/
+CREATE USER [waterford] FOR LOGIN [waterford] WITH DEFAULT_SCHEMA=[dbo]
+GO
+ALTER ROLE [db_owner] ADD MEMBER [waterford]
+GO
+ALTER ROLE [db_accessadmin] ADD MEMBER [waterford]
+GO
+/****** Object:  UserDefinedTableType [dbo].[udtStudent]    Script Date: 8/18/2022 1:44:01 PM ******/
+CREATE TYPE [dbo].[udtStudent] AS TABLE(
+	[Id] [bigint] NULL,
+	[Name] [nvarchar](500) NULL,
+	[Class] [varchar](200) NULL,
+	[RollNo] [varchar](50) NULL,
+	[Session] [varchar](50) NULL,
+	[MobNo] [varchar](50) NULL,
+	[AltMobNo] [varchar](50) NULL,
+	[ContactPerson] [nvarchar](500) NULL,
+	[Address] [nvarchar](1000) NULL,
+	[City] [nvarchar](500) NULL,
+	[State] [nvarchar](500) NULL
+)
+GO
+/****** Object:  UserDefinedFunction [dbo].[fnNameAbbrevation]    Script Date: 8/18/2022 1:44:01 PM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+Create  FUNCTION [dbo].[fnNameAbbrevation]( @str NVARCHAR(4000) )  
+RETURNS NVARCHAR(2000)  
+AS  
+BEGIN  
+    DECLARE @retval NVARCHAR(2000);  
+    SET @str=RTRIM(LTRIM(@str));  
+    SET @retval=LEFT(@str,1);  
+  
+    WHILE CHARINDEX(' ',@str,1)>0 BEGIN  
+        SET @str=LTRIM(RIGHT(@str,LEN(@str)-CHARINDEX(' ',@str,1)));  
+        SET @retval+=LEFT(@str,1);  
+    END  
+ if LEN(@retval)=1 and len(@str)>1  
+ begin  
+ set @retval= @retval+substring(@str,2,1)    
+ end  
+  
+ --if LEN(@retval)>2  
+ --begin  
+ --set @retval=substring(@retval,1,1)+substring(@retval,LEN(@retval),1)    
+ --end  
+    RETURN Upper(@retval);  
+END  
+GO
+/****** Object:  UserDefinedFunction [dbo].[GetSchoolCode]    Script Date: 8/18/2022 1:44:02 PM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+ 
+CREATE FUNCTION [dbo].[GetSchoolCode](@initial varchar(20))  
+RETURNS NVARCHAR(128)  
+AS  
+BEGIN  
+ DECLARE @_newid1 NVARCHAR(128),@_newid2 NVARCHAR(128),@_newid3 NVARCHAR(128),@_newid4 NVARCHAR(128),@_newid5 NVARCHAR(128)  
+ DECLARE @recordcount bigint  
+ SELECT @_newid1=Cast(ABS(CAST(CAST((select new_id from dbo.getNewID) AS VARBINARY) AS INT)) as NVARCHAR(128))   
+ SELECT @_newid2=Cast(ABS(CAST(CAST((select new_id from dbo.getNewID) AS VARBINARY) AS INT)) as NVARCHAR(128))   
+ SELECT @_newid3=Cast(ABS(CAST(CAST((select new_id from dbo.getNewID) AS VARBINARY) AS INT)) as NVARCHAR(128))   
+ SELECT @_newid4=Cast(ABS(CAST(CAST((select new_id from dbo.getNewID) AS VARBINARY) AS INT)) as NVARCHAR(128))   
+ SELECT @_newid5=Cast(ABS(CAST(CAST((select new_id from dbo.getNewID) AS VARBINARY) AS INT)) as NVARCHAR(128))   
+ DECLARE @Code VARCHAR(200)  
+ declare @AlLChars varchar(100) = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'  
+ SELECT @Code=RIGHT( LEFT(@AlLChars,ABS(BINARY_CHECKSUM(@_newid1)%35) + 1 ),1) + RIGHT( LEFT(@AlLChars,ABS(BINARY_CHECKSUM(@_newid2)%35) + 1 ),1) +  
+ RIGHT( LEFT(@AlLChars,ABS(BINARY_CHECKSUM(@_newid3)%35) + 1 ),1) + RIGHT( LEFT(@AlLChars,ABS(BINARY_CHECKSUM(@_newid4)%35) + 1 ),1) + RIGHT( LEFT(@AlLChars,ABS(BINARY_CHECKSUM(@_newid5)%35) + 1 ),1)  
+ set  @Code=@initial+'-'+@Code    
+ select @recordcount=count(1) from dbo.School where SchoolCode=@Code  
+ if  @recordcount>0  
+ begin    
+ set @Code = [dbo].[GetSchoolCode](@initial)   
+ end    
+    RETURN @Code    
+END  
+  
+   
+GO
+/****** Object:  Table [dbo].[__MigrationHistory]    Script Date: 8/18/2022 1:44:02 PM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[__MigrationHistory](
+	[MigrationId] [nvarchar](150) NOT NULL,
+	[ContextKey] [nvarchar](300) NOT NULL,
+	[Model] [varbinary](max) NOT NULL,
+	[ProductVersion] [nvarchar](32) NOT NULL,
+ CONSTRAINT [PK_dbo.__MigrationHistory] PRIMARY KEY CLUSTERED 
+(
+	[MigrationId] ASC,
+	[ContextKey] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[AspNetRoles]    Script Date: 8/18/2022 1:44:02 PM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[AspNetRoles](
+	[Id] [nvarchar](128) NOT NULL,
+	[Name] [nvarchar](256) NOT NULL,
+ CONSTRAINT [PK_dbo.AspNetRoles] PRIMARY KEY CLUSTERED 
+(
+	[Id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[AspNetUserClaims]    Script Date: 8/18/2022 1:44:02 PM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[AspNetUserClaims](
+	[Id] [int] IDENTITY(1,1) NOT NULL,
+	[UserId] [nvarchar](128) NOT NULL,
+	[ClaimType] [nvarchar](max) NULL,
+	[ClaimValue] [nvarchar](max) NULL,
+ CONSTRAINT [PK_dbo.AspNetUserClaims] PRIMARY KEY CLUSTERED 
+(
+	[Id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[AspNetUserLogins]    Script Date: 8/18/2022 1:44:02 PM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[AspNetUserLogins](
+	[LoginProvider] [nvarchar](128) NOT NULL,
+	[ProviderKey] [nvarchar](128) NOT NULL,
+	[UserId] [nvarchar](128) NOT NULL,
+ CONSTRAINT [PK_dbo.AspNetUserLogins] PRIMARY KEY CLUSTERED 
+(
+	[LoginProvider] ASC,
+	[ProviderKey] ASC,
+	[UserId] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[AspNetUserRoles]    Script Date: 8/18/2022 1:44:02 PM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[AspNetUserRoles](
+	[UserId] [nvarchar](128) NOT NULL,
+	[RoleId] [nvarchar](128) NOT NULL,
+ CONSTRAINT [PK_dbo.AspNetUserRoles] PRIMARY KEY CLUSTERED 
+(
+	[UserId] ASC,
+	[RoleId] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[AspNetUsers]    Script Date: 8/18/2022 1:44:02 PM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[AspNetUsers](
+	[Id] [nvarchar](128) NOT NULL,
+	[FirstName] [nvarchar](max) NULL,
+	[LastName] [nvarchar](max) NULL,
+	[Gender] [int] NOT NULL,
+	[DOB] [datetime] NULL,
+	[MobNo] [nvarchar](max) NULL,
+	[EmailId] [nvarchar](max) NULL,
+	[SecurityQuestion] [nvarchar](max) NULL,
+	[SecurityAnswer] [nvarchar](max) NULL,
+	[eUserName] [nvarchar](max) NULL,
+	[ePassword] [nvarchar](max) NULL,
+	[MobValidate] [bit] NOT NULL,
+	[EmailValidate] [bit] NOT NULL,
+	[LoginMode] [int] NOT NULL,
+	[LoginThirdParty] [bit] NOT NULL,
+	[LoginSourse] [int] NOT NULL,
+	[LastLogin] [datetime] NULL,
+	[Image] [nvarchar](max) NULL,
+	[dtmCreate] [datetime] NULL,
+	[dtmUpdate] [datetime] NULL,
+	[dtmDelete] [datetime] NULL,
+	[Status] [int] NOT NULL,
+	[TimeZone] [nvarchar](max) NULL,
+	[AccessLevels] [nvarchar](max) NULL,
+	[DisplayOrder] [int] NOT NULL,
+	[Email] [nvarchar](256) NULL,
+	[EmailConfirmed] [bit] NOT NULL,
+	[PasswordHash] [nvarchar](max) NULL,
+	[SecurityStamp] [nvarchar](max) NULL,
+	[PhoneNumber] [nvarchar](max) NULL,
+	[PhoneNumberConfirmed] [bit] NOT NULL,
+	[TwoFactorEnabled] [bit] NOT NULL,
+	[LockoutEndDateUtc] [datetime] NULL,
+	[LockoutEnabled] [bit] NOT NULL,
+	[AccessFailedCount] [int] NOT NULL,
+	[UserName] [nvarchar](256) NOT NULL,
+ CONSTRAINT [PK_dbo.AspNetUsers] PRIMARY KEY CLUSTERED 
+(
+	[Id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[MasterBooks]    Script Date: 8/18/2022 1:44:02 PM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[MasterBooks](
+	[Id] [nvarchar](128) NOT NULL,
+	[MasterCategoryId] [bigint] NULL,
+	[MasterClassId] [bigint] NULL,
+	[Title] [nvarchar](1000) NULL,
+	[Author] [nvarchar](1000) NULL,
+	[ISBN] [varchar](50) NULL,
+	[Edition] [varchar](50) NULL,
+	[Image] [varchar](150) NULL,
+	[Description] [nvarchar](max) NULL,
+	[PageTitle] [nvarchar](500) NULL,
+	[MetaDescription] [nvarchar](1000) NULL,
+	[OgTitle] [nvarchar](500) NULL,
+	[OgDescription] [nvarchar](1000) NULL,
+	[TwitterTitle] [nvarchar](500) NULL,
+	[TwitterDescription] [nvarchar](1000) NULL,
+	[KeyWords] [nvarchar](1000) NULL,
+	[ParentId] [bigint] NULL,
+	[ShortCode] [nvarchar](150) NULL,
+	[DisplayOrder] [smallint] NULL,
+	[BannerImage] [nvarchar](150) NULL,
+	[ServerId] [nvarchar](128) NULL,
+	[EncriptionKey] [nvarchar](200) NULL,
+	[isSize] [varchar](50) NULL,
+	[EbookPrice] [decimal](18, 2) NULL,
+	[PrintPrice] [decimal](18, 2) NULL,
+	[Discount] [decimal](10, 2) NULL,
+	[Colour] [int] NULL,
+	[EbookSize(MB)] [bigint] NULL,
+	[Ebook] [int] NULL,
+	[Pbook] [int] NULL,
+	[Audio] [int] NULL,
+	[EBookType] [int] NULL,
+	[CreatedBy] [nvarchar](128) NULL,
+	[UpdatedBy] [nvarchar](128) NULL,
+	[CreateDate] [datetime] NULL,
+	[UpdateDate] [datetime] NULL,
+	[Status] [tinyint] NULL,
+	[IPaddress] [varchar](20) NULL,
+ CONSTRAINT [PK_MasterBooks] PRIMARY KEY CLUSTERED 
+(
+	[Id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[MasterCategory]    Script Date: 8/18/2022 1:44:02 PM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[MasterCategory](
+	[Id] [bigint] IDENTITY(1,1) NOT NULL,
+	[Title] [nvarchar](300) NULL,
+	[PageTitle] [nvarchar](500) NULL,
+	[MetaDescription] [nvarchar](1000) NULL,
+	[OgTitle] [nvarchar](500) NULL,
+	[OgDescription] [nvarchar](1000) NULL,
+	[TwitterTitle] [nvarchar](500) NULL,
+	[TwitterDescription] [nvarchar](1000) NULL,
+	[Author] [nvarchar](500) NULL,
+	[KeyWords] [nvarchar](1000) NULL,
+	[Description] [nvarchar](max) NULL,
+	[ParentId] [bigint] NULL,
+	[ShortCode] [nvarchar](150) NULL,
+	[DisplayOrder] [smallint] NULL,
+	[Image] [nvarchar](150) NULL,
+	[BannerImage] [nvarchar](150) NULL,
+	[CreatedBy] [nvarchar](128) NULL,
+	[UpdatedBy] [nvarchar](128) NULL,
+	[CreateDate] [datetime] NULL,
+	[UpdateDate] [datetime] NULL,
+	[Status] [tinyint] NULL,
+	[IPaddress] [varchar](20) NULL,
+ CONSTRAINT [PK_MasterCategory] PRIMARY KEY CLUSTERED 
+(
+	[Id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[MasterClass]    Script Date: 8/18/2022 1:44:02 PM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[MasterClass](
+	[Id] [bigint] IDENTITY(1,1) NOT NULL,
+	[Title] [nvarchar](max) NULL,
+	[Description] [varchar](max) NOT NULL,
+	[CreateDate] [datetime] NOT NULL,
+	[UpdatedDate] [datetime] NOT NULL,
+	[CreatedBy] [nvarchar](128) NULL,
+	[UpdatedBy] [nvarchar](128) NULL,
+	[IPAddress] [varchar](50) NOT NULL,
+	[Status] [int] NOT NULL,
+ CONSTRAINT [PK_MasterClass] PRIMARY KEY CLUSTERED 
+(
+	[Id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[MyLibrary]    Script Date: 8/18/2022 1:44:02 PM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[MyLibrary](
+	[Id] [nvarchar](128) NOT NULL,
+	[MasterBookId] [nvarchar](128) NULL,
+	[AspNetUserId] [nvarchar](128) NULL,
+	[CreatedBy] [nvarchar](128) NULL,
+	[UpdatedBy] [nvarchar](128) NULL,
+	[Validity] [int] NULL,
+	[LastDate] [datetime] NULL,
+	[CreateDate] [datetime] NULL,
+	[UpdateDate] [datetime] NULL,
+	[Status] [tinyint] NULL,
+	[IPaddress] [varchar](20) NULL,
+ CONSTRAINT [PK_MyLibrary] PRIMARY KEY CLUSTERED 
+(
+	[Id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[School]    Script Date: 8/18/2022 1:44:02 PM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[School](
+	[Id] [nvarchar](128) NOT NULL,
+	[AspNetUserId] [nvarchar](128) NULL,
+	[Title] [nvarchar](1000) NULL,
+	[SchoolCode] [nvarchar](50) NULL,
+	[EmailId] [nvarchar](200) NULL,
+	[Logo] [nvarchar](200) NULL,
+	[ContactNo] [nvarchar](50) NULL,
+	[AlterNateContactNo] [nvarchar](50) NULL,
+	[Principle] [nvarchar](500) NULL,
+	[PrincipleContactNo] [nvarchar](50) NULL,
+	[AddressLine1] [nvarchar](500) NULL,
+	[AddressLine2] [nvarchar](500) NULL,
+	[AddressLine3] [nvarchar](500) NULL,
+	[State] [nvarchar](500) NULL,
+	[City] [nvarchar](500) NULL,
+	[Pincode] [nvarchar](10) NULL,
+	[Description] [varchar](max) NULL,
+	[CreateDate] [datetime] NULL,
+	[UpdatedDate] [datetime] NULL,
+	[CreatedBy] [nvarchar](128) NULL,
+	[UpdatedBy] [nvarchar](128) NULL,
+	[IPAddress] [varchar](50) NULL,
+	[Status] [int] NULL,
+ CONSTRAINT [PK_School] PRIMARY KEY CLUSTERED 
+(
+	[Id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[UserDetail]    Script Date: 8/18/2022 1:44:02 PM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[UserDetail](
+	[UseDetailId] [nvarchar](128) NOT NULL,
+	[AspNetUserId] [nvarchar](128) NULL,
+	[MasterClassId] [bigint] NULL,
+	[UserCode] [nvarchar](200) NULL,
+	[Name] [nvarchar](500) NULL,
+	[RollNo] [varchar](50) NULL,
+	[Session] [varchar](50) NULL,
+	[ContactNo] [varchar](50) NULL,
+	[Address] [nvarchar](500) NULL,
+	[ExpiyDate] [datetime] NULL,
+	[CreatedDate] [datetime] NULL,
+	[CreatedBy] [nvarchar](128) NULL,
+	[UpdatedBy] [nvarchar](128) NULL,
+	[IpAddress] [varchar](50) NULL,
+ CONSTRAINT [PK_UserDetail] PRIMARY KEY CLUSTERED 
+(
+	[UseDetailId] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[UserExcelData]    Script Date: 8/18/2022 1:44:02 PM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[UserExcelData](
+	[Id] [nvarchar](128) NOT NULL,
+	[UserExcelMetaDataId] [nvarchar](128) NULL,
+	[Name] [nvarchar](500) NULL,
+	[Class] [nvarchar](200) NULL,
+	[RollNo] [varchar](50) NULL,
+	[Session] [varchar](50) NULL,
+	[CreateDate] [datetime] NULL,
+	[UpdatedDate] [datetime] NULL,
+	[CreatedBy] [nvarchar](128) NULL,
+	[UpdatedBy] [nvarchar](128) NULL,
+	[IPAddress] [varchar](3) NULL,
+	[Status] [int] NULL,
+ CONSTRAINT [PK_UserExcelData] PRIMARY KEY CLUSTERED 
+(
+	[Id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[UserExcelMetaData]    Script Date: 8/18/2022 1:44:02 PM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[UserExcelMetaData](
+	[Id] [nvarchar](128) NOT NULL,
+	[AspNetUserId] [nvarchar](128) NULL,
+	[FileName] [nvarchar](500) NULL,
+	[SheetName] [nvarchar](500) NULL,
+	[UploadedFileName] [nvarchar](500) NULL,
+	[Rows] [int] NULL,
+	[Cols] [int] NULL,
+	[FileMetaData] [nvarchar](1000) NULL,
+	[Description] [nvarchar](1000) NULL,
+	[CreateDate] [datetime] NOT NULL,
+	[UpdatedDate] [datetime] NOT NULL,
+	[CreatedBy] [nvarchar](128) NULL,
+	[UpdatedBy] [nvarchar](128) NULL,
+	[IPAddress] [varchar](3) NOT NULL,
+	[Status] [int] NOT NULL,
+ CONSTRAINT [PK_UserExcelMetaData] PRIMARY KEY CLUSTERED 
+(
+	[Id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/****** Object:  UserDefinedFunction [dbo].[fun_CategoryChild]    Script Date: 8/18/2022 1:44:02 PM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+Create FUNCTION  [dbo].[fun_CategoryChild](@id smallint)  
+RETURNS TABLE  
+AS  
+RETURN   
+(   
+    
+WITH tblChild AS  
+(  
+    SELECT *      FROM [MasterCategory] WHERE coalesce(ParentId,0) = @id  
+    UNION ALL  
+    SELECT [MasterCategory].* FROM [MasterCategory]  JOIN tblChild  ON [MasterCategory].ParentId = tblChild.Id  
+)  
+SELECT *    FROM tblChild  
+  
+  
+ ); 
+GO
+/****** Object:  UserDefinedFunction [dbo].[fun_Category]    Script Date: 8/18/2022 1:44:02 PM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE FUNCTION  [dbo].[fun_Category](
+@id smallint  
+)
+RETURNS TABLE
+AS
+RETURN 
+( 
+  
+	WITH Category AS
+	(
+		 SELECT Id,Title,ParentId,[Image],coalesce(DisplayOrder,0) DisplayOrder 	FROM [MasterCategory] 
+		 WHERE coalesce(ParentId,-1) = @id and status=1 
+	),  
+	Catcount  
+	AS
+	(
+	     SELECT Id,ParentId,[Image] FROM [MasterCategory] WHERE   status=1	
+	) 
+	SELECT c2.* , (select count(1) from fun_CategoryChild(c2.id) where [status]=1 union select c2.id) BookCount,
+	(Select count(1) from Catcount c1 where c1.ParentId=c2.Id) ChildCatCount    FROM Category   c2 
+ );
+GO
+/****** Object:  UserDefinedFunction [dbo].[fun_CategoryHierarchy]    Script Date: 8/18/2022 1:44:02 PM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+ 
+CREATE FUNCTION  [dbo].[fun_CategoryHierarchy](     
+ @id smallint      
+)    
+RETURNS TABLE    
+AS    
+RETURN     
+(      
+ WITH ctchild AS    
+ (         
+  select Id,Title,ParentId ,isnull(DisplayOrder,-1)DisplayOrder,isnull(BannerImage,'') BannerImage  
+    
+  from [dbo].[fun_CategoryChild](@id) where [Status]=1    
+ ) ,    
+ ctSibling as    
+ (    
+ select Id,Title,ParentId,isnull(DisplayOrder,-1)DisplayOrder,isnull(BannerImage,'') BannerImage  from [dbo].MasterCategory      
+ where parentid in(select Parentid from [dbo].MasterCategory where id=@id )    
+ )    
+    select Id,Title,ParentId,DisplayOrder,BannerImage From ctchild    
+ union all    
+ select Id,Title,ParentId,DisplayOrder,BannerImage from ctSibling    
+);    
+     
+GO
+/****** Object:  UserDefinedFunction [dbo].[fun_CategoryHierarchyL2]    Script Date: 8/18/2022 1:44:02 PM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+ 
+CREATE FUNCTION  [dbo].[fun_CategoryHierarchyL2](       
+ @id smallint ,      
+ @parentid smallint       
+)      
+RETURNS TABLE      
+AS      
+RETURN       
+(        
+ WITH ctchild AS      
+ (           
+  select Id,Title,ParentId ,isnull(DisplayOrder,-1)DisplayOrder,isnull(BannerImage,'') BannerImage from [dbo].[fun_CategoryChild](@parentid) where [Status]=1      
+          
+ ) ,      
+ ctparent as      
+ (      
+ select Id,Title,ParentId,isnull(DisplayOrder,-1)DisplayOrder ,isnull(BannerImage,'') BannerImage from [dbo].MasterCategory        
+ where id =@parentid      
+ ),      
+ ctparentp as      
+ (      
+ select Id,Title,ParentId,isnull(DisplayOrder,-1)DisplayOrder,isnull(BannerImage,'') BannerImage  from [dbo].MasterCategory        
+ where id in(select parentid from [dbo].MasterCategory where id=@parentid)      
+ )      
+ select Id,Title,ParentId,DisplayOrder,BannerImage From ctparentp      
+ union all      
+    select Id,Title,ParentId,DisplayOrder,BannerImage From ctparent      
+ union all      
+ select Id,Title,ParentId,DisplayOrder,BannerImage from ctchild      
+);      
+GO
+/****** Object:  UserDefinedFunction [dbo].[fun_CategoryBook]    Script Date: 8/18/2022 1:44:02 PM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+ 
+Create FUNCTION  [dbo].[fun_CategoryBook](
+@id smallint  
+)
+RETURNS TABLE
+AS
+RETURN 
+( 
+  
+ select count(1) BookCount From [dbo].[MasterBooks]  where 
+ 
+ Id in( select id From fun_CategoryChild(@id) where status=1)
+ 
+ );
+GO
+/****** Object:  UserDefinedFunction [dbo].[fun_CategoryBookCount]    Script Date: 8/18/2022 1:44:02 PM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+ 
+
+Create FUNCTION  [dbo].[fun_CategoryBookCount](  
+@id smallint    
+)  
+RETURNS TABLE  
+AS  
+RETURN   
+(   
+    
+	WITH Category AS  
+	(  
+		SELECT Id,Title,ParentId,[Image],coalesce(DisplayOrder,0) DisplayOrder  FROM [MasterCategory] WHERE coalesce(ParentId,-1) = @id and status=1  
+    
+	)  
+	SELECT c2.* ,(   select count(1) from fun_CategoryChild(c2.id) where [status]=1 union select c2.id) BookCount
+	FROM Category   c2   
+ );  
+  
+GO
+/****** Object:  UserDefinedFunction [dbo].[fun_CategoryAll]    Script Date: 8/18/2022 1:44:02 PM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+
+CREATE FUNCTION  [dbo].[fun_CategoryAll](
+@id smallint  
+)
+RETURNS TABLE
+AS
+RETURN 
+(  
+	WITH Category AS
+	(
+		SELECT Id,Title,coalesce(ParentId,-1) ParentId,[Image],coalesce(DisplayOrder,0) DisplayOrder 	FROM [MasterCategory] WHERE  status=1
+ 
+	) 
+  
+	SELECT   *   FROM Category     
+ );
+
+
+GO
+/****** Object:  UserDefinedFunction [dbo].[fun_CategoryParent]    Script Date: 8/18/2022 1:44:02 PM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+ 
+ CREATE FUNCTION    [dbo].[fun_CategoryParent](@id smallint)
+RETURNS TABLE
+AS
+RETURN 
+(
+  
+  WITH tblParent AS
+(
+     SELECT [Id] ,[Title] ,[Description] ,isnull([ParentId],0)[ParentId]
+      ,[ShortCode],[DisplayOrder],[Image],[CreatedBy],[UpdatedBy],[CreateDate] ,[UpdateDate]   ,[Status],IPAddress  FROM [MasterCategory] WHERE Id = @id
+    UNION ALL
+    SELECT m1.[Id] ,m1.[Title] ,m1.[Description] ,isnull(m1.[ParentId],0)[ParentId]
+      ,m1.[ShortCode],m1.[DisplayOrder],m1.[Image],m1.[CreatedBy],m1.[UpdatedBy],m1.[CreateDate] ,m1.[UpdateDate]   ,m1.[Status],m1.IPAddress    
+	  FROM  [MasterCategory] m1  JOIN tblParent  ON  m1.Id = tblParent.ParentId
+)
+SELECT [Id]
+      ,[Title]
+      ,[Description]
+      ,coalesce([ParentId],0)[ParentId]
+      ,[ShortCode]
+      ,[DisplayOrder]
+      ,[Image]
+      ,[CreatedBy]
+      ,[UpdatedBy]
+      ,[CreateDate] 
+      ,[UpdateDate] 
+      ,[Status]
+      ,[IPaddress] FROM  tblParent
+
+ );
+GO
+/****** Object:  UserDefinedFunction [dbo].[GetLibraryBooks]    Script Date: 8/18/2022 1:44:02 PM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE  FUNCTION  [dbo].[GetLibraryBooks](@AspNetUserId nvarchar(128))        
+RETURNS TABLE        
+AS        
+RETURN         
+(         
+ WITH   cteMyLibrary as            
+ (            
+   SELECT   [Id] ,[MasterBookId] ,[AspNetUserId],[Status]   
+   FROM  [dbo].[MyLibrary] where [Status]=1 and [AspNetUserId]=@AspNetUserId  
+  -- SELECT Id MasterBookId,1 AspNetUserId, [Status]  
+  --FROM dbo.MasterBooks where [Status]=1  
+ ) ,            
+ cteBook AS            
+ (            
+  SELECT Id,MasterCategoryId, [Title],[Image],[ISBN],[Author],[Edition],[EbookPrice],[PrintPrice],EBookType  
+  FROM dbo.MasterBooks where Id in(select [MasterBookId] from cteMyLibrary)        
+ )         
+ SELECT b.Id,b.MasterCategoryId, b.[Title],'' 'SlugUrl',b.[Image],b.[ISBN],b.[Author],b.[Edition],b.[EbookPrice],b.[PrintPrice] ,b.EBookType   
+ from cteMyLibrary a        
+ left join cteBook b        
+ on a.MasterBookId=b.Id        
+        
+);
+GO
+/****** Object:  UserDefinedFunction [dbo].[GetSchoolBooks]    Script Date: 8/18/2022 1:44:02 PM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+ 
+Create  FUNCTION  [dbo].[GetSchoolBooks](@AspNetUserId nvarchar(128))        
+RETURNS TABLE        
+AS        
+RETURN         
+(         
+ WITH   cteBooks as            
+ (            
+   --SELECT   [Id] ,[MasterBookId] ,[AspNetUserId],[Status]   
+   --FROM  [dbo].[MyLibrary] where [Status]=1 and [AspNetUserId]=@AspNetUserId  
+   SELECT Id MasterBookId,@AspNetUserId AspNetUserId, [Status]  
+  FROM dbo.MasterBooks where [Status]=1  
+ ) ,            
+ cteBook AS            
+ (            
+  SELECT Id,MasterCategoryId, [Title],[Image],[ISBN],[Author],[Edition],[EbookPrice],[PrintPrice],EBookType  
+  FROM dbo.MasterBooks where Id in(select [MasterBookId] from cteBooks)        
+ )         
+ SELECT b.Id,b.MasterCategoryId, b.[Title],'' 'SlugUrl',b.[Image],b.[ISBN],b.[Author],b.[Edition],b.[EbookPrice],b.[PrintPrice] ,b.EBookType   
+ from cteBooks a        
+ left join cteBook b        
+ on a.MasterBookId=b.Id        
+        
+);
+GO
+/****** Object:  View [dbo].[getNewID]    Script Date: 8/18/2022 1:44:02 PM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+ create view [dbo].[getNewID] as select newid() as new_id 
+GO
+SET ANSI_PADDING ON
+GO
+/****** Object:  Index [RoleNameIndex]    Script Date: 8/18/2022 1:44:02 PM ******/
+CREATE UNIQUE NONCLUSTERED INDEX [RoleNameIndex] ON [dbo].[AspNetRoles]
+(
+	[Name] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, SORT_IN_TEMPDB = OFF, IGNORE_DUP_KEY = OFF, DROP_EXISTING = OFF, ONLINE = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+GO
+SET ANSI_PADDING ON
+GO
+/****** Object:  Index [IX_UserId]    Script Date: 8/18/2022 1:44:02 PM ******/
+CREATE NONCLUSTERED INDEX [IX_UserId] ON [dbo].[AspNetUserClaims]
+(
+	[UserId] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, SORT_IN_TEMPDB = OFF, DROP_EXISTING = OFF, ONLINE = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+GO
+SET ANSI_PADDING ON
+GO
+/****** Object:  Index [IX_UserId]    Script Date: 8/18/2022 1:44:02 PM ******/
+CREATE NONCLUSTERED INDEX [IX_UserId] ON [dbo].[AspNetUserLogins]
+(
+	[UserId] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, SORT_IN_TEMPDB = OFF, DROP_EXISTING = OFF, ONLINE = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+GO
+SET ANSI_PADDING ON
+GO
+/****** Object:  Index [IX_RoleId]    Script Date: 8/18/2022 1:44:02 PM ******/
+CREATE NONCLUSTERED INDEX [IX_RoleId] ON [dbo].[AspNetUserRoles]
+(
+	[RoleId] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, SORT_IN_TEMPDB = OFF, DROP_EXISTING = OFF, ONLINE = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+GO
+SET ANSI_PADDING ON
+GO
+/****** Object:  Index [IX_UserId]    Script Date: 8/18/2022 1:44:02 PM ******/
+CREATE NONCLUSTERED INDEX [IX_UserId] ON [dbo].[AspNetUserRoles]
+(
+	[UserId] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, SORT_IN_TEMPDB = OFF, DROP_EXISTING = OFF, ONLINE = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+GO
+SET ANSI_PADDING ON
+GO
+/****** Object:  Index [UserNameIndex]    Script Date: 8/18/2022 1:44:02 PM ******/
+CREATE UNIQUE NONCLUSTERED INDEX [UserNameIndex] ON [dbo].[AspNetUsers]
+(
+	[UserName] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, SORT_IN_TEMPDB = OFF, IGNORE_DUP_KEY = OFF, DROP_EXISTING = OFF, ONLINE = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+GO
+SET ANSI_PADDING ON
+GO
+/****** Object:  Index [IX_MyLibrary]    Script Date: 8/18/2022 1:44:02 PM ******/
+CREATE UNIQUE NONCLUSTERED INDEX [IX_MyLibrary] ON [dbo].[MyLibrary]
+(
+	[MasterBookId] ASC,
+	[AspNetUserId] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, SORT_IN_TEMPDB = OFF, IGNORE_DUP_KEY = OFF, DROP_EXISTING = OFF, ONLINE = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+GO
+ALTER TABLE [dbo].[AspNetUserClaims]  WITH CHECK ADD  CONSTRAINT [FK_dbo.AspNetUserClaims_dbo.AspNetUsers_UserId] FOREIGN KEY([UserId])
+REFERENCES [dbo].[AspNetUsers] ([Id])
+ON DELETE CASCADE
+GO
+ALTER TABLE [dbo].[AspNetUserClaims] CHECK CONSTRAINT [FK_dbo.AspNetUserClaims_dbo.AspNetUsers_UserId]
+GO
+ALTER TABLE [dbo].[AspNetUserLogins]  WITH CHECK ADD  CONSTRAINT [FK_dbo.AspNetUserLogins_dbo.AspNetUsers_UserId] FOREIGN KEY([UserId])
+REFERENCES [dbo].[AspNetUsers] ([Id])
+ON DELETE CASCADE
+GO
+ALTER TABLE [dbo].[AspNetUserLogins] CHECK CONSTRAINT [FK_dbo.AspNetUserLogins_dbo.AspNetUsers_UserId]
+GO
+ALTER TABLE [dbo].[AspNetUserRoles]  WITH CHECK ADD  CONSTRAINT [FK_dbo.AspNetUserRoles_dbo.AspNetRoles_RoleId] FOREIGN KEY([RoleId])
+REFERENCES [dbo].[AspNetRoles] ([Id])
+ON DELETE CASCADE
+GO
+ALTER TABLE [dbo].[AspNetUserRoles] CHECK CONSTRAINT [FK_dbo.AspNetUserRoles_dbo.AspNetRoles_RoleId]
+GO
+ALTER TABLE [dbo].[AspNetUserRoles]  WITH CHECK ADD  CONSTRAINT [FK_dbo.AspNetUserRoles_dbo.AspNetUsers_UserId] FOREIGN KEY([UserId])
+REFERENCES [dbo].[AspNetUsers] ([Id])
+ON DELETE CASCADE
+GO
+ALTER TABLE [dbo].[AspNetUserRoles] CHECK CONSTRAINT [FK_dbo.AspNetUserRoles_dbo.AspNetUsers_UserId]
+GO
+ALTER TABLE [dbo].[MasterBooks]  WITH CHECK ADD  CONSTRAINT [FK_MasterBooks_AspNetUsers] FOREIGN KEY([CreatedBy])
+REFERENCES [dbo].[AspNetUsers] ([Id])
+GO
+ALTER TABLE [dbo].[MasterBooks] CHECK CONSTRAINT [FK_MasterBooks_AspNetUsers]
+GO
+ALTER TABLE [dbo].[MasterBooks]  WITH CHECK ADD  CONSTRAINT [FK_MasterBooks_AspNetUsers1] FOREIGN KEY([UpdatedBy])
+REFERENCES [dbo].[AspNetUsers] ([Id])
+GO
+ALTER TABLE [dbo].[MasterBooks] CHECK CONSTRAINT [FK_MasterBooks_AspNetUsers1]
+GO
+ALTER TABLE [dbo].[MasterBooks]  WITH CHECK ADD  CONSTRAINT [FK_MasterBooks_MasterCategory] FOREIGN KEY([MasterCategoryId])
+REFERENCES [dbo].[MasterCategory] ([Id])
+GO
+ALTER TABLE [dbo].[MasterBooks] CHECK CONSTRAINT [FK_MasterBooks_MasterCategory]
+GO
+ALTER TABLE [dbo].[MasterBooks]  WITH CHECK ADD  CONSTRAINT [FK_MasterBooks_MasterClass] FOREIGN KEY([MasterClassId])
+REFERENCES [dbo].[MasterClass] ([Id])
+GO
+ALTER TABLE [dbo].[MasterBooks] CHECK CONSTRAINT [FK_MasterBooks_MasterClass]
+GO
+ALTER TABLE [dbo].[MasterCategory]  WITH CHECK ADD  CONSTRAINT [FK_MasterCategory_AspNetUsers] FOREIGN KEY([CreatedBy])
+REFERENCES [dbo].[AspNetUsers] ([Id])
+GO
+ALTER TABLE [dbo].[MasterCategory] CHECK CONSTRAINT [FK_MasterCategory_AspNetUsers]
+GO
+ALTER TABLE [dbo].[MasterCategory]  WITH CHECK ADD  CONSTRAINT [FK_MasterCategory_AspNetUsers1] FOREIGN KEY([UpdatedBy])
+REFERENCES [dbo].[AspNetUsers] ([Id])
+GO
+ALTER TABLE [dbo].[MasterCategory] CHECK CONSTRAINT [FK_MasterCategory_AspNetUsers1]
+GO
+ALTER TABLE [dbo].[MasterCategory]  WITH CHECK ADD  CONSTRAINT [FK_MasterCategory_MasterCategory] FOREIGN KEY([ParentId])
+REFERENCES [dbo].[MasterCategory] ([Id])
+GO
+ALTER TABLE [dbo].[MasterCategory] CHECK CONSTRAINT [FK_MasterCategory_MasterCategory]
+GO
+ALTER TABLE [dbo].[MasterClass]  WITH CHECK ADD  CONSTRAINT [FK_MasterClass_AspNetUsers] FOREIGN KEY([CreatedBy])
+REFERENCES [dbo].[AspNetUsers] ([Id])
+GO
+ALTER TABLE [dbo].[MasterClass] CHECK CONSTRAINT [FK_MasterClass_AspNetUsers]
+GO
+ALTER TABLE [dbo].[MasterClass]  WITH CHECK ADD  CONSTRAINT [FK_MasterClass_AspNetUsers1] FOREIGN KEY([UpdatedBy])
+REFERENCES [dbo].[AspNetUsers] ([Id])
+GO
+ALTER TABLE [dbo].[MasterClass] CHECK CONSTRAINT [FK_MasterClass_AspNetUsers1]
+GO
+ALTER TABLE [dbo].[MyLibrary]  WITH CHECK ADD  CONSTRAINT [FK_MyLibrary_AspNetUsers] FOREIGN KEY([CreatedBy])
+REFERENCES [dbo].[AspNetUsers] ([Id])
+GO
+ALTER TABLE [dbo].[MyLibrary] CHECK CONSTRAINT [FK_MyLibrary_AspNetUsers]
+GO
+ALTER TABLE [dbo].[MyLibrary]  WITH CHECK ADD  CONSTRAINT [FK_MyLibrary_AspNetUsers1] FOREIGN KEY([UpdatedBy])
+REFERENCES [dbo].[AspNetUsers] ([Id])
+GO
+ALTER TABLE [dbo].[MyLibrary] CHECK CONSTRAINT [FK_MyLibrary_AspNetUsers1]
+GO
+ALTER TABLE [dbo].[MyLibrary]  WITH CHECK ADD  CONSTRAINT [FK_MyLibrary_MasterBooks] FOREIGN KEY([MasterBookId])
+REFERENCES [dbo].[MasterBooks] ([Id])
+GO
+ALTER TABLE [dbo].[MyLibrary] CHECK CONSTRAINT [FK_MyLibrary_MasterBooks]
+GO
+ALTER TABLE [dbo].[School]  WITH CHECK ADD  CONSTRAINT [FK_School_AspNetUsers] FOREIGN KEY([CreatedBy])
+REFERENCES [dbo].[AspNetUsers] ([Id])
+GO
+ALTER TABLE [dbo].[School] CHECK CONSTRAINT [FK_School_AspNetUsers]
+GO
+ALTER TABLE [dbo].[School]  WITH CHECK ADD  CONSTRAINT [FK_School_AspNetUsers1] FOREIGN KEY([UpdatedBy])
+REFERENCES [dbo].[AspNetUsers] ([Id])
+GO
+ALTER TABLE [dbo].[School] CHECK CONSTRAINT [FK_School_AspNetUsers1]
+GO
+ALTER TABLE [dbo].[UserDetail]  WITH CHECK ADD  CONSTRAINT [FK_UserDetail_AspNetUsers] FOREIGN KEY([AspNetUserId])
+REFERENCES [dbo].[AspNetUsers] ([Id])
+GO
+ALTER TABLE [dbo].[UserDetail] CHECK CONSTRAINT [FK_UserDetail_AspNetUsers]
+GO
+ALTER TABLE [dbo].[UserDetail]  WITH CHECK ADD  CONSTRAINT [FK_UserDetail_AspNetUsers1] FOREIGN KEY([CreatedBy])
+REFERENCES [dbo].[AspNetUsers] ([Id])
+GO
+ALTER TABLE [dbo].[UserDetail] CHECK CONSTRAINT [FK_UserDetail_AspNetUsers1]
+GO
+ALTER TABLE [dbo].[UserDetail]  WITH CHECK ADD  CONSTRAINT [FK_UserDetail_AspNetUsers2] FOREIGN KEY([UpdatedBy])
+REFERENCES [dbo].[AspNetUsers] ([Id])
+GO
+ALTER TABLE [dbo].[UserDetail] CHECK CONSTRAINT [FK_UserDetail_AspNetUsers2]
+GO
+ALTER TABLE [dbo].[UserDetail]  WITH CHECK ADD  CONSTRAINT [FK_UserDetail_MasterClass] FOREIGN KEY([MasterClassId])
+REFERENCES [dbo].[MasterClass] ([Id])
+GO
+ALTER TABLE [dbo].[UserDetail] CHECK CONSTRAINT [FK_UserDetail_MasterClass]
+GO
+ALTER TABLE [dbo].[UserExcelData]  WITH CHECK ADD  CONSTRAINT [FK_UserExcelData_AspNetUsers] FOREIGN KEY([CreatedBy])
+REFERENCES [dbo].[AspNetUsers] ([Id])
+GO
+ALTER TABLE [dbo].[UserExcelData] CHECK CONSTRAINT [FK_UserExcelData_AspNetUsers]
+GO
+ALTER TABLE [dbo].[UserExcelData]  WITH CHECK ADD  CONSTRAINT [FK_UserExcelData_AspNetUsers1] FOREIGN KEY([UpdatedBy])
+REFERENCES [dbo].[AspNetUsers] ([Id])
+GO
+ALTER TABLE [dbo].[UserExcelData] CHECK CONSTRAINT [FK_UserExcelData_AspNetUsers1]
+GO
+ALTER TABLE [dbo].[UserExcelData]  WITH CHECK ADD  CONSTRAINT [FK_UserExcelData_UserExcelMetaData] FOREIGN KEY([UserExcelMetaDataId])
+REFERENCES [dbo].[UserExcelMetaData] ([Id])
+GO
+ALTER TABLE [dbo].[UserExcelData] CHECK CONSTRAINT [FK_UserExcelData_UserExcelMetaData]
+GO
+ALTER TABLE [dbo].[UserExcelMetaData]  WITH CHECK ADD  CONSTRAINT [FK_UserExcelMetaData_AspNetUsers] FOREIGN KEY([CreatedBy])
+REFERENCES [dbo].[AspNetUsers] ([Id])
+GO
+ALTER TABLE [dbo].[UserExcelMetaData] CHECK CONSTRAINT [FK_UserExcelMetaData_AspNetUsers]
+GO
+ALTER TABLE [dbo].[UserExcelMetaData]  WITH CHECK ADD  CONSTRAINT [FK_UserExcelMetaData_AspNetUsers1] FOREIGN KEY([UpdatedBy])
+REFERENCES [dbo].[AspNetUsers] ([Id])
+GO
+ALTER TABLE [dbo].[UserExcelMetaData] CHECK CONSTRAINT [FK_UserExcelMetaData_AspNetUsers1]
+GO
+ALTER TABLE [dbo].[UserExcelMetaData]  WITH CHECK ADD  CONSTRAINT [FK_UserExcelMetaData_AspNetUsers2] FOREIGN KEY([AspNetUserId])
+REFERENCES [dbo].[AspNetUsers] ([Id])
+GO
+ALTER TABLE [dbo].[UserExcelMetaData] CHECK CONSTRAINT [FK_UserExcelMetaData_AspNetUsers2]
+GO
+/****** Object:  StoredProcedure [dbo].[DeleteCategory]    Script Date: 8/18/2022 1:44:02 PM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE  PROCEDURE  [dbo].[DeleteCategory]            
+ (     
+ @Id bigint,    
+ @result   int  output ,     
+ @IImage  varchar(200) output,  
+ @Message varchar(500) output  
+ )            
+As            
+BEGIN    
+begin try      
+ begin transaction    
+ declare @isexist int  
+ declare @Title nvarchar(300)  
+ select  @Title=isnull(Title,''),@IImage=isnull([Image],'') from dbo.MasterCategory  where Id=@Id   
+ if  not exists(select Id from MasterBooks where ParentId=@Id )  or not exists(select Id from MasterBooks where MasterCategoryId=@Id )   
+ begin  
+      
+  delete from dbo.MasterCategory  where Id=@Id  
+  set @Message=isnull(@Title,'') +' deleted successfully.'  
+  set @result =1  
+ end  
+ else  
+ begin  
+  set @Message=isnull(@Title,'') +' is not allowed to be delete it is used by another process.'  
+  set @result =3  
+ end      
+ commit transaction              
+ END TRY              
+ BEGIN CATCH             
+ set @result=-1             
+ set @Message=ERROR_MESSAGE()    
+ set @IImage =''  
+  --SELECT ERROR_NUMBER() AS ErrorNumber            
+  -- ,ERROR_SEVERITY() AS ErrorSeverity            
+  -- ,ERROR_STATE() AS ErrorState            
+  -- ,ERROR_PROCEDURE() AS ErrorProcedure            
+  -- ,ERROR_LINE() AS ErrorLine            
+  -- ,ERROR_MESSAGE() AS ErrorMessage               
+  rollback transaction              
+ END CATCH             
+   return --return from procedure successfully               
+END 
+GO
+/****** Object:  StoredProcedure [dbo].[GetSchools]    Script Date: 8/18/2022 1:44:02 PM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+ 
+CREATE procedure [dbo].[GetSchools]      
+(      
+ @RoleId nvarchar(1000),      
+ @MaxRows int=50,      
+ @Page int=0,      
+ @CurrentRow int       
+)      
+AS      
+BEGIN      
+  SET FMTONLY OFF      
+ Declare @TempTable table      
+ (      
+   [RowNum] int          
+  ,[Id] nvarchar(128) 
+  ,[SchoolCode] nvarchar(max)     
+  ,[Name] nvarchar(max) 
+  ,[ContactNo] nvarchar(max)    
+  ,[State] nvarchar(500)    
+  ,[City] nvarchar(500)   
+  ,[PinCode] nvarchar(20)   
+  ,[Email] nvarchar(200)      
+  ,[PasswordHash] nvarchar(max)      
+  ,[UserName] nvarchar(max)      
+  ,[Logo] nvarchar(max)    
+  ,[AspNetUserId] nvarchar(128)   
+  ,[Status] int  
+ );    
+ DECLARE @SQL nvarchar(max)   
+ set @SQL= '  
+WITH  cteSchool AS      
+(      
+  SELECT  RowNum, [Id],SchoolCode  , Title, ContactNo, [State],City, PinCode, EmailId,  
+  AspNetUserId, [Status],UserName, PasswordHash   FROM    (       
+ SELECT    ROW_NUMBER() OVER ( ORDER BY [CreateDate] desc  ) AS RowNum,       
+ a.[Id]  ,isnull([Title],'''')Title,isnull(a.[ContactNo],'''')ContactNo,isnull(a.[State],'''')State,  
+ isnull(a.[City],'''')City,isnull(a.PinCode,'''')PinCode,isnull(a.[EmailId],'''')EmailId,  
+ isnull(a.[AspNetUserId],'''')AspNetUserId,isnull(a.[Status],0)Status,  
+ isnull(b.UserName,'''')UserName,isnull(b.PasswordHash,'''')PasswordHash  ,SchoolCode
+ FROM [dbo].School a  
+ left join AspNetUsers b on a.AspNetUserId=b.Id  
+  ) AS RowConstrainedResult      
+  WHERE   RowNum >= '+cast(@CurrentRow+1 as varchar)+'      
+  AND RowNum <= '+cast(@Page*@MaxRows as varchar)+'     
+)   select   RowNum, [Id]  ,SchoolCode, Title, ContactNo, [State],City, PinCode, EmailId,  
+  AspNetUserId, [Status],UserName, PasswordHash from cteSchool'       
+   
+  
+INSERT INTO @TempTable( RowNum, [Id],SchoolCode  , [Name], ContactNo, [State],City, PinCode, Email,  
+  AspNetUserId, [Status],UserName, PasswordHash)       
+EXEC sp_executesql @SQL   
+select  RowNum, [Id] ,SchoolCode , [Name], ContactNo, [State],City, PinCode, Email,  
+  AspNetUserId, [Status],UserName, PasswordHash from @TempTable  ORDER BY RowNum asc    
+END      
+  
+GO
+/****** Object:  StoredProcedure [dbo].[GetUsers]    Script Date: 8/18/2022 1:44:02 PM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE procedure [dbo].[GetUsers]    
+(    
+ @RoleId nvarchar(1000),    
+ @MaxRows int=50,    
+ @Page int=0,    
+ @CurrentRow int     
+)    
+AS    
+BEGIN    
+  SET FMTONLY OFF    
+Declare @TempTable table    
+(    [RowNum] int        
+    ,[Id] nvarchar(128)  
+    ,[FirstName] nvarchar(max)    
+    ,[LastName] nvarchar(max)    
+    ,[Gender] int    
+    ,[DOB] datetime 
+	,[LoginSourse] int  
+    ,[dtmCreate] datetime    
+    ,[dtmUpdate] datetime    
+    ,[dtmDelete] datetime    
+    ,[Status] int    
+    ,[Email] nvarchar(max)    
+    ,[EmailConfirmed] bit    
+    ,[PasswordHash] nvarchar(max)    
+    ,[PhoneNumber] nvarchar(max)    
+    ,[PhoneNumberConfirmed] bit    
+    ,[UserName] nvarchar(256)    
+);  
+ DECLARE @SQL nvarchar(max) 
+ set @SQL= 'WITH  cteUsers AS    
+(    
+  SELECT  *   FROM    (     
+  SELECT    ROW_NUMBER() OVER ( ORDER BY [dtmCreate] desc  ) AS RowNum,     
+    [Id]  ,[FirstName]  ,[LastName] ,[Gender]   ,[DOB],LoginSourse ,[dtmCreate]    
+   ,[dtmUpdate]  ,[dtmDelete]  ,[Status]    ,[Email]   ,[EmailConfirmed]    
+   ,[PasswordHash] ,[PhoneNumber] ,[PhoneNumberConfirmed]  ,[UserName]    
+   FROM [dbo].[AspNetUsers]    
+   where     
+   Id in (Select [UserId]  from AspNetUserRoles where [RoleId] in('+@RoleId+')   )    
+              
+  ) AS RowConstrainedResult    
+  WHERE   RowNum >= '+cast(@CurrentRow+1 as varchar)+'    
+  AND RowNum <= '+cast(@Page*@MaxRows as varchar)+'   
+)   select * from cteUsers '     
+  
+INSERT INTO @TempTable     
+EXEC sp_executesql @SQL
+
+select * from @TempTable  ORDER BY RowNum asc    
+    
+END    
+GO
+/****** Object:  StoredProcedure [dbo].[InsertUpdateDeleteMasterBooks]    Script Date: 8/18/2022 1:44:02 PM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+ 
+CREATE  PROCEDURE  [dbo].[InsertUpdateDeleteMasterBooks]          
+ (   
+	@Id [nvarchar](128)   ,
+	@MasterCategoryId [bigint] ,
+	@Title [nvarchar](1000) ,
+	@Author [nvarchar](1000) ,
+	@ISBN [varchar](50) ,
+	@Edition [varchar](50) ,
+	@Image [varchar](150) ,
+	@Description [nvarchar](max) ,
+	@PageTitle [nvarchar](500) ,
+	@MetaDescription [nvarchar](1000) ,
+	@OgTitle [nvarchar](500) ,
+	@OgDescription [nvarchar](1000) ,
+	@TwitterTitle [nvarchar](500) ,
+	@TwitterDescription [nvarchar](1000) ,
+	@KeyWords [nvarchar](1000) ,
+	@ParentId [bigint] ,  
+	@BannerImage [nvarchar](150) ,
+	@ServerId [nvarchar](128) ,
+	@EncriptionKey [nvarchar](200) ,
+	@isSize [varchar](50) ,
+	@EbookPrice [decimal](18, 2) ,
+	@PrintPrice [decimal](18, 2) ,
+	@Discount [decimal](10, 2) ,
+	@Colour [int] ,
+	@EbookSizeMB [bigint] ,
+	@Ebook [int] ,
+	@Pbook [int] ,
+	@Audio [int] ,
+	@EBookType [int] ,
+	@AspNetUserId [nvarchar](128) , 
+	@Status [tinyint] ,
+	@IPaddress [varchar](20) ,
+	@Action int ,--0 insert ,1 update, 2 delete
+	@result   int  output ,    
+	@IId [nvarchar](128) output ,
+	@IImage  varchar(500) output,
+	@Message varchar(500) output
+ )          
+As          
+BEGIN      
+ begin transaction  
+	declare @isexist int,@ShortCode [nvarchar](150) ,@DisplayOrder [smallint]  
+	set @Title=ltrim(rtrim(isnull(@Title,'')))
+	set @Description=ltrim(rtrim(isnull(@Description,'')))  
+	set @Author =ltrim(rtrim(isnull(@Author ,'')))  
+	set @ISBN =ltrim(rtrim(isnull(@ISBN ,''))) 
+	set @Edition =ltrim(rtrim(isnull(@Edition ,''))) 
+	set @Image =ltrim(rtrim(isnull(@Image ,''))) 
+	set @Description=ltrim(rtrim(isnull(@Description ,''))) 
+	set @PageTitle =ltrim(rtrim(isnull(@PageTitle ,''))) 
+	set @MetaDescription =ltrim(rtrim(isnull(@MetaDescription ,'')))  
+	set @OgTitle =ltrim(rtrim(isnull(@OgTitle ,''))) 
+	set @OgDescription =ltrim(rtrim(isnull(@OgDescription ,'')))  
+	set @TwitterTitle =ltrim(rtrim(isnull(@TwitterTitle ,''))) 
+	set @TwitterDescription =ltrim(rtrim(isnull(@TwitterDescription ,'')))  
+	set @KeyWords =ltrim(rtrim(isnull(@KeyWords ,'')))   
+	set @ShortCode =dbo.fnNameAbbrevation(ltrim(rtrim(isnull(@Title ,''))))  
+	set @BannerImage =ltrim(rtrim(isnull(@BannerImage ,'')))  
+	set @EncriptionKey=ltrim(rtrim(isnull(@EncriptionKey ,''))) 
+	set @isSize =ltrim(rtrim(isnull(@isSize ,0.0))) 
+	set @EbookPrice =ltrim(rtrim(isnull(@EbookPrice ,0.0))) 
+	set @PrintPrice =ltrim(rtrim(isnull(@PrintPrice ,0.0))) 
+	set @Discount =ltrim(rtrim(isnull(@Discount ,0.0))) 
+	set @Colour =ltrim(rtrim(isnull(@Colour ,0))) 
+	set @EbookSizeMB  =ltrim(rtrim(isnull(@Colour ,0))) 
+	set @Ebook  =ltrim(rtrim(isnull(@Ebook ,0))) 
+	set @Pbook  =ltrim(rtrim(isnull(@Pbook ,0))) 
+	set @Audio  =ltrim(rtrim(isnull(@Audio ,0))) 
+	set @EBookType  =ltrim(rtrim(isnull(@EBookType ,0))) 
+ BEGIN TRY    
+	declare @_image [varchar](150),@_bimage [varchar](150)
+	select @_image=  isnull([Image],'')  ,@_bimage=   isnull(BannerImage,'')  
+	from  [dbo].[MasterBooks] where Id =@Id
+   if @Action=0
+   begin
+
+	if isnull(@DisplayOrder,0)=0
+	begin
+		select @DisplayOrder=count(1)+1 from MasterBooks
+	end	
+	set @ShortCode =dbo.fnNameAbbrevation(ltrim(rtrim(isnull(@Title ,'')))) +'-'+cast (@DisplayOrder as varchar)
+	select @MasterCategoryId	 
+	INSERT INTO [dbo].[MasterBooks]
+	([Id],[MasterCategoryId],[Title],[Author],[ISBN],[Edition],[Image],[Description],[PageTitle],[MetaDescription]
+	,[OgTitle],[OgDescription],[TwitterTitle],[TwitterDescription],[KeyWords],[ParentId],[ShortCode],[DisplayOrder]
+	,[BannerImage],[ServerId],[EncriptionKey],[isSize],[EbookPrice],[PrintPrice],[Discount],[Colour],[EbookSize(MB)]
+	,[Ebook],[Pbook],[Audio],[EBookType],[CreatedBy],[UpdatedBy],[CreateDate],[UpdateDate],[Status],[IPaddress])
+	VALUES (@Id,@MasterCategoryId,@Title,@Author,@ISBN,@Edition,@Image,@Description,@PageTitle,@MetaDescription
+	,@OgTitle,@OgDescription,@TwitterTitle,@TwitterDescription,@KeyWords,@ParentId,@ShortCode,@DisplayOrder
+	,@BannerImage,@ServerId,@EncriptionKey,@isSize,@EbookPrice,@PrintPrice,@Discount,@Colour,@EbookSizeMB
+	,@Ebook,@Pbook,@Audio,@EBookType,@AspNetUserId,@AspNetUserId,getdate(),getdate(),1,@IPaddress)	
+	set @IImage=''
+	set @IId=@Id 
+	set @Message=isnull(@Title,'') +' inserted successfully.'
+	set @result =1
+	
+   end
+   if @Action=1
+   begin 
+	if @Image='' and @_image<>''
+	begin
+		set @Image=@_image
+		set @IImage=@_image
+	end
+	if @BannerImage='' and @_bimage<>''
+	begin
+		set @BannerImage=@_bimage
+		set @IImage=@IImage+ ','+@_bimage
+	end
+	Update [dbo].[MasterBooks]
+	 set  [MasterCategoryId]=@MasterCategoryId,
+		[Title] =@Title,
+		[Author] =@Author, 
+		[ISBN] =@ISBN, 
+		[Edition] =@Edition, 
+		[Image] =@Image, 
+		[Description] =@Description, 
+		[PageTitle] =@PageTitle,
+		[MetaDescription]=@MetaDescription,
+		[OgTitle] =@OgTitle, 
+		[OgDescription] =@OgDescription, 
+		[TwitterTitle] =@TwitterTitle,
+		[TwitterDescription]=@TwitterDescription, 
+		[KeyWords] =@KeyWords, 
+		[ParentId] =@ParentId,
+		[ShortCode] =@ShortCode, 
+		[DisplayOrder]=@DisplayOrder,
+		[BannerImage] =@BannerImage, 
+		[ServerId] =@ServerId, 
+		[EncriptionKey] =@EncriptionKey, 
+		[isSize] =@isSize, 
+		[EbookPrice] =@EbookPrice, 
+		[PrintPrice] =@PrintPrice, 
+		[Discount] =@Discount, 
+		[Colour] =@Colour, 
+		[EbookSize(MB)]=@EbookSizeMB,
+		[Ebook] =@Ebook, 
+		[Pbook] =@Pbook, 
+		[Audio] =@Audio,
+		[EBookType] =@EBookType,
+		[UpdatedBy] =@AspnetUserId, 
+		[UpdateDate] =getdate(), 
+		[IPaddress] =@IPaddress
+		where Id=@Id  
+	set @IId=@Id 
+	set @Message=isnull(@Title,'') +' updated successfully.'
+	set @result =1
+   end
+   if @Action=2
+   begin 
+    if not exists(select Id from MyLibrary where MasterBookId=@Id )    
+	begin
+		delete from MasterBooks where Id=@Id
+		set @IImage=@_image +','+@_bimage 
+		set @IId=@Id 
+		set @Message=isnull(@Title,'') +' deleted successfully.'
+		set @result =1
+	end 
+	else
+	begin
+		set @IImage=''
+		set @IId=@Id 
+		set @Message='you are not allowed to be delete book :'+@Title+', it is used another process.'
+		set @result =-1
+	end 
+   end
+   commit transaction      
+    
+ END TRY            
+ BEGIN CATCH           
+	set @result=-1           
+	set @Message=ERROR_MESSAGE()
+	set @IId =''  
+	set @IImage =''
+  --SELECT ERROR_NUMBER() AS ErrorNumber          
+  -- ,ERROR_SEVERITY() AS ErrorSeverity          
+  -- ,ERROR_STATE() AS ErrorState          
+  -- ,ERROR_PROCEDURE() AS ErrorProcedure          
+  -- ,ERROR_LINE() AS ErrorLine          
+  -- ,ERROR_MESSAGE() AS ErrorMessage             
+  rollback transaction            
+ END CATCH           
+   return --return from procedure successfully             
+END 
+GO
+/****** Object:  StoredProcedure [dbo].[InsertUpdateDeleteMyLibrary]    Script Date: 8/18/2022 1:44:02 PM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+
+CREATE  PROCEDURE  [dbo].[InsertUpdateDeleteMyLibrary]          
+ (   
+	@Id [nvarchar](128) ,
+	@MasterBookId [nvarchar](128) ,
+	@AspNetUserId [nvarchar](128) , 
+	@CreatedBy [nvarchar](128) ,
+	@Validity [int] ,
+	@LastDate [datetime] , 
+	@Status [tinyint] ,
+	@IPaddress [varchar](20) , 
+	@Action int ,--0 insert ,1 update, 2 delete
+	@result   int  output ,    
+	@IId [nvarchar](128) output ,
+	@IImage  varchar(500) output,
+	@Message varchar(500) output
+ )          
+As          
+BEGIN      
+ begin transaction  
+	declare @Title varchar(500)
+	select @Title=isnull(Title,'') from dbo.MasterBooks where [Id]=@MasterBookId 
+ BEGIN TRY  
+   if @Action=0 
+   begin 
+    if not exists (select Id from [dbo].[MyLibrary] where [MasterBookId]=@MasterBookId and [AspNetUserId]=@AspNetUserId)
+	begin
+		INSERT INTO [dbo].[MyLibrary]
+           ([Id],[MasterBookId],[AspNetUserId],[CreatedBy],[UpdatedBy],[Validity],[LastDate],[CreateDate]
+           ,[UpdateDate],[Status],[IPaddress])
+			values  (@Id,@MasterBookId,@AspNetUserId,@CreatedBy,@CreatedBy,@Validity,@LastDate,getdate()
+			,getdate(),@Status,@IPaddress)
+		set @IImage=''
+		set @IId=@Id 
+		set @Message=@Title +' inserted successfully.'
+		set @result =1
+	end
+	else
+	begin
+		set @IImage=''
+		set @IId=@Id 
+		set @Message=@Title +' already in your library.'
+		set @result =-1
+	end 
+   end
+   if @Action=1
+   begin  
+	Update [dbo].[MyLibrary]
+	set  
+	[MasterBookId]=@MasterBookId,
+	[AspNetUserId]=@AspNetUserId,
+	[UpdatedBy]=@CreatedBy,
+	[Validity]=@Validity,
+	[LastDate]		=@LastDate,	  
+	[UpdateDate]=getdate(),
+	[IPaddress] =@IPaddress  
+	where Id=@Id			 
+	set @IId=@Id 
+	set @Message=@Title +' updated successfully.'
+	set @result =1
+   end
+   if @Action=2
+   begin 
+   Update [dbo].[MyLibrary]
+   set [Status]=2,	  
+	[UpdateDate]=getdate(),
+	[IPaddress] =@IPaddress  
+	where Id=@Id			 
+	set @IId=@Id 
+	set @Message=@Title +' deleted successfully.'
+	set @result =1
+	set @result =1
+   end
+  commit transaction            
+ END TRY            
+ BEGIN CATCH           
+	set @result=-1           
+	set @Message=ERROR_MESSAGE()
+	set @IId =''  
+	set @IImage =''
+  --SELECT ERROR_NUMBER() AS ErrorNumber          
+  -- ,ERROR_SEVERITY() AS ErrorSeverity          
+  -- ,ERROR_STATE() AS ErrorState          
+  -- ,ERROR_PROCEDURE() AS ErrorProcedure          
+  -- ,ERROR_LINE() AS ErrorLine          
+  -- ,ERROR_MESSAGE() AS ErrorMessage             
+  rollback transaction            
+ END CATCH           
+   return --return from procedure successfully             
+END 
+GO
+/****** Object:  StoredProcedure [dbo].[InsertUpdateSchool]    Script Date: 8/18/2022 1:44:02 PM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+   
+CREATE  PROCEDURE  [dbo].[InsertUpdateSchool]            
+ (     
+ @Id [nvarchar](128)  ,  
+ @AspNetUserId [nvarchar](128)  ,  
+ @Title  [nvarchar](1000)  ,  
+ @EmailId  [nvarchar](200)  ,  
+ @Logo  [nvarchar](200)  ,  
+ @ContactNo  [nvarchar](50)  ,  
+ @AlterNateContactNo  [nvarchar](50)  ,  
+ @Principle  [nvarchar](500)  ,  
+ @PrincipleContactNo  [nvarchar](50)  ,  
+ @AddressLine1 [nvarchar](500)  ,  
+ @AddressLine2 [nvarchar](500)  ,  
+ @AddressLine3 [nvarchar](500)  ,  
+ @State [nvarchar](500)  ,  
+ @City [nvarchar](500)  ,  
+ @Pincode [nvarchar](10)  ,  
+ @Password [nvarchar](200)  ,  
+ @Description [varchar](max)  ,    
+ @CreatedBy  [nvarchar](128)  ,     
+ @Status [int] ,  
+ @IPaddress [varchar](50) ,  
+ @Action int ,--0 insert ,1 update, 2 delete  
+ @result   int  output ,      
+ @IId [nvarchar](128) output ,  
+ @IImage  varchar(500) output,  
+ @Message varchar(500) output  
+ )            
+As            
+BEGIN        
+ begin transaction    
+ declare @isexist int,@ShortCode [nvarchar](150) ,@DisplayOrder [smallint]    
+    
+ set @Title  =ltrim(rtrim(isnull(@Title,'')))  
+ set @EmailId =ltrim(rtrim(isnull(@EmailId,'')))  
+ set @Logo  =ltrim(rtrim(isnull(@Logo,'')))  
+ set @ContactNo =ltrim(rtrim(isnull(@ContactNo,'')))  
+ set @AlterNateContactNo =ltrim(rtrim(isnull(@AlterNateContactNo,'')))  
+ set @Principle =ltrim(rtrim(isnull(@Principle,'')))  
+ set @PrincipleContactNo =ltrim(rtrim(isnull(@PrincipleContactNo,'')))  
+ set @AddressLine1 =ltrim(rtrim(isnull(@AddressLine1,'')))  
+ set @AddressLine2 =ltrim(rtrim(isnull(@AddressLine2,'')))  
+ set @AddressLine3 =ltrim(rtrim(isnull(@AddressLine3,'')))  
+ set @State=ltrim(rtrim(isnull(@State,'')))  
+ set @City=ltrim(rtrim(isnull(@City,'')))  
+ set @Pincode =ltrim(rtrim(isnull(@Pincode,'')))  
+ set @Description =ltrim(rtrim(isnull(@Description,'')))  
+    
+ BEGIN TRY      
+ declare @_image [varchar](150),@_bimage [varchar](150)  
+ select @_image=  isnull(Logo,''),@AspNetUserId=AspNetUserId  from  [dbo].School where Id =@Id  
+   if @Action=0  
+   begin    
+  set @ShortCode =dbo.[GetSchoolCode](dbo.fnNameAbbrevation(ltrim(rtrim(isnull(@Title ,'')))))  
+  set @AspNetUserId=newid()   
+  INSERT INTO [dbo].[AspNetUsers] ([Id],[FirstName],[LastName],[Gender],[DOB],[MobNo] ,[EmailId],[SecurityQuestion]
+            ,[SecurityAnswer],[eUserName],[ePassword],[MobValidate],[EmailValidate] ,[LoginMode],[LoginThirdParty],
+			[LoginSourse] ,[LastLogin],[Image],[dtmCreate],[dtmUpdate],[dtmDelete] ,[Status],[TimeZone],[AccessLevels]  ,
+			[DisplayOrder],[Email] ,[EmailConfirmed],[PasswordHash],[SecurityStamp],[PhoneNumber] ,[PhoneNumberConfirmed]
+           ,[TwoFactorEnabled],[LockoutEndDateUtc] ,[LockoutEnabled],[AccessFailedCount] ,[UserName])
+		   values (@AspNetUserId,@title,'',-1,'1-1-1900',@ContactNo ,@EmailId,'Wahat is first name?'
+            ,@title,@ShortCode,@Password,0,0 ,-1,0,
+			3 ,getdate(),'',getdate(),getdate(),null,1,'',''  ,
+			0,@EmailId ,0,@Password,newid(),@ContactNo ,0
+           ,0,'1-1-1900' ,0,0 ,@ShortCode)
+  
+  INSERT INTO [dbo].[AspNetUserRoles]  
+  ([UserId] ,[RoleId])  
+  VALUES  
+  (@AspNetUserId,'092cac24-7b87-47e1-b5c3-4cbd9f9ff3ac' )  
+  
+  INSERT INTO [dbo].School  
+  ([Id],[AspNetUserId],[Title],[SchoolCode],[EmailId],[Logo],[ContactNo],[AlterNateContactNo],[Principle],  
+  [PrincipleContactNo],[AddressLine1],[AddressLine2],[AddressLine3],[State],[City],[Pincode],[Description],  
+  [CreateDate],[UpdatedDate],[CreatedBy],[UpdatedBy],[IPAddress] ,[Status])  
+  VALUES (newId(),@AspNetUserId,@Title,@ShortCode,@EmailId,@Logo,@ContactNo,@AlterNateContactNo,@Principle,  
+  @PrincipleContactNo,@AddressLine1,@AddressLine2,@AddressLine3,@State,@City,@Pincode,@Description,  
+  getdate(),getdate(),@CreatedBy,@CreatedBy,@IPAddress ,1)  
+  set @IImage=''  
+  set @IId=@Id   
+  set @Message=isnull(@Title,'') +' inserted successfully.'  
+  set @result =1   
+   end  
+   if @Action=1  
+   begin   
+  if @Logo='' and @_image<>''  
+  begin  
+   set @Logo=@_image  
+   set @IImage=@_image  
+  end   
+  Update  [dbo].School  
+  set  [Title]=@Title,  
+  [EmailId]=@EmailId,  
+  [Logo]=@Logo,  
+  [ContactNo]=@ContactNo,  
+  [AlterNateContactNo]=@AlterNateContactNo,  
+  [Principle]=@Principle,  
+  [PrincipleContactNo]=@PrincipleContactNo,  
+  [AddressLine1]=@AddressLine1,  
+  [AddressLine2]=@AddressLine2,  
+  [AddressLine3]=@AddressLine3,  
+  [State]=@State,  
+  [City]=@City,  
+  [Pincode]=@Pincode,  
+  [Description]=@Description,   
+  [UpdatedBy]=@CreatedBy,    
+  [UpdatedDate] =getdate(),   
+  [IPaddress] =@IPaddress  
+  where Id=@Id    
+  set @IId=@Id   
+  set @Message=isnull(@Title,'') +' updated successfully.'  
+  set @result =1  
+   end  
+   if @Action=2  
+   begin   
+    if not exists(select Id from AspNetUsers where Id=@AspNetUserId )      
+ begin  
+  delete from School where Id=@Id  
+  set @IImage=@_image   
+  set @IId=@Id   
+  set @Message=isnull(@Title,'') +' deleted successfully.'  
+  set @result =1  
+ end   
+ else  
+ begin  
+  set @IImage=''  
+  set @IId=@Id   
+  set @Message='you are not allowed to be delete school :'+@Title+', it is used by another process.'  
+  set @result =-1  
+ end   
+   end  
+   commit transaction        
+      
+ END TRY              
+ BEGIN CATCH             
+ set @result=-1             
+ set @Message=ERROR_MESSAGE()  
+ set @IId =''    
+ set @IImage =''  
+  --SELECT ERROR_NUMBER() AS ErrorNumber            
+  -- ,ERROR_SEVERITY() AS ErrorSeverity            
+  -- ,ERROR_STATE() AS ErrorState            
+  -- ,ERROR_PROCEDURE() AS ErrorProcedure            
+  -- ,ERROR_LINE() AS ErrorLine            
+  -- ,ERROR_MESSAGE() AS ErrorMessage               
+  rollback transaction              
+ END CATCH             
+   return --return from procedure successfully               
+END   
+  
+GO
+/****** Object:  StoredProcedure [dbo].[InserUserExcelMetaData]    Script Date: 8/18/2022 1:44:02 PM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+ 
+CREATE  PROCEDURE  [dbo].[InserUserExcelMetaData]              
+ (     
+	@AspNetUserId nvarchar(128),
+	@FileName [nvarchar](500) ,
+	@SheetName [nvarchar](500) ,
+	@UploadedFileName [nvarchar](500) ,
+	@Rows [int] ,
+	@Cols [int] ,
+	@FileMetaData [nvarchar](1000) ,
+	@Description [nvarchar](1000) ,
+	@Students udtStudent READONLY,
+	@CreatedBy nvarchar(128),  
+	@IPAddress varchar(50), 
+	@UserExcelMetaDataId  nvarchar(128) output,  
+	@result   int  output ,   
+	@Message varchar(500) output  
+ )              
+As              
+BEGIN          
+	begin transaction      
+	declare @countrows int     
+	BEGIN TRY  
+
+	    
+		set @FileName  =isnull(@FileName,'')
+		set @SheetName  =isnull(@SheetName,'')
+		set @UploadedFileName =isnull(@UploadedFileName,'')
+		set @Rows  =isnull(@Rows,0)
+		set @Cols  =isnull(@Cols,0)
+		set @FileMetaData  =isnull(@FileMetaData,'')
+		set @Description =isnull(@Description,'')
+	    set @UserExcelMetaDataId=newid()
+
+		if @Description=''
+		begin
+		 select @Description=ltrim(rtrim(Firstname +' '+LastName)) +'-'+cast(getdate() as varchar(12))  from AspNetusers where Id=@CreatedBy
+		end
+		 
+		INSERT INTO [dbo].[UserExcelMetaData]
+		([Id],[AspNetUserId],[FileName],[SheetName],[UploadedFileName],[Rows],[Cols],[FileMetaData],
+		[Description],[CreateDate],[UpdatedDate],[CreatedBy],[UpdatedBy],[IPAddress],[Status]) 
+		values (@UserExcelMetaDataId,@AspNetUserId,@FileName,@SheetName,@UploadedFileName,@Rows,@Cols,@FileMetaData,
+		@Description,getdate(),getdate(),@CreatedBy,@CreatedBy,@IPAddress,1) 
+		
+		 
+		 
+		INSERT INTO [dbo].[UserExcelData]
+		([Id],[UserExcelMetaDataId],[Name],[Class],[RollNo],[Session],[CreateDate],
+		[UpdatedDate],[CreatedBy],[UpdatedBy],[IPAddress],[Status])
+		select NEWID(),@UserExcelMetaDataId,s.[Name],s.[Class],s.[RollNo],s.[Session],getdate(),
+		getdate(),@CreatedBy,@CreatedBy,@IPAddress,-1 from @Students s 
+
+		if @@ROWCOUNT=0
+		begin
+			delete from [dbo].[UserExcelMetaData] where Id=@UserExcelMetaDataId
+			set @UserExcelMetaDataId=''
+			set @Message =  'you are inserting duplicate excel . Please upload correct excel'    
+			set @result =2        
+		end
+		else
+		begin
+		select @countrows=count(1) from [dbo].[UserExcelData] where UserExcelMetaDataId=@UserExcelMetaDataId
+		set @Message =  'you are inserted  rows-'+cast(@countrows as varchar)+' successfully.'    
+		set @result =1        
+		end 
+		commit transaction                
+	END TRY                
+	BEGIN CATCH               
+		set @result=-1 
+		set @UserExcelMetaDataId=''
+		set @Message=ERROR_MESSAGE()
+		--SELECT ERROR_NUMBER() AS ErrorNumber              
+		-- ,ERROR_SEVERITY() AS ErrorSeverity              
+		-- ,ERROR_STATE() AS ErrorState              
+		-- ,ERROR_PROCEDURE() AS ErrorProcedure              
+		-- ,ERROR_LINE() AS ErrorLine              
+		-- ,ERROR_MESSAGE() AS ErrorMessage                 
+		rollback transaction                
+	END CATCH               
+	return --return from procedure successfully                 
+END 
+ 
+GO
+/****** Object:  StoredProcedure [dbo].[ReadBook]    Script Date: 8/18/2022 1:44:02 PM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+ 
+CREATE procedure [dbo].[ReadBook]    
+(    
+	 @AspNetUserId nvarchar(128),    
+	 @BookId nvarchar(128)  
+)    
+AS    
+BEGIN    
+SET FMTONLY OFF  ;  
+	 
+	 WITH  cteMyLibrary AS    
+	(    
+		 select MasterBookId  From [dbo].[MyLibrary] where MasterBookId=@BookId and  AspNetUserId=@AspNetUserId
+	) ,
+	cteBook as(
+		select [Id],isnull([MasterCategoryId],0)[MasterCategoryId],
+		isnull(EBookPrice,0)EBookPrice,
+		isnull([Title],'')[Title] ,isnull([Author],'')[Author],
+		isnull([ISBN],'')[ISBN],isnull([Edition],'')[Edition] ,isnull([Image],'')[Image] , isnull([EncriptionKey],'')[EncriptionKey]
+		from MasterBooks where Id in (select MasterBookId from cteMyLibrary )
+	) 
+	  select [Id],  [MasterCategoryId], EBookPrice, [Title] ,[Author],[ISBN],[Edition] ,
+	  [Image] ,[EncriptionKey] from cteBook   order by [Title] asc
+END    
+GO
+/****** Object:  StoredProcedure [dbo].[ReadBooks]    Script Date: 8/18/2022 1:44:02 PM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+ 
+Create procedure [dbo].[ReadBooks]    
+(    
+	 @AspNetUserId nvarchar(128) 
+)    
+AS    
+BEGIN    
+SET FMTONLY OFF  ;  
+	 
+	 WITH  cteMyLibrary AS    
+	(    
+		 select MasterBookId  From [dbo].[MyLibrary] where   AspNetUserId=@AspNetUserId
+	) ,
+	cteBook as(
+		select [Id],isnull([MasterCategoryId],0)[MasterCategoryId],
+		isnull(EBookPrice,0)EBookPrice,
+		isnull([Title],'')[Title] ,isnull([Author],'')[Author],
+		isnull([ISBN],'')[ISBN],isnull([Edition],'')[Edition] ,isnull([Image],'')[Image] , isnull([EncriptionKey],'')[EncriptionKey]
+		from MasterBooks where Id in (select MasterBookId from cteMyLibrary )
+	) 
+	  select [Id],  [MasterCategoryId], EBookPrice, [Title] ,[Author],[ISBN],[Edition] ,
+	  [Image] ,[EncriptionKey] from cteBook   order by [Title] asc
+END    
+GO
+USE [master]
+GO
+ALTER DATABASE [DC] SET  READ_WRITE 
+GO

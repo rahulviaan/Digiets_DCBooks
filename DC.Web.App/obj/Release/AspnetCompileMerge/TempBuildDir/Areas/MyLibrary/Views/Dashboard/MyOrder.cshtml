@@ -1,0 +1,205 @@
+﻿
+@model List<Database.USP_MyOrders_Result>
+@{
+    ViewBag.Title = "Cart Detail";
+
+    int count = 1;
+
+    if (User.IsInRole("Admin") || User.IsInRole("SuperAdmin"))
+    {
+        Layout = "~/Areas/CP/Views/Shared/_LayoutM.cshtml";
+    }
+    if (User.IsInRole("User"))
+    {
+        Layout = "~/Areas/MyLibrary/Views/Shared/_LayoutM.cshtml";
+    }
+    if (User.IsInRole("School"))
+    {
+        Layout = "~/Areas/MySchool/Views/Shared/_LayoutM.cshtml";
+    }
+    if (User.IsInRole("Student"))
+    {
+        Layout = "~/Areas/Student/Views/Shared/_LayoutM.cshtml";
+    }
+}
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Orders</title>
+
+</head>
+<style>
+    .container-section {
+        padding-top: 122px;
+        padding-left: 150px;
+        padding-right: 150px;
+    }
+</style>
+<body>
+    @using (Html.BeginForm("Index", "Home", FormMethod.Post))
+    {
+        @*<span>Order Id :</span> @Html.TextBox("Order Id ")
+        <input type="submit" value="Search" />*@
+        <br />
+        <br />
+        <table class="display nowrap" style="width:100%" id="myTable">
+            <thead>
+                <tr>
+                    <th>SNO #</th>
+                    <th>OrderId</th>
+                    <th>Tracking Id</th>
+                    <th>Order Status</th>
+                    <th>Transaction Date</th>
+                    <th>Amount Paid</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>@count</td>
+                        <td><a data-toggle="modal" data-target="#OrderDetailsModel" data-orderid="@item.OrderId" href="javascript:void(0);" onclick="ViewOrderDetails(this)">@item.OrderId</a></td>
+                        <td>@item.TrackingId</td>
+                        <td>@item.OrderStatus</td>
+                        <td>@item.TransactionDate</td>
+                        <td><i class="fa fa-inr"></i> @item.TotalAmount</td>
+                    </tr>
+                    count = count + 1;
+                }
+            </tbody>
+        </table>
+    }
+
+    <!-- Button trigger modal -->
+
+
+    <!-- Modal -->
+    <div  class="modal fade" id="OrderDetailsModel" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document" style="width:1250px">
+            <div class="modal-content">
+                <div class="modal-header">
+                  
+
+                    <h4 class="display-4" id="#orderID">Order Details</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="text-center">
+                        <div class="col-md-6">
+                            <h6 class="modal-title" id="exampleModalLabel"></h6>
+                        </div>
+                        <div class="col-md-6">
+                            Amount Paid  :   <i class="fa fa-inr"></i><span id="amountPaid"></span>
+                        </div>
+                       
+                        
+
+                        <table class="table table-bordered">
+
+                            <tr class="table-head">
+
+                                <th> </th>
+                                <th>Book Name</th>
+
+                                <th>Board</th>
+
+                                <th>Class</th>
+                                <th>Subject</th>
+                                <th>Series</th>
+                                <th>ISBN </th>
+                                <th>Price </th>
+
+                            </tr>
+
+                            <tbody id="output"></tbody>
+
+                        </table>
+
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
+<script src="https://code.jquery.com/jquery-3.7.0.js"></script>
+<script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/searchbuilder/1.6.0/js/dataTables.searchBuilder.min.js"></script>
+<script src="https://cdn.datatables.net/datetime/1.5.1/js/dataTables.dateTime.min.js"></script>
+
+
+<link href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css" rel="stylesheet" />
+<link href="https://cdn.datatables.net/searchbuilder/1.6.0/css/searchBuilder.dataTables.min.css" rel="stylesheet" />
+<link href="https://cdn.datatables.net/datetime/1.5.1/css/dataTables.dateTime.min.css" rel="stylesheet" />
+
+
+
+
+
+
+<script>
+    $(document).ready(function () {
+        $.noConflict();
+        $('#myTable').DataTable({
+        });
+    });
+
+    function ViewOrderDetails(obj) {
+
+
+        var orderid = $(obj).attr("data-orderid");
+        var html = $(obj).html();
+        //$(obj).html("<span class='fa fa-spin fa-spinner'></span>");
+        $.ajax({
+            type: 'POST',
+            url: '/MyLibrary/Dashboard/ViewOrderDetails',
+            data: { OrderId: orderid },
+            dataType: "json",
+            success: function (data) {
+                console.log(data)
+                $("#output").empty();
+                $("#exampleModalLabel").text("OrderID : #"+data[0].OrderId);
+                $("#amountPaid").text(data[0].TotalAmount);
+                
+                var tr;  
+                for (var i = 0; i < data.length; i++) {
+                    tr = $('<tr/>');
+                    tr.append("<td><img style='width:100px' src='/Attatchments/Book/" + data[i].Image + "' class='img-responsive' alt=''></td>");
+                    tr.append("<td>" + data[i].BookName + "</td>");
+                    tr.append("<td>" + data[i].Board + "</td>");
+                    tr.append("<td>" + data[i].Class + "</td>");
+                    tr.append("<td>" + data[i].Subject + "</td>");
+                    tr.append("<td>" + data[i].Series + "</td>");
+                    tr.append("<td>" + data[i].ISBN + "</td>");
+                    tr.append("<td>" + data[i].EbookPrice + "</td>");
+                    $("#output").append(tr);
+                }
+           
+
+                //$("#output").html(output);
+
+                document.body.appendChild(z);
+                if (data.StatusCode == 200) {
+
+                }
+                else {
+             
+                    RemoveLoader();
+                }
+            },
+            complete: function (data) {
+                RemoveLoader();
+            },
+            error: function (data) {
+                RemoveLoader();
+            }
+
+        });
+    }
+</script>

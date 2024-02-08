@@ -1,0 +1,378 @@
+﻿@{
+    ViewBag.Title = "Manage Subject";
+}
+
+
+<div class="container">
+
+<div class="row">
+    <div class="col-lg-12">
+<ol class="breadcrumb" id="olBredcrumb">
+    <li class="breadcrumb-item">
+        <a href="@Url.Action("Index","Dashboard",new {area="Admin" })">Home</a>
+    </li>
+    <li class="breadcrumb-item active "> Manage Subject </li>
+</ol>
+    </div>
+    
+</div>
+
+
+<div class="row">
+     <div id="pageAdd" style="display:none;"></div>
+</div>
+
+<div class="row">
+      <div id="pageData" class="text-center">
+
+            <div class="col-lg-8 col-xs-8">
+                <div class="form-group has-feedback">
+                    <input onkeyup="Search()" type="text" class="form-control" id="txtSearch" name="txtSearch" placeholder="Search By Name">
+                    <span class="fa fa-search form-control-feedback seachIcn"></span>
+                </div>
+
+            </div>
+
+            <div class="col-lg-4 col-xs-4 text-right">
+                <button type="button" title="Click refresh data." class="btn btn-sm  btn-primary" onclick="return FillData();"><i class="fa fa-refresh"></i></button>
+                <button type="button" id="btnAdd" onclick="return Add('Create  Subject','0');" title="Click for add ." class="btn btn-sm btn-primary"><i class="fa fa-plus"></i></button>
+            </div>
+            <div class="col-lg-12">
+                <table id="tblData" class="table table-bordered">
+                    <tr>
+                        <td class="text-center">
+                            Working on it   <img src="~/Images/inlineloader.gif" />
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+</div>
+
+    
+
+</div>
+
+@section Scripts {
+    <script src="~/Scripts/jquery.toaster.js"></script>
+    <script src="~/Scripts/bootbox.min.js"></script>
+    <script src="~/Scripts/Common.js"></script>
+    <script>
+        function CancelAdd() {
+
+            $("#pageData").css({ "display": "" })
+            $("#pageAdd").css({ "display": "none" })
+        }
+        function Search() {
+            var input, filter, table, tr, td, i;
+            input = document.getElementById("txtSearch");
+            filter = input.value.toUpperCase();
+            table = document.getElementById("tblData");
+            tr = table.getElementsByTagName("tr");
+            for (i = 0; i < tr.length; i++) {
+                td = tr[i].getElementsByTagName("td")[0];
+                if (td) {
+                    if (td.innerHTML.toUpperCase().indexOf(filter) > -1) {
+                        tr[i].style.display = "";
+                    } else {
+                        tr[i].style.display = "none";
+                    }
+                }
+            }
+        }
+        function Add(title,id) {
+
+            var btnhtml = $("#btnAdd").html();
+            $("#btnAdd").html("Wait.. <i class='fa fa-spinner fa-spin'></i>");
+            $("#btnAdd").attr("disabled", "disabled");
+
+            AddLoader();
+            $.ajax({
+                type: "GET",
+                url: '@Url.Action("Add", "Dashboard", new {area="Subject" })',
+                data: { Id: id  , Title: title},
+                success: function (data) {
+                    $("#btnAdd").html(btnhtml);
+                    $("#btnAdd").removeAttr("disabled");
+                    $("#pageAdd").css({ "display": "" });
+                    $("#pageData").css({ "display": "none" });
+                    $("#pageAdd").html(data);
+
+                    title = title == "" ? "Create Subject" :  title;
+                    $("#h3Title").html(title);
+                },
+                complete: function (data) {
+                    $("#btnAdd").html(btnhtml);
+                    $("#btnAdd").removeAttr("disabled");
+                    RemoveLoader();
+                },
+                error: function (data) {
+                    $("#btnAdd").html(btnhtml);
+                    $("#btnAdd").removeAttr("disabled");
+                    RemoveLoader();
+                }
+            });
+    }
+        function View(popupTitle, id) {
+            AddLoader();
+            $.ajax({
+                type: "GET",
+                url: '@Url.Action("View", "Dashboard", new {area="Subject" })',
+                data: { Id:id },
+                success: function (data) {
+
+                    bootbox.dialog({
+                        size: "large",
+                        title: "<i class='fa fa-list'>  </i> |  Details " + popupTitle+"",
+                        message: data,
+                        closeButton: true,
+                        buttons: {
+                            success: {
+                                label: "<i class='fa fa-times'></i> Close",
+                                className: "jsLoading col-lg-2  btn btn-dark",
+                                callback: function () {
+                                    bootbox.hideAll();
+                                }
+                            }
+                        }
+                    });
+                    RemoveLoader();
+                },
+                complete: function (data) {
+                    RemoveLoader();
+                },
+                error: function (data) {
+                    RemoveLoader();
+                }
+            });
+        }
+        function FillData() {
+
+            CancelAdd();
+            AddLoader();
+            $("#tblData").html('<tr><td class="text-center">Working on it <img src="/Images/inlineloader.gif" /> </td> </tr>');
+
+            $.ajax({
+                type: 'POST',
+                url: '@Url.Action("Gets", "Dashboard", new {area="Subject"})',
+                dataType: "json",
+                success: function (data) {
+                    var rowdata = '';
+                    var cssclas = "";
+                    var cssapprove = "";
+                    if (data.StatusCode == 200) {
+                        var currentstatus = "";
+                        var tdclass = "td-inactive"
+                        var thead = "<thead><tr>  <th class='text-left' >Subject Name </th>"
+                            + " <th class='text-center' width='20%'  title='Action'><i class='fa fa-cogs'></i></th> </tr>   <tr></thead>  ";
+
+                        $.each(data.results, function () {
+                              if (this.Status == '@DC.Status.Active.GetHashCode()') {
+                                currentstatus = '&nbsp;<button data-id="' + this.Id + '"  data-title="' + this.Title + '" title="Currennt status is Active click to In-Active." type="button" class="jsLoading jsActiveInactive btn btn btn-primary btn-xs"><i class="fa fa-check-square text-danger"></i></button>'
+                                cssclas = "text-primary";
+                                tdclass = ""
+                            }
+                            else {
+                                currentstatus = '&nbsp;<button data-id="' + this.Id + '"  data-title="' + this.Title + '" title="Currennt status is  In-Active click to Active." type="button" class="jsLoading jsActiveInactive btn btn-primary btn-xs"><i class="fa fa-close"></i></button>';
+                                cssclas = "text-muted";
+                                tdclass = "td-inactive"
+                            }
+
+                            rowdata += '<tr id="tr_' + this.Id + '" class="' + tdclass +'">'
+                            + '<td class="text-left "> <a  data-title="' + this.Title + '" data-id="' + this.Id + '" title="Click for view data."  class="jsLoading jsView '+cssclas+'" href="javascript:void(0);">  <strong class="text-info">   '  + this.Title +  ' </strong> </a> </td>'
+                            + ' <td class="text-center">'
+                            +'&nbsp;<button   type="button" data-title="Edit ' + this.Title + '" data-id="' + this.Id + '" title="Click for edit data."  class="jsLoading jsEdit btn btn-primary btn-xs"><i class="fa fa-pencil"></i></button>'
+                            + '' + currentstatus + ''
+                            + '&nbsp;<button   type="button"  data-title="' + this.Title + '"  data-id="' + this.Id + '" title="Click for delete."  class="jsLoading jsDelete btn btn-primary btn-xs"><i class="fa fa-trash text-danger"></i></button>'
+                            +'</td></tr>';
+                        });
+                        if (data.results.length > 0) {
+                            $("#tblData").html(thead + rowdata);
+                            RemoveLoader();
+                            Search();
+                        }
+                        else {
+
+                            $("#tblData").html('<tr><td class="tetx-left h3 text-danger">' + data.Message+' </td></tr>');
+                            $.toaster({ priority: 'danger', title: "Error", message: data.Message });
+                            RemoveLoader();
+                        }
+                    }
+                    else if (data.StatusCode == 201) {
+                        $("#tblData").html('<tr><td class="tetx-left h3 text-info">' + data.Message + ' </td></tr>');
+                        RemoveLoader();
+                    }
+                    else {
+                        $("#tblData").html('<tr><td class="tetx-left h3 text-danger">Some error occur try later.</td></tr>');
+                        RemoveLoader();
+                    }
+                },
+                complete: function (data) {
+                    RemoveLoader();
+                },
+                error: function (data) {
+                    $.toaster({ priority: 'danger', title: "Error", message: "Some error occur try later." });
+                    $("#tblData").html('<tr><td class="tetx-left h3 text-danger">Some error occur try later.</td></tr>');
+                    RemoveLoader();
+                },
+            });
+        }
+        function Delete(popupTitle, id) {
+            $("#toaster").remove();
+           
+            bootbox.confirm({
+                title: 'Delete',
+                message: "Do you want to delete the '<b>"+popupTitle+"</b>' now ? This cannot be undone.",
+                buttons: {
+                    cancel: {
+                        label: '<i class="fa fa-times"></i> Cancel',
+                        className: 'btn-dark',
+                    },
+                    confirm: {
+                        label: '<i class="fa fa-check"></i> Confirm'
+                    }
+                },
+                callback: function (result) {
+                    if (result) {
+                        AddLoader();
+                            $.ajax({
+                            type: 'POST',
+                            url: '@Url.Action("Delete", "Dashboard", new {area="Subject"})',
+                             data: { Id: id},
+                            dataType: "json",
+                            success: function (data) {
+                                if (data.StatusCode == 200) {
+                                    $.toaster({ priority: 'success', title: "Success", message: data.Message });
+                                    $("#tr_" + id + "").remove();
+                                    HidePopup();
+                                    RemoveLoader();
+                                }
+                                else {
+                                    $.toaster({ priority: 'danger', title: "Error", message: data.Message });
+                                    RemoveLoader();
+                                }
+                            },
+                            complete: function (data) {
+                                RemoveLoader();
+                            },
+                            error: function (data) {
+                                RemoveLoader();
+                            }
+                        });
+                    }
+                    else {
+                        HidePopup();
+                    }
+
+                }
+            });
+            
+            RemoveLoader();
+        }
+        function ActiveInactive(Id) {
+            $("#toaster").remove();
+            AddLoader();
+            $.ajax({
+                type: 'POST',
+                url: '@Url.Action("ActiveInactive", "Dashboard", new {area="Subject"})',
+                data: { Id: Id},
+                dataType: "json",
+                success: function (data) {
+                    if (data.StatusCode == 200) {
+                        FillData();
+                        $.toaster({ priority: 'success', title: "Active/Inactive", message: data.Message });
+                        RemoveLoader();
+                    }
+                    else
+                    {
+                        $.toaster({ priority: 'danger', title: '', message: data.Message });
+                        RemoveLoader();
+                    }
+                },
+                complete: function (data) {
+                    RemoveLoader();
+                },
+                error: function (data) {
+                    RemoveLoader();
+                }
+
+            });
+        }
+        $(function () {
+            FillData();
+            $(document).ajaxSend(function (event, xhr, settings) {
+                $(".jsLoading").attr("disabled", "disabled");
+            });
+            $(document).ajaxComplete(function (event, xhr, settings) {
+                $(".jsLoading").removeAttr("disabled");
+            });
+            $(document).on("submit", "#frmAdd", function (e) {
+                $("#toaster").remove();
+                var btnhtml = $("#btnSubmit").html();
+                $("#btnSubmit").html("Wait.. <i class='fa fa-spinner fa-spin'></i>");
+                $("#btnSubmit").attr("disabled", "disabled");
+                var Id = $.trim($("#Id").val());
+                var Title1 = $.trim($("#Title1").val());
+                var DisplayOrder = $.trim($("#DisplayOrder").val());
+                DisplayOrder = DisplayOrder == "" ? 0 : parseInt(DisplayOrder);
+
+
+                var Description = $.trim($("#Description").val());
+                    e.preventDefault();
+                    AddLoader();
+                    $.ajax({
+                        type: "POST",
+                        url: '@Url.Action("Add", "Dashboard", new {area="Subject" })',
+                        data: {Id: Id, Title1: Title1, Title: Title1, DisplayOrder: DisplayOrder, Description: Description
+                        },
+                        success: function (data) {
+                            $("#btnSubmit").html(btnhtml);
+                            $("#btnSubmit").removeAttr("disabled");
+                            if (data.StatusCode == 200) {
+
+                                $.toaster({ priority: 'success', title: " Success! ", message: data.Message });
+                                FillData();
+                                CancelAdd();
+                                RemoveLoader();
+                            }
+                            else {
+                                $.toaster({ priority: 'danger', title: " Error! ", message: data.Message });
+                                RemoveLoader();
+                            }
+                        },
+                        error: function (data) {
+                            $("#btnSubmit").html(btnhtml);
+                            $("#btnSubmit").removeAttr("disabled");
+                            RemoveLoader();
+                        },
+                        complete: function (data) {
+                            $("#btnSubmit").html(btnhtml);
+                            $("#btnSubmit").removeAttr("disabled");
+                            RemoveLoader();
+                        }
+                    });
+            });
+            $(document).on("click", ".jsView", function (e) {
+                var dataid = $(this).attr("data-id");
+                var datatitle = $(this).attr("data-title");
+                View(datatitle, dataid);
+            });
+            $(document).on("click", ".jsEdit", function (e) {
+                var id = $(this).attr("data-id");
+                var title = $(this).attr("data-title");
+                Add("Update Subject",id);
+            });
+            $(document).on("click", ".jsActiveInactive", function () {
+                var id = $(this).attr("data-id");
+                var title = $(this).attr("data-title");
+                ActiveInactive(id);
+
+            });
+            $(document).on("click", ".jsDelete", function (e) {
+                var id = $(this).attr("data-id");
+                var title = $(this).attr("data-title");
+                Delete(title, id);
+            });
+        });
+    </script>
+}

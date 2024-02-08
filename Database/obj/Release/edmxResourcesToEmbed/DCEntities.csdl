@@ -1,0 +1,2088 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="DCModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+  <ComplexType Name="fun_Category_Result">
+    <Property Name="Id" Type="Int64" Nullable="false" />
+    <Property Name="Title" Type="String" MaxLength="300" FixedLength="false" Unicode="true" />
+    <Property Name="ParentId" Type="Int64" />
+    <Property Name="Image" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
+    <Property Name="DisplayOrder" Type="Int32" />
+    <Property Name="BookCount" Type="Int64" />
+    <Property Name="ChildCatCount" Type="Int32" />
+  </ComplexType>
+  <ComplexType Name="fun_CategoryAll_Result">
+    <Property Name="Id" Type="Int64" Nullable="false" />
+    <Property Name="Title" Type="String" MaxLength="300" FixedLength="false" Unicode="true" />
+    <Property Name="ParentId" Type="Int64" />
+    <Property Name="Image" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
+    <Property Name="DisplayOrder" Type="Int32" />
+  </ComplexType>
+  <ComplexType Name="fun_CategoryBook_Result">
+    <Property Name="BookCount" Type="Int32" />
+  </ComplexType>
+  <ComplexType Name="fun_CategoryBookCount_Result">
+    <Property Name="Id" Type="Int64" Nullable="false" />
+    <Property Name="Title" Type="String" MaxLength="300" FixedLength="false" Unicode="true" />
+    <Property Name="ParentId" Type="Int64" />
+    <Property Name="Image" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
+    <Property Name="DisplayOrder" Type="Int32" />
+    <Property Name="BookCount" Type="Int64" />
+  </ComplexType>
+  <ComplexType Name="fun_CategoryChild_Result">
+    <Property Name="Id" Type="Int64" />
+    <Property Name="Title" Type="String" MaxLength="300" FixedLength="false" Unicode="true" />
+    <Property Name="PageTitle" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+    <Property Name="MetaDescription" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
+    <Property Name="OgTitle" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+    <Property Name="OgDescription" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
+    <Property Name="TwitterTitle" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+    <Property Name="TwitterDescription" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
+    <Property Name="Author" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+    <Property Name="KeyWords" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
+    <Property Name="Description" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="ParentId" Type="Int64" />
+    <Property Name="ShortCode" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
+    <Property Name="DisplayOrder" Type="Int16" />
+    <Property Name="Image" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
+    <Property Name="BannerImage" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
+    <Property Name="CreatedBy" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+    <Property Name="UpdatedBy" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+    <Property Name="CreateDate" Type="DateTime" />
+    <Property Name="UpdateDate" Type="DateTime" />
+    <Property Name="Status" Type="Byte" />
+    <Property Name="IPaddress" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+  </ComplexType>
+  <ComplexType Name="fun_CategoryHierarchy_Result">
+    <Property Name="Id" Type="Int64" />
+    <Property Name="Title" Type="String" MaxLength="300" FixedLength="false" Unicode="true" />
+    <Property Name="ParentId" Type="Int64" />
+    <Property Name="DisplayOrder" Type="Int16" Nullable="false" />
+    <Property Name="BannerImage" Type="String" MaxLength="150" FixedLength="false" Unicode="true" Nullable="false" />
+  </ComplexType>
+  <ComplexType Name="fun_CategoryHierarchyL2_Result">
+    <Property Name="Id" Type="Int64" />
+    <Property Name="Title" Type="String" MaxLength="300" FixedLength="false" Unicode="true" />
+    <Property Name="ParentId" Type="Int64" />
+    <Property Name="DisplayOrder" Type="Int16" Nullable="false" />
+    <Property Name="BannerImage" Type="String" MaxLength="150" FixedLength="false" Unicode="true" Nullable="false" />
+  </ComplexType>
+  <ComplexType Name="fun_CategoryParent_Result">
+    <Property Name="Id" Type="Int64" />
+    <Property Name="Title" Type="String" MaxLength="300" FixedLength="false" Unicode="true" />
+    <Property Name="Description" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="ParentId" Type="Int64" />
+    <Property Name="ShortCode" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
+    <Property Name="DisplayOrder" Type="Int16" />
+    <Property Name="Image" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
+    <Property Name="CreatedBy" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+    <Property Name="UpdatedBy" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+    <Property Name="CreateDate" Type="DateTime" />
+    <Property Name="UpdateDate" Type="DateTime" />
+    <Property Name="Status" Type="Byte" />
+    <Property Name="IPaddress" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+  </ComplexType>
+  <ComplexType Name="GetStudent_Result">
+    <Property Name="Id" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="FirstName" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="LastName" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="Gender" Type="Int32" Nullable="false" />
+    <Property Name="DOB" Type="DateTime" Nullable="false" />
+    <Property Name="MOB" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="dtmCreate" Type="DateTime" />
+    <Property Name="Status" Type="Int32" Nullable="false" />
+    <Property Name="Email" Type="String" MaxLength="256" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="UserName" Type="String" MaxLength="256" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="PasswordHash" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="MasterClassId" Type="Int64" Nullable="false" />
+    <Property Name="MasterBoardId" Type="Int64" Nullable="false" />
+    <Property Name="SchoolId" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+    <Property Name="UserCode" Type="String" MaxLength="200" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="RollNo" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="Session" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="Address" Type="String" MaxLength="500" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="Class" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="Board" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="School" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="SchoolCode" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="AdmissionNo" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+    <Property Name="AccountCode" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+    <Property Name="ParentName" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+  </ComplexType>
+  <ComplexType Name="GetStudentLibraryBooks_Result">
+    <Property Name="Id" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="MasterCategoryId" Type="Int64" />
+    <Property Name="Title" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
+    <Property Name="SlugUrl" Type="String" MaxLength="1" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="Image" Type="String" MaxLength="150" FixedLength="false" Unicode="false" />
+    <Property Name="ISBN" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="Author" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
+    <Property Name="Edition" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="EbookPrice" Type="Decimal" Precision="18" Scale="2" />
+    <Property Name="PrintPrice" Type="Decimal" Precision="18" Scale="2" />
+    <Property Name="EBookType" Type="Int32" />
+  </ComplexType>
+  <EntityType Name="C__MigrationHistory">
+    <Key>
+      <PropertyRef Name="MigrationId" />
+      <PropertyRef Name="ContextKey" />
+    </Key>
+    <Property Name="MigrationId" Type="String" MaxLength="150" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="ContextKey" Type="String" MaxLength="300" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="Model" Type="Binary" MaxLength="Max" FixedLength="false" Nullable="false" />
+    <Property Name="ProductVersion" Type="String" MaxLength="32" FixedLength="false" Unicode="true" Nullable="false" />
+  </EntityType>
+  <EntityType Name="AspNetRole">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="Name" Type="String" MaxLength="256" FixedLength="false" Unicode="true" Nullable="false" />
+    <NavigationProperty Name="AspNetUsers" Relationship="Self.AspNetUserRoles" FromRole="AspNetRoles" ToRole="AspNetUsers" />
+  </EntityType>
+  <EntityType Name="AspNetUserClaim">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="UserId" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="ClaimType" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="ClaimValue" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <NavigationProperty Name="AspNetUser" Relationship="Self.FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId" FromRole="AspNetUserClaims" ToRole="AspNetUsers" />
+  </EntityType>
+  <EntityType Name="AspNetUserLogin">
+    <Key>
+      <PropertyRef Name="LoginProvider" />
+      <PropertyRef Name="ProviderKey" />
+      <PropertyRef Name="UserId" />
+    </Key>
+    <Property Name="LoginProvider" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="ProviderKey" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="UserId" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+    <NavigationProperty Name="AspNetUser" Relationship="Self.FK_dbo_AspNetUserLogins_dbo_AspNetUsers_UserId" FromRole="AspNetUserLogins" ToRole="AspNetUsers" />
+  </EntityType>
+  <EntityType Name="AspNetUser">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="FirstName" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="LastName" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="Gender" Type="Int32" Nullable="false" />
+    <Property Name="DOB" Type="DateTime" Precision="3" />
+    <Property Name="MobNo" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="EmailId" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="SecurityQuestion" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="SecurityAnswer" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="eUserName" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="ePassword" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="MobValidate" Type="Boolean" Nullable="false" />
+    <Property Name="EmailValidate" Type="Boolean" Nullable="false" />
+    <Property Name="LoginMode" Type="Int32" Nullable="false" />
+    <Property Name="LoginThirdParty" Type="Boolean" Nullable="false" />
+    <Property Name="LoginSourse" Type="Int32" Nullable="false" />
+    <Property Name="LastLogin" Type="DateTime" Precision="3" />
+    <Property Name="Image" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="dtmCreate" Type="DateTime" Precision="3" />
+    <Property Name="dtmUpdate" Type="DateTime" Precision="3" />
+    <Property Name="dtmDelete" Type="DateTime" Precision="3" />
+    <Property Name="Status" Type="Int32" Nullable="false" />
+    <Property Name="TimeZone" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="AccessLevels" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="DisplayOrder" Type="Int32" Nullable="false" />
+    <Property Name="Email" Type="String" MaxLength="256" FixedLength="false" Unicode="true" />
+    <Property Name="EmailConfirmed" Type="Boolean" Nullable="false" />
+    <Property Name="PasswordHash" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="SecurityStamp" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="PhoneNumber" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="PhoneNumberConfirmed" Type="Boolean" Nullable="false" />
+    <Property Name="TwoFactorEnabled" Type="Boolean" Nullable="false" />
+    <Property Name="LockoutEndDateUtc" Type="DateTime" Precision="3" />
+    <Property Name="LockoutEnabled" Type="Boolean" Nullable="false" />
+    <Property Name="AccessFailedCount" Type="Int32" Nullable="false" />
+    <Property Name="UserName" Type="String" MaxLength="256" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="UserExcelMetaDataId" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+    <Property Name="UniqueId" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+    <Property Name="FromUpload" Type="Int32" />
+    <NavigationProperty Name="AspNetUserClaims" Relationship="Self.FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId" FromRole="AspNetUsers" ToRole="AspNetUserClaims" />
+    <NavigationProperty Name="AspNetUserLogins" Relationship="Self.FK_dbo_AspNetUserLogins_dbo_AspNetUsers_UserId" FromRole="AspNetUsers" ToRole="AspNetUserLogins" />
+    <NavigationProperty Name="MasterBoards" Relationship="Self.FK_MasterBoard_AspNetUsers1" FromRole="AspNetUsers" ToRole="MasterBoard" />
+    <NavigationProperty Name="MasterBooks" Relationship="Self.FK_MasterBooks_AspNetUsers" FromRole="AspNetUsers" ToRole="MasterBooks" />
+    <NavigationProperty Name="MasterBooks1" Relationship="Self.FK_MasterBooks_AspNetUsers1" FromRole="AspNetUsers" ToRole="MasterBooks" />
+    <NavigationProperty Name="MasterCategories" Relationship="Self.FK_MasterCategory_AspNetUsers" FromRole="AspNetUsers" ToRole="MasterCategory" />
+    <NavigationProperty Name="MasterCategories1" Relationship="Self.FK_MasterCategory_AspNetUsers1" FromRole="AspNetUsers" ToRole="MasterCategory" />
+    <NavigationProperty Name="MasterClasses" Relationship="Self.FK_MasterClass_AspNetUsers" FromRole="AspNetUsers" ToRole="MasterClass" />
+    <NavigationProperty Name="MasterClasses1" Relationship="Self.FK_MasterClass_AspNetUsers1" FromRole="AspNetUsers" ToRole="MasterClass" />
+    <NavigationProperty Name="MasterSubjects" Relationship="Self.FK_MasterSubject_AspNetUsers1" FromRole="AspNetUsers" ToRole="MasterSubject" />
+    <NavigationProperty Name="MyLibraries" Relationship="Self.FK_MyLibrary_AspNetUsers" FromRole="AspNetUsers" ToRole="MyLibrary" />
+    <NavigationProperty Name="MyLibraries1" Relationship="Self.FK_MyLibrary_AspNetUsers1" FromRole="AspNetUsers" ToRole="MyLibrary" />
+    <NavigationProperty Name="Schools" Relationship="Self.FK_School_AspNetUsers" FromRole="AspNetUsers" ToRole="School" />
+    <NavigationProperty Name="Schools1" Relationship="Self.FK_School_AspNetUsers1" FromRole="AspNetUsers" ToRole="School" />
+    <NavigationProperty Name="UserDetails" Relationship="Self.FK_UserDetail_AspNetUsers" FromRole="AspNetUsers" ToRole="UserDetail" />
+    <NavigationProperty Name="UserDetails1" Relationship="Self.FK_UserDetail_AspNetUsers1" FromRole="AspNetUsers" ToRole="UserDetail" />
+    <NavigationProperty Name="UserDetails2" Relationship="Self.FK_UserDetail_AspNetUsers2" FromRole="AspNetUsers" ToRole="UserDetail" />
+    <NavigationProperty Name="UserExcelDatas" Relationship="Self.FK_UserExcelData_AspNetUsers" FromRole="AspNetUsers" ToRole="UserExcelData" />
+    <NavigationProperty Name="UserExcelDatas1" Relationship="Self.FK_UserExcelData_AspNetUsers1" FromRole="AspNetUsers" ToRole="UserExcelData" />
+    <NavigationProperty Name="UserExcelMetaDatas" Relationship="Self.FK_UserExcelMetaData_AspNetUsers" FromRole="AspNetUsers" ToRole="UserExcelMetaData" />
+    <NavigationProperty Name="UserExcelMetaDatas1" Relationship="Self.FK_UserExcelMetaData_AspNetUsers1" FromRole="AspNetUsers" ToRole="UserExcelMetaData" />
+    <NavigationProperty Name="UserExcelMetaDatas2" Relationship="Self.FK_UserExcelMetaData_AspNetUsers2" FromRole="AspNetUsers" ToRole="UserExcelMetaData" />
+    <NavigationProperty Name="AspNetRoles" Relationship="Self.AspNetUserRoles" FromRole="AspNetUsers" ToRole="AspNetRoles" />
+    <NavigationProperty Name="UserCarts" Relationship="DCModel.FK_UserCart_AspNetUsers" FromRole="AspNetUser" ToRole="UserCart" />
+    <NavigationProperty Name="UserCarts1" Relationship="DCModel.FK_UserCart_AspNetUsers1" FromRole="AspNetUser" ToRole="UserCart" />
+    <NavigationProperty Name="UserCarts2" Relationship="DCModel.FK_UserCart_AspNetUsers2" FromRole="AspNetUser" ToRole="UserCart" />
+    <NavigationProperty Name="UserCartItems" Relationship="DCModel.FK_UserCartItem_AspNetUsers" FromRole="AspNetUser" ToRole="UserCartItem" />
+    <NavigationProperty Name="UserCartItems1" Relationship="DCModel.FK_UserCartItem_AspNetUsers1" FromRole="AspNetUser" ToRole="UserCartItem" />
+  </EntityType>
+  <EntityType Name="MasterBoard">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="GlobalId" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+    <Property Name="MasterPublisherId" Type="Int64" />
+    <Property Name="Title" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="DisplayOrder" Type="Int32" />
+    <Property Name="Image" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+    <Property Name="Description" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="CreatedDate" Type="DateTime" Precision="3" />
+    <Property Name="UpdatedDate" Type="DateTime" Precision="3" />
+    <Property Name="IPAddress" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="CreatedBy" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+    <Property Name="UpdatedBy" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+    <Property Name="Status" Type="Int32" />
+    <NavigationProperty Name="AspNetUser" Relationship="Self.FK_MasterBoard_AspNetUsers1" FromRole="MasterBoard" ToRole="AspNetUsers" />
+    <NavigationProperty Name="MasterBooks" Relationship="Self.FK_MasterBooks_MasterBoard" FromRole="MasterBoard" ToRole="MasterBooks" />
+    <NavigationProperty Name="Schools" Relationship="Self.FK_School_MasterBoard" FromRole="MasterBoard" ToRole="School" />
+    <NavigationProperty Name="UserDetails" Relationship="Self.FK_UserDetail_MasterBoard" FromRole="MasterBoard" ToRole="UserDetail" />
+  </EntityType>
+  <EntityType Name="MasterBook">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="MasterCategoryId" Type="Int64" />
+    <Property Name="MasterClassId" Type="Int64" />
+    <Property Name="MasterBoardId" Type="Int64" />
+    <Property Name="MasterSubjectid" Type="Int64" />
+    <Property Name="MasterSeriesid" Type="Int64" />
+    <Property Name="Title" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
+    <Property Name="Author" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
+    <Property Name="ISBN" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="Edition" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="Image" Type="String" MaxLength="150" FixedLength="false" Unicode="false" />
+    <Property Name="Description" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="PageTitle" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+    <Property Name="MetaDescription" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
+    <Property Name="OgTitle" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+    <Property Name="OgDescription" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
+    <Property Name="TwitterTitle" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+    <Property Name="TwitterDescription" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
+    <Property Name="KeyWords" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
+    <Property Name="ParentId" Type="Int64" />
+    <Property Name="ShortCode" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
+    <Property Name="DisplayOrder" Type="Int16" />
+    <Property Name="BannerImage" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
+    <Property Name="ServerId" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+    <Property Name="EncriptionKey" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+    <Property Name="isSize" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="EbookPrice" Type="Decimal" Precision="18" Scale="2" />
+    <Property Name="PrintPrice" Type="Decimal" Precision="18" Scale="2" />
+    <Property Name="Discount" Type="Decimal" Precision="10" Scale="2" />
+    <Property Name="Colour" Type="Int32" />
+    <Property Name="EbookSize_MB_" Type="Int64" />
+    <Property Name="Ebook" Type="Int32" />
+    <Property Name="Pbook" Type="Int32" />
+    <Property Name="Audio" Type="Int32" />
+    <Property Name="EBookType" Type="Int32" />
+    <Property Name="CreatedBy" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+    <Property Name="UpdatedBy" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+    <Property Name="CreateDate" Type="DateTime" Precision="3" />
+    <Property Name="UpdateDate" Type="DateTime" Precision="3" />
+    <Property Name="Status" Type="Byte" />
+    <Property Name="IPaddress" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+    <NavigationProperty Name="AspNetUser" Relationship="Self.FK_MasterBooks_AspNetUsers" FromRole="MasterBooks" ToRole="AspNetUsers" />
+    <NavigationProperty Name="AspNetUser1" Relationship="Self.FK_MasterBooks_AspNetUsers1" FromRole="MasterBooks" ToRole="AspNetUsers" />
+    <NavigationProperty Name="MasterBoard" Relationship="Self.FK_MasterBooks_MasterBoard" FromRole="MasterBooks" ToRole="MasterBoard" />
+    <NavigationProperty Name="MasterCategory" Relationship="Self.FK_MasterBooks_MasterCategory" FromRole="MasterBooks" ToRole="MasterCategory" />
+    <NavigationProperty Name="MasterClass" Relationship="Self.FK_MasterBooks_MasterClass" FromRole="MasterBooks" ToRole="MasterClass" />
+    <NavigationProperty Name="MasterSery" Relationship="Self.FK_MasterBooks_MasterSeries" FromRole="MasterBooks" ToRole="MasterSeries" />
+    <NavigationProperty Name="MasterSubject" Relationship="Self.FK_MasterBooks_MasterSubject" FromRole="MasterBooks" ToRole="MasterSubject" />
+    <NavigationProperty Name="MyLibraries" Relationship="Self.FK_MyLibrary_MasterBooks" FromRole="MasterBooks" ToRole="MyLibrary" />
+    <NavigationProperty Name="UserCartItems" Relationship="DCModel.FK_UserCartItem_MasterBooks" FromRole="MasterBook" ToRole="UserCartItem" />
+  </EntityType>
+  <EntityType Name="MasterCategory">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Title" Type="String" MaxLength="300" FixedLength="false" Unicode="true" />
+    <Property Name="PageTitle" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+    <Property Name="MetaDescription" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
+    <Property Name="OgTitle" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+    <Property Name="OgDescription" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
+    <Property Name="TwitterTitle" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+    <Property Name="TwitterDescription" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
+    <Property Name="Author" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+    <Property Name="KeyWords" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
+    <Property Name="Description" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="ParentId" Type="Int64" />
+    <Property Name="ShortCode" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
+    <Property Name="DisplayOrder" Type="Int16" />
+    <Property Name="Image" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
+    <Property Name="BannerImage" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
+    <Property Name="CreatedBy" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+    <Property Name="UpdatedBy" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+    <Property Name="CreateDate" Type="DateTime" Precision="3" />
+    <Property Name="UpdateDate" Type="DateTime" Precision="3" />
+    <Property Name="Status" Type="Byte" />
+    <Property Name="IPaddress" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+    <NavigationProperty Name="AspNetUser" Relationship="Self.FK_MasterCategory_AspNetUsers" FromRole="MasterCategory" ToRole="AspNetUsers" />
+    <NavigationProperty Name="AspNetUser1" Relationship="Self.FK_MasterCategory_AspNetUsers1" FromRole="MasterCategory" ToRole="AspNetUsers" />
+    <NavigationProperty Name="MasterBooks" Relationship="Self.FK_MasterBooks_MasterCategory" FromRole="MasterCategory" ToRole="MasterBooks" />
+    <NavigationProperty Name="MasterCategory1" Relationship="Self.FK_MasterCategory_MasterCategory" FromRole="MasterCategory" ToRole="MasterCategory1" />
+    <NavigationProperty Name="MasterCategory2" Relationship="Self.FK_MasterCategory_MasterCategory" FromRole="MasterCategory1" ToRole="MasterCategory" />
+  </EntityType>
+  <EntityType Name="MasterClass">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Title" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="DisplayOrder" Type="Int32" />
+    <Property Name="Description" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="CreateDate" Type="DateTime" Nullable="false" Precision="3" />
+    <Property Name="UpdatedDate" Type="DateTime" Nullable="false" Precision="3" />
+    <Property Name="CreatedBy" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+    <Property Name="UpdatedBy" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+    <Property Name="IPAddress" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="Status" Type="Int32" Nullable="false" />
+    <NavigationProperty Name="AspNetUser" Relationship="Self.FK_MasterClass_AspNetUsers" FromRole="MasterClass" ToRole="AspNetUsers" />
+    <NavigationProperty Name="AspNetUser1" Relationship="Self.FK_MasterClass_AspNetUsers1" FromRole="MasterClass" ToRole="AspNetUsers" />
+    <NavigationProperty Name="MasterBooks" Relationship="Self.FK_MasterBooks_MasterClass" FromRole="MasterClass" ToRole="MasterBooks" />
+    <NavigationProperty Name="UserDetails" Relationship="Self.FK_UserDetail_MasterClass" FromRole="MasterClass" ToRole="UserDetail" />
+  </EntityType>
+  <EntityType Name="MasterSery">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="GlobalId" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+    <Property Name="MasterSubjectId" Type="Int64" />
+    <Property Name="Title" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="DisplayOrder" Type="Int32" />
+    <Property Name="Image" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+    <Property Name="Description" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="CreatedDate" Type="DateTime" Precision="3" />
+    <Property Name="UpdatedDate" Type="DateTime" Precision="3" />
+    <Property Name="IPAddress" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="CreatedBy" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+    <Property Name="UpdatedBy" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+    <Property Name="Status" Type="Int32" />
+    <NavigationProperty Name="MasterBooks" Relationship="Self.FK_MasterBooks_MasterSeries" FromRole="MasterSeries" ToRole="MasterBooks" />
+    <NavigationProperty Name="MasterSubject" Relationship="Self.FK_MasterSeries_MasterSubject" FromRole="MasterSeries" ToRole="MasterSubject" />
+  </EntityType>
+  <EntityType Name="MasterSubject">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="MasterPublisherId" Type="Int64" />
+    <Property Name="GlobalId" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+    <Property Name="Title" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="DisplayOrder" Type="Int32" />
+    <Property Name="Image" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+    <Property Name="Description" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="CreatedDate" Type="DateTime" Precision="3" />
+    <Property Name="UpdatedDate" Type="DateTime" Precision="3" />
+    <Property Name="IPAddress" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="CreatedBy" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+    <Property Name="UpdatedBy" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+    <Property Name="Status" Type="Int32" />
+    <NavigationProperty Name="AspNetUser" Relationship="Self.FK_MasterSubject_AspNetUsers1" FromRole="MasterSubject" ToRole="AspNetUsers" />
+    <NavigationProperty Name="MasterBooks" Relationship="Self.FK_MasterBooks_MasterSubject" FromRole="MasterSubject" ToRole="MasterBooks" />
+    <NavigationProperty Name="MasterSeries" Relationship="Self.FK_MasterSeries_MasterSubject" FromRole="MasterSubject" ToRole="MasterSeries" />
+  </EntityType>
+  <EntityType Name="MyLibrary">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="MasterBookId" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+    <Property Name="AspNetUserId" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+    <Property Name="CreatedBy" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+    <Property Name="UpdatedBy" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+    <Property Name="Validity" Type="Int32" />
+    <Property Name="LastDate" Type="DateTime" Precision="3" />
+    <Property Name="CreateDate" Type="DateTime" Precision="3" />
+    <Property Name="UpdateDate" Type="DateTime" Precision="3" />
+    <Property Name="Status" Type="Byte" />
+    <Property Name="IPaddress" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+    <NavigationProperty Name="AspNetUser" Relationship="Self.FK_MyLibrary_AspNetUsers" FromRole="MyLibrary" ToRole="AspNetUsers" />
+    <NavigationProperty Name="AspNetUser1" Relationship="Self.FK_MyLibrary_AspNetUsers1" FromRole="MyLibrary" ToRole="AspNetUsers" />
+    <NavigationProperty Name="MasterBook" Relationship="Self.FK_MyLibrary_MasterBooks" FromRole="MyLibrary" ToRole="MasterBooks" />
+    <Property Name="OrderId" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+  </EntityType>
+  <EntityType Name="School">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="AspNetUserId" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+    <Property Name="MasterBoardId" Type="Int64" />
+    <Property Name="Title" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
+    <Property Name="SchoolCode" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="Strength" Type="Int64" />
+    <Property Name="ITIncharge" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+    <Property Name="EmailId" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+    <Property Name="Logo" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+    <Property Name="ContactNo" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="AlterNateContactNo" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="Principle" Type="String" MaxLength="500" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="PrincipleContactNo" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="AddressLine1" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+    <Property Name="AddressLine2" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+    <Property Name="AddressLine3" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+    <Property Name="State" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+    <Property Name="City" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+    <Property Name="Pincode" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+    <Property Name="Description" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+    <Property Name="CreateDate" Type="DateTime" Precision="3" />
+    <Property Name="UpdatedDate" Type="DateTime" Precision="3" />
+    <Property Name="CreatedBy" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+    <Property Name="UpdatedBy" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+    <Property Name="IPAddress" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="Status" Type="Int32" />
+    <NavigationProperty Name="AspNetUser" Relationship="Self.FK_School_AspNetUsers" FromRole="School" ToRole="AspNetUsers" />
+    <NavigationProperty Name="AspNetUser1" Relationship="Self.FK_School_AspNetUsers1" FromRole="School" ToRole="AspNetUsers" />
+    <NavigationProperty Name="MasterBoard" Relationship="Self.FK_School_MasterBoard" FromRole="School" ToRole="MasterBoard" />
+    <NavigationProperty Name="UserDetails" Relationship="Self.FK_UserDetail_School" FromRole="School" ToRole="UserDetail" />
+  </EntityType>
+  <EntityType Name="UserBook">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="AspNetUserId" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+    <Property Name="MasterBookId" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+    <Property Name="CreatedBy" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+    <Property Name="UpdatedBy" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+    <Property Name="CreateDate" Type="DateTime" Precision="3" />
+    <Property Name="UpdateDate" Type="DateTime" Precision="3" />
+    <Property Name="Status" Type="Byte" />
+    <Property Name="IPaddress" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+  </EntityType>
+  <EntityType Name="UserDetail">
+    <Key>
+      <PropertyRef Name="UseDetailId" />
+    </Key>
+    <Property Name="UseDetailId" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="AspNetUserId" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+    <Property Name="MasterClassId" Type="Int64" />
+    <Property Name="MasterBoardId" Type="Int64" />
+    <Property Name="AdmissionNo" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+    <Property Name="AccountCode" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+    <Property Name="ParentName" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+    <Property Name="DateOfBirth" Type="DateTime" Precision="3" />
+    <Property Name="SchoolId" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+    <Property Name="UserCode" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+    <Property Name="Name" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+    <Property Name="RollNo" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="Session" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="ContactNo" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="Address" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+    <Property Name="ExpiyDate" Type="DateTime" Precision="3" />
+    <Property Name="CreatedDate" Type="DateTime" Precision="3" />
+    <Property Name="CreatedBy" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+    <Property Name="UpdatedBy" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+    <Property Name="IpAddress" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <NavigationProperty Name="AspNetUser" Relationship="Self.FK_UserDetail_AspNetUsers" FromRole="UserDetail" ToRole="AspNetUsers" />
+    <NavigationProperty Name="AspNetUser1" Relationship="Self.FK_UserDetail_AspNetUsers1" FromRole="UserDetail" ToRole="AspNetUsers" />
+    <NavigationProperty Name="AspNetUser2" Relationship="Self.FK_UserDetail_AspNetUsers2" FromRole="UserDetail" ToRole="AspNetUsers" />
+    <NavigationProperty Name="MasterBoard" Relationship="Self.FK_UserDetail_MasterBoard" FromRole="UserDetail" ToRole="MasterBoard" />
+    <NavigationProperty Name="MasterClass" Relationship="Self.FK_UserDetail_MasterClass" FromRole="UserDetail" ToRole="MasterClass" />
+    <NavigationProperty Name="School" Relationship="Self.FK_UserDetail_School" FromRole="UserDetail" ToRole="School" />
+  </EntityType>
+  <EntityType Name="UserExcelData">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="UserExcelMetaDataId" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+    <Property Name="MasterClassId" Type="Int64" />
+    <Property Name="MasterBoardId" Type="Int64" />
+    <Property Name="AspNetUserId" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+    <Property Name="UpdateUserId" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+    <Property Name="AdmissionNo" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+    <Property Name="AccountCode" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+    <Property Name="AccountName" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+    <Property Name="ParentName" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+    <Property Name="DateOfBirth" Type="DateTime" Precision="3" />
+    <Property Name="Name" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+    <Property Name="Class" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+    <Property Name="RollNo" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="Session" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="Board" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+    <Property Name="Password" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="NameAbbr" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+    <Property Name="UserCode" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+    <Property Name="CreateDate" Type="DateTime" Precision="3" />
+    <Property Name="UpdatedDate" Type="DateTime" Precision="3" />
+    <Property Name="CreatedBy" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+    <Property Name="UpdatedBy" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+    <Property Name="IPAddress" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="Status" Type="Int32" />
+    <NavigationProperty Name="AspNetUser" Relationship="Self.FK_UserExcelData_AspNetUsers" FromRole="UserExcelData" ToRole="AspNetUsers" />
+    <NavigationProperty Name="AspNetUser1" Relationship="Self.FK_UserExcelData_AspNetUsers1" FromRole="UserExcelData" ToRole="AspNetUsers" />
+    <NavigationProperty Name="UserExcelMetaData" Relationship="Self.FK_UserExcelData_UserExcelMetaData" FromRole="UserExcelData" ToRole="UserExcelMetaData" />
+  </EntityType>
+  <EntityType Name="UserExcelMetaData">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="AspNetUserId" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+    <Property Name="FileName" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+    <Property Name="SheetName" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+    <Property Name="UploadedFileName" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+    <Property Name="Rows" Type="Int32" />
+    <Property Name="Cols" Type="Int32" />
+    <Property Name="LoopCount" Type="Int32" />
+    <Property Name="FileMetaData" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
+    <Property Name="Description" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
+    <Property Name="CreateDate" Type="DateTime" Nullable="false" Precision="3" />
+    <Property Name="UpdatedDate" Type="DateTime" Nullable="false" Precision="3" />
+    <Property Name="CreatedBy" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+    <Property Name="UpdatedBy" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+    <Property Name="IPAddress" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="Status" Type="Int32" Nullable="false" />
+    <NavigationProperty Name="AspNetUser" Relationship="Self.FK_UserExcelMetaData_AspNetUsers" FromRole="UserExcelMetaData" ToRole="AspNetUsers" />
+    <NavigationProperty Name="AspNetUser1" Relationship="Self.FK_UserExcelMetaData_AspNetUsers1" FromRole="UserExcelMetaData" ToRole="AspNetUsers" />
+    <NavigationProperty Name="AspNetUser2" Relationship="Self.FK_UserExcelMetaData_AspNetUsers2" FromRole="UserExcelMetaData" ToRole="AspNetUsers" />
+    <NavigationProperty Name="UserExcelDatas" Relationship="Self.FK_UserExcelData_UserExcelMetaData" FromRole="UserExcelMetaData" ToRole="UserExcelData" />
+  </EntityType>
+  <EntityType Name="History_UserExcelData">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="UserExcelMetaDataId" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+    <Property Name="MasterClassId" Type="Int64" />
+    <Property Name="MasterBoardId" Type="Int64" />
+    <Property Name="AspNetUserId" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+    <Property Name="UpdateUserId" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+    <Property Name="AdmissionNo" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+    <Property Name="AccountCode" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+    <Property Name="AccountName" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+    <Property Name="ParentName" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+    <Property Name="DateOfBirth" Type="DateTime" Precision="3" />
+    <Property Name="Name" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+    <Property Name="Class" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+    <Property Name="RollNo" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="Session" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="Board" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+    <Property Name="Password" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="NameAbbr" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+    <Property Name="UserCode" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+    <Property Name="CreateDate" Type="DateTime" Precision="3" />
+    <Property Name="UpdatedDate" Type="DateTime" Precision="3" />
+    <Property Name="CreatedBy" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+    <Property Name="UpdatedBy" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+    <Property Name="IPAddress" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="Status" Type="Int32" />
+  </EntityType>
+  <Association Name="FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId">
+    <End Role="AspNetUsers" Type="Self.AspNetUser" Multiplicity="1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Role="AspNetUserClaims" Type="Self.AspNetUserClaim" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="AspNetUsers">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="AspNetUserClaims">
+        <PropertyRef Name="UserId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_dbo_AspNetUserLogins_dbo_AspNetUsers_UserId">
+    <End Role="AspNetUsers" Type="Self.AspNetUser" Multiplicity="1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Role="AspNetUserLogins" Type="Self.AspNetUserLogin" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="AspNetUsers">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="AspNetUserLogins">
+        <PropertyRef Name="UserId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_MasterBoard_AspNetUsers1">
+    <End Role="AspNetUsers" Type="Self.AspNetUser" Multiplicity="0..1" />
+    <End Role="MasterBoard" Type="Self.MasterBoard" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="AspNetUsers">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="MasterBoard">
+        <PropertyRef Name="CreatedBy" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_MasterBooks_AspNetUsers">
+    <End Role="AspNetUsers" Type="Self.AspNetUser" Multiplicity="0..1" />
+    <End Role="MasterBooks" Type="Self.MasterBook" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="AspNetUsers">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="MasterBooks">
+        <PropertyRef Name="CreatedBy" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_MasterBooks_AspNetUsers1">
+    <End Role="AspNetUsers" Type="Self.AspNetUser" Multiplicity="0..1" />
+    <End Role="MasterBooks" Type="Self.MasterBook" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="AspNetUsers">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="MasterBooks">
+        <PropertyRef Name="UpdatedBy" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_MasterCategory_AspNetUsers">
+    <End Role="AspNetUsers" Type="Self.AspNetUser" Multiplicity="0..1" />
+    <End Role="MasterCategory" Type="Self.MasterCategory" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="AspNetUsers">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="MasterCategory">
+        <PropertyRef Name="CreatedBy" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_MasterCategory_AspNetUsers1">
+    <End Role="AspNetUsers" Type="Self.AspNetUser" Multiplicity="0..1" />
+    <End Role="MasterCategory" Type="Self.MasterCategory" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="AspNetUsers">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="MasterCategory">
+        <PropertyRef Name="UpdatedBy" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_MasterClass_AspNetUsers">
+    <End Role="AspNetUsers" Type="Self.AspNetUser" Multiplicity="0..1" />
+    <End Role="MasterClass" Type="Self.MasterClass" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="AspNetUsers">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="MasterClass">
+        <PropertyRef Name="CreatedBy" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_MasterClass_AspNetUsers1">
+    <End Role="AspNetUsers" Type="Self.AspNetUser" Multiplicity="0..1" />
+    <End Role="MasterClass" Type="Self.MasterClass" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="AspNetUsers">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="MasterClass">
+        <PropertyRef Name="UpdatedBy" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_MasterSubject_AspNetUsers1">
+    <End Role="AspNetUsers" Type="Self.AspNetUser" Multiplicity="0..1" />
+    <End Role="MasterSubject" Type="Self.MasterSubject" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="AspNetUsers">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="MasterSubject">
+        <PropertyRef Name="CreatedBy" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_MyLibrary_AspNetUsers">
+    <End Role="AspNetUsers" Type="Self.AspNetUser" Multiplicity="0..1" />
+    <End Role="MyLibrary" Type="Self.MyLibrary" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="AspNetUsers">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="MyLibrary">
+        <PropertyRef Name="CreatedBy" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_MyLibrary_AspNetUsers1">
+    <End Role="AspNetUsers" Type="Self.AspNetUser" Multiplicity="0..1" />
+    <End Role="MyLibrary" Type="Self.MyLibrary" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="AspNetUsers">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="MyLibrary">
+        <PropertyRef Name="UpdatedBy" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_School_AspNetUsers">
+    <End Role="AspNetUsers" Type="Self.AspNetUser" Multiplicity="0..1" />
+    <End Role="School" Type="Self.School" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="AspNetUsers">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="School">
+        <PropertyRef Name="CreatedBy" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_School_AspNetUsers1">
+    <End Role="AspNetUsers" Type="Self.AspNetUser" Multiplicity="0..1" />
+    <End Role="School" Type="Self.School" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="AspNetUsers">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="School">
+        <PropertyRef Name="UpdatedBy" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_UserDetail_AspNetUsers">
+    <End Role="AspNetUsers" Type="Self.AspNetUser" Multiplicity="0..1" />
+    <End Role="UserDetail" Type="Self.UserDetail" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="AspNetUsers">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="UserDetail">
+        <PropertyRef Name="AspNetUserId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_UserDetail_AspNetUsers1">
+    <End Role="AspNetUsers" Type="Self.AspNetUser" Multiplicity="0..1" />
+    <End Role="UserDetail" Type="Self.UserDetail" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="AspNetUsers">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="UserDetail">
+        <PropertyRef Name="CreatedBy" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_UserDetail_AspNetUsers2">
+    <End Role="AspNetUsers" Type="Self.AspNetUser" Multiplicity="0..1" />
+    <End Role="UserDetail" Type="Self.UserDetail" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="AspNetUsers">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="UserDetail">
+        <PropertyRef Name="UpdatedBy" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_UserExcelData_AspNetUsers">
+    <End Role="AspNetUsers" Type="Self.AspNetUser" Multiplicity="0..1" />
+    <End Role="UserExcelData" Type="Self.UserExcelData" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="AspNetUsers">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="UserExcelData">
+        <PropertyRef Name="CreatedBy" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_UserExcelData_AspNetUsers1">
+    <End Role="AspNetUsers" Type="Self.AspNetUser" Multiplicity="0..1" />
+    <End Role="UserExcelData" Type="Self.UserExcelData" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="AspNetUsers">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="UserExcelData">
+        <PropertyRef Name="UpdatedBy" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_UserExcelMetaData_AspNetUsers">
+    <End Role="AspNetUsers" Type="Self.AspNetUser" Multiplicity="0..1" />
+    <End Role="UserExcelMetaData" Type="Self.UserExcelMetaData" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="AspNetUsers">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="UserExcelMetaData">
+        <PropertyRef Name="CreatedBy" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_UserExcelMetaData_AspNetUsers1">
+    <End Role="AspNetUsers" Type="Self.AspNetUser" Multiplicity="0..1" />
+    <End Role="UserExcelMetaData" Type="Self.UserExcelMetaData" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="AspNetUsers">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="UserExcelMetaData">
+        <PropertyRef Name="UpdatedBy" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_UserExcelMetaData_AspNetUsers2">
+    <End Role="AspNetUsers" Type="Self.AspNetUser" Multiplicity="0..1" />
+    <End Role="UserExcelMetaData" Type="Self.UserExcelMetaData" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="AspNetUsers">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="UserExcelMetaData">
+        <PropertyRef Name="AspNetUserId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_MasterBooks_MasterBoard">
+    <End Role="MasterBoard" Type="Self.MasterBoard" Multiplicity="0..1" />
+    <End Role="MasterBooks" Type="Self.MasterBook" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="MasterBoard">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="MasterBooks">
+        <PropertyRef Name="MasterBoardId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_School_MasterBoard">
+    <End Role="MasterBoard" Type="Self.MasterBoard" Multiplicity="0..1" />
+    <End Role="School" Type="Self.School" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="MasterBoard">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="School">
+        <PropertyRef Name="MasterBoardId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_UserDetail_MasterBoard">
+    <End Role="MasterBoard" Type="Self.MasterBoard" Multiplicity="0..1" />
+    <End Role="UserDetail" Type="Self.UserDetail" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="MasterBoard">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="UserDetail">
+        <PropertyRef Name="MasterBoardId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_MasterBooks_MasterCategory">
+    <End Role="MasterCategory" Type="Self.MasterCategory" Multiplicity="0..1" />
+    <End Role="MasterBooks" Type="Self.MasterBook" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="MasterCategory">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="MasterBooks">
+        <PropertyRef Name="MasterCategoryId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_MasterBooks_MasterClass">
+    <End Role="MasterClass" Type="Self.MasterClass" Multiplicity="0..1" />
+    <End Role="MasterBooks" Type="Self.MasterBook" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="MasterClass">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="MasterBooks">
+        <PropertyRef Name="MasterClassId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_MasterBooks_MasterSeries">
+    <End Role="MasterSeries" Type="Self.MasterSery" Multiplicity="0..1" />
+    <End Role="MasterBooks" Type="Self.MasterBook" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="MasterSeries">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="MasterBooks">
+        <PropertyRef Name="MasterSeriesid" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_MasterBooks_MasterSubject">
+    <End Role="MasterSubject" Type="Self.MasterSubject" Multiplicity="0..1" />
+    <End Role="MasterBooks" Type="Self.MasterBook" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="MasterSubject">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="MasterBooks">
+        <PropertyRef Name="MasterSubjectid" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_MyLibrary_MasterBooks">
+    <End Role="MasterBooks" Type="Self.MasterBook" Multiplicity="0..1" />
+    <End Role="MyLibrary" Type="Self.MyLibrary" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="MasterBooks">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="MyLibrary">
+        <PropertyRef Name="MasterBookId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_MasterCategory_MasterCategory">
+    <End Role="MasterCategory" Type="Self.MasterCategory" Multiplicity="0..1" />
+    <End Role="MasterCategory1" Type="Self.MasterCategory" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="MasterCategory">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="MasterCategory1">
+        <PropertyRef Name="ParentId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_UserDetail_MasterClass">
+    <End Role="MasterClass" Type="Self.MasterClass" Multiplicity="0..1" />
+    <End Role="UserDetail" Type="Self.UserDetail" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="MasterClass">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="UserDetail">
+        <PropertyRef Name="MasterClassId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_MasterSeries_MasterSubject">
+    <End Role="MasterSubject" Type="Self.MasterSubject" Multiplicity="0..1" />
+    <End Role="MasterSeries" Type="Self.MasterSery" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="MasterSubject">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="MasterSeries">
+        <PropertyRef Name="MasterSubjectId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_UserDetail_School">
+    <End Role="School" Type="Self.School" Multiplicity="0..1" />
+    <End Role="UserDetail" Type="Self.UserDetail" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="School">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="UserDetail">
+        <PropertyRef Name="SchoolId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_UserExcelData_UserExcelMetaData">
+    <End Role="UserExcelMetaData" Type="Self.UserExcelMetaData" Multiplicity="0..1" />
+    <End Role="UserExcelData" Type="Self.UserExcelData" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="UserExcelMetaData">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="UserExcelData">
+        <PropertyRef Name="UserExcelMetaDataId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="AspNetUserRoles">
+    <End Role="AspNetRoles" Type="Self.AspNetRole" Multiplicity="*" />
+    <End Role="AspNetUsers" Type="Self.AspNetUser" Multiplicity="*" />
+  </Association>
+  <EntityContainer Name="DCEntities" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="C__MigrationHistory" EntityType="Self.C__MigrationHistory" />
+    <EntitySet Name="AspNetRoles" EntityType="Self.AspNetRole" />
+    <EntitySet Name="AspNetUserClaims" EntityType="Self.AspNetUserClaim" />
+    <EntitySet Name="AspNetUserLogins" EntityType="Self.AspNetUserLogin" />
+    <EntitySet Name="AspNetUsers" EntityType="Self.AspNetUser" />
+    <EntitySet Name="MasterBoards" EntityType="Self.MasterBoard" />
+    <EntitySet Name="MasterBooks" EntityType="Self.MasterBook" />
+    <EntitySet Name="MasterCategories" EntityType="Self.MasterCategory" />
+    <EntitySet Name="MasterClasses" EntityType="Self.MasterClass" />
+    <EntitySet Name="MasterSeries" EntityType="Self.MasterSery" />
+    <EntitySet Name="MasterSubjects" EntityType="Self.MasterSubject" />
+    <EntitySet Name="MyLibraries" EntityType="Self.MyLibrary" />
+    <EntitySet Name="Schools" EntityType="Self.School" />
+    <EntitySet Name="UserBooks" EntityType="Self.UserBook" />
+    <EntitySet Name="UserDetails" EntityType="Self.UserDetail" />
+    <EntitySet Name="UserExcelDatas" EntityType="Self.UserExcelData" />
+    <EntitySet Name="UserExcelMetaDatas" EntityType="Self.UserExcelMetaData" />
+    <EntitySet Name="History_UserExcelData" EntityType="Self.History_UserExcelData" />
+    <AssociationSet Name="FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId" Association="Self.FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId">
+      <End Role="AspNetUsers" EntitySet="AspNetUsers" />
+      <End Role="AspNetUserClaims" EntitySet="AspNetUserClaims" />
+    </AssociationSet>
+    <AssociationSet Name="FK_dbo_AspNetUserLogins_dbo_AspNetUsers_UserId" Association="Self.FK_dbo_AspNetUserLogins_dbo_AspNetUsers_UserId">
+      <End Role="AspNetUsers" EntitySet="AspNetUsers" />
+      <End Role="AspNetUserLogins" EntitySet="AspNetUserLogins" />
+    </AssociationSet>
+    <AssociationSet Name="FK_MasterBoard_AspNetUsers1" Association="Self.FK_MasterBoard_AspNetUsers1">
+      <End Role="AspNetUsers" EntitySet="AspNetUsers" />
+      <End Role="MasterBoard" EntitySet="MasterBoards" />
+    </AssociationSet>
+    <AssociationSet Name="FK_MasterBooks_AspNetUsers" Association="Self.FK_MasterBooks_AspNetUsers">
+      <End Role="AspNetUsers" EntitySet="AspNetUsers" />
+      <End Role="MasterBooks" EntitySet="MasterBooks" />
+    </AssociationSet>
+    <AssociationSet Name="FK_MasterBooks_AspNetUsers1" Association="Self.FK_MasterBooks_AspNetUsers1">
+      <End Role="AspNetUsers" EntitySet="AspNetUsers" />
+      <End Role="MasterBooks" EntitySet="MasterBooks" />
+    </AssociationSet>
+    <AssociationSet Name="FK_MasterCategory_AspNetUsers" Association="Self.FK_MasterCategory_AspNetUsers">
+      <End Role="AspNetUsers" EntitySet="AspNetUsers" />
+      <End Role="MasterCategory" EntitySet="MasterCategories" />
+    </AssociationSet>
+    <AssociationSet Name="FK_MasterCategory_AspNetUsers1" Association="Self.FK_MasterCategory_AspNetUsers1">
+      <End Role="AspNetUsers" EntitySet="AspNetUsers" />
+      <End Role="MasterCategory" EntitySet="MasterCategories" />
+    </AssociationSet>
+    <AssociationSet Name="FK_MasterClass_AspNetUsers" Association="Self.FK_MasterClass_AspNetUsers">
+      <End Role="AspNetUsers" EntitySet="AspNetUsers" />
+      <End Role="MasterClass" EntitySet="MasterClasses" />
+    </AssociationSet>
+    <AssociationSet Name="FK_MasterClass_AspNetUsers1" Association="Self.FK_MasterClass_AspNetUsers1">
+      <End Role="AspNetUsers" EntitySet="AspNetUsers" />
+      <End Role="MasterClass" EntitySet="MasterClasses" />
+    </AssociationSet>
+    <AssociationSet Name="FK_MasterSubject_AspNetUsers1" Association="Self.FK_MasterSubject_AspNetUsers1">
+      <End Role="AspNetUsers" EntitySet="AspNetUsers" />
+      <End Role="MasterSubject" EntitySet="MasterSubjects" />
+    </AssociationSet>
+    <AssociationSet Name="FK_MyLibrary_AspNetUsers" Association="Self.FK_MyLibrary_AspNetUsers">
+      <End Role="AspNetUsers" EntitySet="AspNetUsers" />
+      <End Role="MyLibrary" EntitySet="MyLibraries" />
+    </AssociationSet>
+    <AssociationSet Name="FK_MyLibrary_AspNetUsers1" Association="Self.FK_MyLibrary_AspNetUsers1">
+      <End Role="AspNetUsers" EntitySet="AspNetUsers" />
+      <End Role="MyLibrary" EntitySet="MyLibraries" />
+    </AssociationSet>
+    <AssociationSet Name="FK_School_AspNetUsers" Association="Self.FK_School_AspNetUsers">
+      <End Role="AspNetUsers" EntitySet="AspNetUsers" />
+      <End Role="School" EntitySet="Schools" />
+    </AssociationSet>
+    <AssociationSet Name="FK_School_AspNetUsers1" Association="Self.FK_School_AspNetUsers1">
+      <End Role="AspNetUsers" EntitySet="AspNetUsers" />
+      <End Role="School" EntitySet="Schools" />
+    </AssociationSet>
+    <AssociationSet Name="FK_UserDetail_AspNetUsers" Association="Self.FK_UserDetail_AspNetUsers">
+      <End Role="AspNetUsers" EntitySet="AspNetUsers" />
+      <End Role="UserDetail" EntitySet="UserDetails" />
+    </AssociationSet>
+    <AssociationSet Name="FK_UserDetail_AspNetUsers1" Association="Self.FK_UserDetail_AspNetUsers1">
+      <End Role="AspNetUsers" EntitySet="AspNetUsers" />
+      <End Role="UserDetail" EntitySet="UserDetails" />
+    </AssociationSet>
+    <AssociationSet Name="FK_UserDetail_AspNetUsers2" Association="Self.FK_UserDetail_AspNetUsers2">
+      <End Role="AspNetUsers" EntitySet="AspNetUsers" />
+      <End Role="UserDetail" EntitySet="UserDetails" />
+    </AssociationSet>
+    <AssociationSet Name="FK_UserExcelData_AspNetUsers" Association="Self.FK_UserExcelData_AspNetUsers">
+      <End Role="AspNetUsers" EntitySet="AspNetUsers" />
+      <End Role="UserExcelData" EntitySet="UserExcelDatas" />
+    </AssociationSet>
+    <AssociationSet Name="FK_UserExcelData_AspNetUsers1" Association="Self.FK_UserExcelData_AspNetUsers1">
+      <End Role="AspNetUsers" EntitySet="AspNetUsers" />
+      <End Role="UserExcelData" EntitySet="UserExcelDatas" />
+    </AssociationSet>
+    <AssociationSet Name="FK_UserExcelMetaData_AspNetUsers" Association="Self.FK_UserExcelMetaData_AspNetUsers">
+      <End Role="AspNetUsers" EntitySet="AspNetUsers" />
+      <End Role="UserExcelMetaData" EntitySet="UserExcelMetaDatas" />
+    </AssociationSet>
+    <AssociationSet Name="FK_UserExcelMetaData_AspNetUsers1" Association="Self.FK_UserExcelMetaData_AspNetUsers1">
+      <End Role="AspNetUsers" EntitySet="AspNetUsers" />
+      <End Role="UserExcelMetaData" EntitySet="UserExcelMetaDatas" />
+    </AssociationSet>
+    <AssociationSet Name="FK_UserExcelMetaData_AspNetUsers2" Association="Self.FK_UserExcelMetaData_AspNetUsers2">
+      <End Role="AspNetUsers" EntitySet="AspNetUsers" />
+      <End Role="UserExcelMetaData" EntitySet="UserExcelMetaDatas" />
+    </AssociationSet>
+    <AssociationSet Name="FK_MasterBooks_MasterBoard" Association="Self.FK_MasterBooks_MasterBoard">
+      <End Role="MasterBoard" EntitySet="MasterBoards" />
+      <End Role="MasterBooks" EntitySet="MasterBooks" />
+    </AssociationSet>
+    <AssociationSet Name="FK_School_MasterBoard" Association="Self.FK_School_MasterBoard">
+      <End Role="MasterBoard" EntitySet="MasterBoards" />
+      <End Role="School" EntitySet="Schools" />
+    </AssociationSet>
+    <AssociationSet Name="FK_UserDetail_MasterBoard" Association="Self.FK_UserDetail_MasterBoard">
+      <End Role="MasterBoard" EntitySet="MasterBoards" />
+      <End Role="UserDetail" EntitySet="UserDetails" />
+    </AssociationSet>
+    <AssociationSet Name="FK_MasterBooks_MasterCategory" Association="Self.FK_MasterBooks_MasterCategory">
+      <End Role="MasterCategory" EntitySet="MasterCategories" />
+      <End Role="MasterBooks" EntitySet="MasterBooks" />
+    </AssociationSet>
+    <AssociationSet Name="FK_MasterBooks_MasterClass" Association="Self.FK_MasterBooks_MasterClass">
+      <End Role="MasterClass" EntitySet="MasterClasses" />
+      <End Role="MasterBooks" EntitySet="MasterBooks" />
+    </AssociationSet>
+    <AssociationSet Name="FK_MasterBooks_MasterSeries" Association="Self.FK_MasterBooks_MasterSeries">
+      <End Role="MasterSeries" EntitySet="MasterSeries" />
+      <End Role="MasterBooks" EntitySet="MasterBooks" />
+    </AssociationSet>
+    <AssociationSet Name="FK_MasterBooks_MasterSubject" Association="Self.FK_MasterBooks_MasterSubject">
+      <End Role="MasterSubject" EntitySet="MasterSubjects" />
+      <End Role="MasterBooks" EntitySet="MasterBooks" />
+    </AssociationSet>
+    <AssociationSet Name="FK_MyLibrary_MasterBooks" Association="Self.FK_MyLibrary_MasterBooks">
+      <End Role="MasterBooks" EntitySet="MasterBooks" />
+      <End Role="MyLibrary" EntitySet="MyLibraries" />
+    </AssociationSet>
+    <AssociationSet Name="FK_MasterCategory_MasterCategory" Association="Self.FK_MasterCategory_MasterCategory">
+      <End Role="MasterCategory" EntitySet="MasterCategories" />
+      <End Role="MasterCategory1" EntitySet="MasterCategories" />
+    </AssociationSet>
+    <AssociationSet Name="FK_UserDetail_MasterClass" Association="Self.FK_UserDetail_MasterClass">
+      <End Role="MasterClass" EntitySet="MasterClasses" />
+      <End Role="UserDetail" EntitySet="UserDetails" />
+    </AssociationSet>
+    <AssociationSet Name="FK_MasterSeries_MasterSubject" Association="Self.FK_MasterSeries_MasterSubject">
+      <End Role="MasterSubject" EntitySet="MasterSubjects" />
+      <End Role="MasterSeries" EntitySet="MasterSeries" />
+    </AssociationSet>
+    <AssociationSet Name="FK_UserDetail_School" Association="Self.FK_UserDetail_School">
+      <End Role="School" EntitySet="Schools" />
+      <End Role="UserDetail" EntitySet="UserDetails" />
+    </AssociationSet>
+    <AssociationSet Name="FK_UserExcelData_UserExcelMetaData" Association="Self.FK_UserExcelData_UserExcelMetaData">
+      <End Role="UserExcelMetaData" EntitySet="UserExcelMetaDatas" />
+      <End Role="UserExcelData" EntitySet="UserExcelDatas" />
+    </AssociationSet>
+    <AssociationSet Name="AspNetUserRoles" Association="Self.AspNetUserRoles">
+      <End Role="AspNetRoles" EntitySet="AspNetRoles" />
+      <End Role="AspNetUsers" EntitySet="AspNetUsers" />
+    </AssociationSet>
+    <FunctionImport Name="fun_Category" IsComposable="true" ReturnType="Collection(DCModel.fun_Category_Result)">
+      <Parameter Name="id" Mode="In" Type="Int16" />
+    </FunctionImport>
+    <FunctionImport Name="fun_CategoryAll" IsComposable="true" ReturnType="Collection(DCModel.fun_CategoryAll_Result)">
+      <Parameter Name="id" Mode="In" Type="Int16" />
+    </FunctionImport>
+    <FunctionImport Name="fun_CategoryBook" IsComposable="true" ReturnType="Collection(DCModel.fun_CategoryBook_Result)">
+      <Parameter Name="id" Mode="In" Type="Int16" />
+    </FunctionImport>
+    <FunctionImport Name="fun_CategoryBookCount" IsComposable="true" ReturnType="Collection(DCModel.fun_CategoryBookCount_Result)">
+      <Parameter Name="id" Mode="In" Type="Int16" />
+    </FunctionImport>
+    <FunctionImport Name="fun_CategoryChild" IsComposable="true" ReturnType="Collection(DCModel.fun_CategoryChild_Result)">
+      <Parameter Name="id" Mode="In" Type="Int16" />
+    </FunctionImport>
+    <FunctionImport Name="fun_CategoryHierarchy" IsComposable="true" ReturnType="Collection(DCModel.fun_CategoryHierarchy_Result)">
+      <Parameter Name="id" Mode="In" Type="Int16" />
+    </FunctionImport>
+    <FunctionImport Name="fun_CategoryHierarchyL2" IsComposable="true" ReturnType="Collection(DCModel.fun_CategoryHierarchyL2_Result)">
+      <Parameter Name="id" Mode="In" Type="Int16" />
+      <Parameter Name="parentid" Mode="In" Type="Int16" />
+    </FunctionImport>
+    <FunctionImport Name="fun_CategoryParent" IsComposable="true" ReturnType="Collection(DCModel.fun_CategoryParent_Result)">
+      <Parameter Name="id" Mode="In" Type="Int16" />
+    </FunctionImport>
+    <FunctionImport Name="GetStudent" IsComposable="true" ReturnType="Collection(DCModel.GetStudent_Result)">
+      <Parameter Name="AspNetUserId" Mode="In" Type="String" />
+    </FunctionImport>
+    <FunctionImport Name="GetStudentLibraryBooks" IsComposable="true" ReturnType="Collection(DCModel.GetStudentLibraryBooks_Result)">
+      <Parameter Name="AspNetUserId" Mode="In" Type="String" />
+    </FunctionImport>
+    <FunctionImport Name="CleanUploadData">
+      <Parameter Name="UserExcelMetaDataId" Mode="In" Type="String" />
+      <Parameter Name="SchoolId" Mode="In" Type="String" />
+      <Parameter Name="result" Mode="InOut" Type="Int32" />
+      <Parameter Name="Message" Mode="InOut" Type="String" />
+    </FunctionImport>
+    <FunctionImport Name="DeleteCategory">
+      <Parameter Name="Id" Mode="In" Type="Int64" />
+      <Parameter Name="result" Mode="InOut" Type="Int32" />
+      <Parameter Name="IImage" Mode="InOut" Type="String" />
+      <Parameter Name="Message" Mode="InOut" Type="String" />
+    </FunctionImport>
+    <FunctionImport Name="GetSchools" ReturnType="Collection(DCModel.GetSchools_Result)">
+      <Parameter Name="RoleId" Mode="In" Type="String" />
+      <Parameter Name="MaxRows" Mode="In" Type="Int32" />
+      <Parameter Name="Page" Mode="In" Type="Int32" />
+      <Parameter Name="CurrentRow" Mode="In" Type="Int32" />
+    </FunctionImport>
+    <FunctionImport Name="GetSchoolStudents" ReturnType="Collection(DCModel.GetSchoolStudents_Result)">
+      <Parameter Name="RoleId" Mode="In" Type="String" />
+      <Parameter Name="SchoolId" Mode="In" Type="String" />
+      <Parameter Name="MaxRows" Mode="In" Type="Int32" />
+      <Parameter Name="Page" Mode="In" Type="Int32" />
+      <Parameter Name="CurrentRow" Mode="In" Type="Int32" />
+    </FunctionImport>
+    <FunctionImport Name="GetUserBooks" ReturnType="Collection(DCModel.GetUserBooks_Result)">
+      <Parameter Name="AspNetUserId" Mode="In" Type="String" />
+      <Parameter Name="MasterClassId" Mode="In" Type="Int64" />
+      <Parameter Name="MasterBoardId" Mode="In" Type="Int64" />
+    </FunctionImport>
+    <FunctionImport Name="GetUsers" ReturnType="Collection(DCModel.GetUsers_Result)">
+      <Parameter Name="RoleId" Mode="In" Type="String" />
+      <Parameter Name="MaxRows" Mode="In" Type="Int32" />
+      <Parameter Name="Page" Mode="In" Type="Int32" />
+      <Parameter Name="CurrentRow" Mode="In" Type="Int32" />
+    </FunctionImport>
+    <FunctionImport Name="InsertUpdateBulkStudent">
+      <Parameter Name="UserExcelMetaDataId" Mode="In" Type="String" />
+      <Parameter Name="SchoolId" Mode="In" Type="String" />
+      <Parameter Name="CreatedBy" Mode="In" Type="String" />
+      <Parameter Name="IPaddress" Mode="In" Type="String" />
+      <Parameter Name="result" Mode="InOut" Type="Int32" />
+      <Parameter Name="Rowcount" Mode="InOut" Type="Int32" />
+      <Parameter Name="IId" Mode="InOut" Type="String" />
+      <Parameter Name="IImage" Mode="InOut" Type="String" />
+      <Parameter Name="Message" Mode="InOut" Type="String" />
+    </FunctionImport>
+    <FunctionImport Name="InsertUpdateBulkStudent_Bp">
+      <Parameter Name="UserExcelMetaDataId" Mode="In" Type="String" />
+      <Parameter Name="SchoolId" Mode="In" Type="String" />
+      <Parameter Name="CreatedBy" Mode="In" Type="String" />
+      <Parameter Name="IPaddress" Mode="In" Type="String" />
+      <Parameter Name="result" Mode="InOut" Type="Int32" />
+      <Parameter Name="IId" Mode="InOut" Type="String" />
+      <Parameter Name="IImage" Mode="InOut" Type="String" />
+      <Parameter Name="Message" Mode="InOut" Type="String" />
+    </FunctionImport>
+    <FunctionImport Name="InsertUpdateBulkStudentsBoard">
+      <Parameter Name="UserExcelMetaDataId" Mode="In" Type="String" />
+      <Parameter Name="SchoolId" Mode="In" Type="String" />
+      <Parameter Name="CreatedBy" Mode="In" Type="String" />
+      <Parameter Name="IPaddress" Mode="In" Type="String" />
+      <Parameter Name="result" Mode="InOut" Type="Int32" />
+      <Parameter Name="Message" Mode="InOut" Type="String" />
+    </FunctionImport>
+    <FunctionImport Name="InsertUpdateBulkStudentsClass">
+      <Parameter Name="UserExcelMetaDataId" Mode="In" Type="String" />
+      <Parameter Name="SchoolId" Mode="In" Type="String" />
+      <Parameter Name="CreatedBy" Mode="In" Type="String" />
+      <Parameter Name="IPaddress" Mode="In" Type="String" />
+      <Parameter Name="result" Mode="InOut" Type="Int32" />
+      <Parameter Name="Message" Mode="InOut" Type="String" />
+    </FunctionImport>
+    <FunctionImport Name="InsertUpdateDeleteMasterBoard">
+      <Parameter Name="Id" Mode="In" Type="Int64" />
+      <Parameter Name="MasterPublisherId" Mode="In" Type="Int64" />
+      <Parameter Name="GlobalId" Mode="In" Type="String" />
+      <Parameter Name="Title" Mode="In" Type="String" />
+      <Parameter Name="DisplayOrder" Mode="In" Type="Int32" />
+      <Parameter Name="Image" Mode="In" Type="String" />
+      <Parameter Name="Description" Mode="In" Type="String" />
+      <Parameter Name="IPAddress" Mode="In" Type="String" />
+      <Parameter Name="AspNetUserId" Mode="In" Type="String" />
+      <Parameter Name="Status" Mode="In" Type="Int32" />
+      <Parameter Name="Action" Mode="In" Type="Int32" />
+      <Parameter Name="result" Mode="InOut" Type="Int32" />
+      <Parameter Name="IId" Mode="InOut" Type="Int64" />
+      <Parameter Name="IImage" Mode="InOut" Type="String" />
+      <Parameter Name="Message" Mode="InOut" Type="String" />
+    </FunctionImport>
+    <FunctionImport Name="InsertUpdateDeleteMasterClass">
+      <Parameter Name="Id" Mode="In" Type="Int64" />
+      <Parameter Name="MasterPublisherId" Mode="In" Type="Int64" />
+      <Parameter Name="GlobalId" Mode="In" Type="String" />
+      <Parameter Name="Title" Mode="In" Type="String" />
+      <Parameter Name="DisplayOrder" Mode="In" Type="Int32" />
+      <Parameter Name="Image" Mode="In" Type="String" />
+      <Parameter Name="Description" Mode="In" Type="String" />
+      <Parameter Name="IPAddress" Mode="In" Type="String" />
+      <Parameter Name="AspNetUserId" Mode="In" Type="String" />
+      <Parameter Name="Status" Mode="In" Type="Int32" />
+      <Parameter Name="Action" Mode="In" Type="Int32" />
+      <Parameter Name="result" Mode="InOut" Type="Int32" />
+      <Parameter Name="IId" Mode="InOut" Type="Int64" />
+      <Parameter Name="IImage" Mode="InOut" Type="String" />
+      <Parameter Name="Message" Mode="InOut" Type="String" />
+    </FunctionImport>
+    <FunctionImport Name="InsertUpdateDeleteMasterSeries">
+      <Parameter Name="Id" Mode="In" Type="Int64" />
+      <Parameter Name="MasterSubjectId" Mode="In" Type="Int64" />
+      <Parameter Name="MasterPublisherId" Mode="In" Type="Int64" />
+      <Parameter Name="GlobalId" Mode="In" Type="String" />
+      <Parameter Name="Title" Mode="In" Type="String" />
+      <Parameter Name="DisplayOrder" Mode="In" Type="Int32" />
+      <Parameter Name="Image" Mode="In" Type="String" />
+      <Parameter Name="Description" Mode="In" Type="String" />
+      <Parameter Name="IPAddress" Mode="In" Type="String" />
+      <Parameter Name="AspNetUserId" Mode="In" Type="String" />
+      <Parameter Name="Status" Mode="In" Type="Int32" />
+      <Parameter Name="Action" Mode="In" Type="Int32" />
+      <Parameter Name="result" Mode="InOut" Type="Int32" />
+      <Parameter Name="IId" Mode="InOut" Type="Int64" />
+      <Parameter Name="IImage" Mode="InOut" Type="String" />
+      <Parameter Name="Message" Mode="InOut" Type="String" />
+    </FunctionImport>
+    <FunctionImport Name="InsertUpdateDeleteMasterSubject">
+      <Parameter Name="Id" Mode="In" Type="Int64" />
+      <Parameter Name="MasterPublisherId" Mode="In" Type="Int64" />
+      <Parameter Name="GlobalId" Mode="In" Type="String" />
+      <Parameter Name="Title" Mode="In" Type="String" />
+      <Parameter Name="DisplayOrder" Mode="In" Type="Int32" />
+      <Parameter Name="Image" Mode="In" Type="String" />
+      <Parameter Name="Description" Mode="In" Type="String" />
+      <Parameter Name="IPAddress" Mode="In" Type="String" />
+      <Parameter Name="AspNetUserId" Mode="In" Type="String" />
+      <Parameter Name="Status" Mode="In" Type="Int32" />
+      <Parameter Name="Action" Mode="In" Type="Int32" />
+      <Parameter Name="result" Mode="InOut" Type="Int32" />
+      <Parameter Name="IId" Mode="InOut" Type="Int64" />
+      <Parameter Name="IImage" Mode="InOut" Type="String" />
+      <Parameter Name="Message" Mode="InOut" Type="String" />
+    </FunctionImport>
+    <FunctionImport Name="InsertUpdateDeleteMyLibrary">
+      <Parameter Name="Id" Mode="In" Type="String" />
+      <Parameter Name="MasterBookId" Mode="In" Type="String" />
+      <Parameter Name="AspNetUserId" Mode="In" Type="String" />
+      <Parameter Name="CreatedBy" Mode="In" Type="String" />
+      <Parameter Name="Validity" Mode="In" Type="Int32" />
+      <Parameter Name="LastDate" Mode="In" Type="DateTime" />
+      <Parameter Name="Status" Mode="In" Type="Byte" />
+      <Parameter Name="IPaddress" Mode="In" Type="String" />
+      <Parameter Name="Action" Mode="In" Type="Int32" />
+      <Parameter Name="result" Mode="InOut" Type="Int32" />
+      <Parameter Name="IId" Mode="InOut" Type="String" />
+      <Parameter Name="IImage" Mode="InOut" Type="String" />
+      <Parameter Name="Message" Mode="InOut" Type="String" />
+    </FunctionImport>
+    <FunctionImport Name="InsertUpdateDeleteUserBooks">
+      <Parameter Name="AspNetUserId" Mode="In" Type="String" />
+      <Parameter Name="MasterBookId" Mode="In" Type="String" />
+      <Parameter Name="CreatedBy" Mode="In" Type="String" />
+      <Parameter Name="IPAddress" Mode="In" Type="String" />
+      <Parameter Name="Action" Mode="In" Type="Int32" />
+      <Parameter Name="result" Mode="InOut" Type="Int32" />
+      <Parameter Name="IId" Mode="InOut" Type="Int64" />
+      <Parameter Name="Message" Mode="InOut" Type="String" />
+    </FunctionImport>
+    <FunctionImport Name="InsertUpdateSchool">
+      <Parameter Name="Id" Mode="In" Type="String" />
+      <Parameter Name="AspNetUserId" Mode="In" Type="String" />
+      <Parameter Name="Title" Mode="In" Type="String" />
+      <Parameter Name="EmailId" Mode="In" Type="String" />
+      <Parameter Name="Logo" Mode="In" Type="String" />
+      <Parameter Name="ContactNo" Mode="In" Type="String" />
+      <Parameter Name="AlterNateContactNo" Mode="In" Type="String" />
+      <Parameter Name="Principle" Mode="In" Type="String" />
+      <Parameter Name="PrincipleContactNo" Mode="In" Type="String" />
+      <Parameter Name="AddressLine1" Mode="In" Type="String" />
+      <Parameter Name="AddressLine2" Mode="In" Type="String" />
+      <Parameter Name="AddressLine3" Mode="In" Type="String" />
+      <Parameter Name="State" Mode="In" Type="String" />
+      <Parameter Name="City" Mode="In" Type="String" />
+      <Parameter Name="Pincode" Mode="In" Type="String" />
+      <Parameter Name="Password" Mode="In" Type="String" />
+      <Parameter Name="Description" Mode="In" Type="String" />
+      <Parameter Name="CreatedBy" Mode="In" Type="String" />
+      <Parameter Name="Status" Mode="In" Type="Int32" />
+      <Parameter Name="MasterBoardId" Mode="In" Type="Int64" />
+      <Parameter Name="Strength" Mode="In" Type="Int64" />
+      <Parameter Name="ITIncharge" Mode="In" Type="String" />
+      <Parameter Name="IPaddress" Mode="In" Type="String" />
+      <Parameter Name="Action" Mode="In" Type="Int32" />
+      <Parameter Name="result" Mode="InOut" Type="Int32" />
+      <Parameter Name="IId" Mode="InOut" Type="String" />
+      <Parameter Name="IImage" Mode="InOut" Type="String" />
+      <Parameter Name="Message" Mode="InOut" Type="String" />
+    </FunctionImport>
+    <FunctionImport Name="InsertUpdateStudent">
+      <Parameter Name="Id" Mode="In" Type="String" />
+      <Parameter Name="MasterClassId" Mode="In" Type="Int64" />
+      <Parameter Name="MasterBoardId" Mode="In" Type="Int64" />
+      <Parameter Name="SchoolId" Mode="In" Type="String" />
+      <Parameter Name="Name" Mode="In" Type="String" />
+      <Parameter Name="RollNo" Mode="In" Type="String" />
+      <Parameter Name="Session" Mode="In" Type="String" />
+      <Parameter Name="ContactNo" Mode="In" Type="String" />
+      <Parameter Name="Address" Mode="In" Type="String" />
+      <Parameter Name="EmailId" Mode="In" Type="String" />
+      <Parameter Name="ExpiyDate" Mode="In" Type="DateTime" />
+      <Parameter Name="Gender" Mode="In" Type="Int32" />
+      <Parameter Name="DOB" Mode="In" Type="DateTime" />
+      <Parameter Name="Password" Mode="In" Type="String" />
+      <Parameter Name="CreatedBy" Mode="In" Type="String" />
+      <Parameter Name="Status" Mode="In" Type="Int32" />
+      <Parameter Name="IPaddress" Mode="In" Type="String" />
+      <Parameter Name="AdmissionNo" Mode="In" Type="String" />
+      <Parameter Name="AccountCode" Mode="In" Type="String" />
+      <Parameter Name="ParentName" Mode="In" Type="String" />
+      <Parameter Name="Action" Mode="In" Type="Int32" />
+      <Parameter Name="result" Mode="InOut" Type="Int32" />
+      <Parameter Name="IId" Mode="InOut" Type="String" />
+      <Parameter Name="IImage" Mode="InOut" Type="String" />
+      <Parameter Name="Message" Mode="InOut" Type="String" />
+    </FunctionImport>
+    <FunctionImport Name="InserUserExcelMetaData">
+      <Parameter Name="AspNetUserId" Mode="In" Type="String" />
+      <Parameter Name="FileName" Mode="In" Type="String" />
+      <Parameter Name="SheetName" Mode="In" Type="String" />
+      <Parameter Name="UploadedFileName" Mode="In" Type="String" />
+      <Parameter Name="Rows" Mode="In" Type="Int32" />
+      <Parameter Name="Cols" Mode="In" Type="Int32" />
+      <Parameter Name="FileMetaData" Mode="In" Type="String" />
+      <Parameter Name="Description" Mode="In" Type="String" />
+      <Parameter Name="CreatedBy" Mode="In" Type="String" />
+      <Parameter Name="IPAddress" Mode="In" Type="String" />
+      <Parameter Name="UserExcelMetaDataId" Mode="InOut" Type="String" />
+      <Parameter Name="result" Mode="InOut" Type="Int32" />
+      <Parameter Name="Message" Mode="InOut" Type="String" />
+    </FunctionImport>
+    <FunctionImport Name="ReadBook" ReturnType="Collection(DCModel.ReadBook_Result)">
+      <Parameter Name="AspNetUserId" Mode="In" Type="String" />
+      <Parameter Name="BookId" Mode="In" Type="String" />
+    </FunctionImport>
+    <FunctionImport Name="ReadBooks" ReturnType="Collection(DCModel.ReadBooks_Result)">
+      <Parameter Name="AspNetUserId" Mode="In" Type="String" />
+    </FunctionImport>
+    <FunctionImport Name="SchoolReadBook" ReturnType="Collection(DCModel.SchoolReadBook_Result)">
+      <Parameter Name="AspNetUserId" Mode="In" Type="String" />
+      <Parameter Name="BookId" Mode="In" Type="String" />
+    </FunctionImport>
+    <FunctionImport Name="StudentReadBook" ReturnType="Collection(DCModel.StudentReadBook_Result)">
+      <Parameter Name="AspNetUserId" Mode="In" Type="String" />
+      <Parameter Name="BookId" Mode="In" Type="String" />
+    </FunctionImport>
+    <FunctionImport Name="InsertUpdateDeleteMasterBooks">
+      <Parameter Name="Id" Mode="In" Type="String" />
+      <Parameter Name="MasterCategoryId" Mode="In" Type="Int64" />
+      <Parameter Name="MasterClassId" Mode="In" Type="Int64" />
+      <Parameter Name="MasterSubjectId" Mode="In" Type="Int64" />
+      <Parameter Name="MasterSeriesId" Mode="In" Type="Int64" />
+      <Parameter Name="MasterBoardId" Mode="In" Type="Int64" />
+      <Parameter Name="Title" Mode="In" Type="String" />
+      <Parameter Name="Author" Mode="In" Type="String" />
+      <Parameter Name="ISBN" Mode="In" Type="String" />
+      <Parameter Name="Edition" Mode="In" Type="String" />
+      <Parameter Name="Image" Mode="In" Type="String" />
+      <Parameter Name="Description" Mode="In" Type="String" />
+      <Parameter Name="PageTitle" Mode="In" Type="String" />
+      <Parameter Name="MetaDescription" Mode="In" Type="String" />
+      <Parameter Name="OgTitle" Mode="In" Type="String" />
+      <Parameter Name="OgDescription" Mode="In" Type="String" />
+      <Parameter Name="TwitterTitle" Mode="In" Type="String" />
+      <Parameter Name="TwitterDescription" Mode="In" Type="String" />
+      <Parameter Name="KeyWords" Mode="In" Type="String" />
+      <Parameter Name="ParentId" Mode="In" Type="Int64" />
+      <Parameter Name="BannerImage" Mode="In" Type="String" />
+      <Parameter Name="ServerId" Mode="In" Type="String" />
+      <Parameter Name="EncriptionKey" Mode="In" Type="String" />
+      <Parameter Name="isSize" Mode="In" Type="String" />
+      <Parameter Name="EbookPrice" Mode="In" Type="Decimal" />
+      <Parameter Name="PrintPrice" Mode="In" Type="Decimal" />
+      <Parameter Name="Discount" Mode="In" Type="Decimal" />
+      <Parameter Name="Colour" Mode="In" Type="Int32" />
+      <Parameter Name="EbookSizeMB" Mode="In" Type="Int64" />
+      <Parameter Name="Ebook" Mode="In" Type="Int32" />
+      <Parameter Name="Pbook" Mode="In" Type="Int32" />
+      <Parameter Name="Audio" Mode="In" Type="Int32" />
+      <Parameter Name="EBookType" Mode="In" Type="Int32" />
+      <Parameter Name="AspNetUserId" Mode="In" Type="String" />
+      <Parameter Name="Status" Mode="In" Type="Byte" />
+      <Parameter Name="IPaddress" Mode="In" Type="String" />
+      <Parameter Name="Action" Mode="In" Type="Int32" />
+      <Parameter Name="result" Mode="InOut" Type="Int32" />
+      <Parameter Name="IId" Mode="InOut" Type="String" />
+      <Parameter Name="IImage" Mode="InOut" Type="String" />
+      <Parameter Name="Message" Mode="InOut" Type="String" />
+    </FunctionImport>
+    <EntitySet Name="UserCarts" EntityType="DCModel.UserCart" />
+    <EntitySet Name="UserCartItems" EntityType="DCModel.UserCartItem" />
+    <AssociationSet Name="FK_UserCart_AspNetUsers" Association="DCModel.FK_UserCart_AspNetUsers">
+      <End Role="AspNetUser" EntitySet="AspNetUsers" />
+      <End Role="UserCart" EntitySet="UserCarts" />
+    </AssociationSet>
+    <AssociationSet Name="FK_UserCart_AspNetUsers1" Association="DCModel.FK_UserCart_AspNetUsers1">
+      <End Role="AspNetUser" EntitySet="AspNetUsers" />
+      <End Role="UserCart" EntitySet="UserCarts" />
+    </AssociationSet>
+    <AssociationSet Name="FK_UserCart_AspNetUsers2" Association="DCModel.FK_UserCart_AspNetUsers2">
+      <End Role="AspNetUser" EntitySet="AspNetUsers" />
+      <End Role="UserCart" EntitySet="UserCarts" />
+    </AssociationSet>
+    <AssociationSet Name="FK_UserCartItem_AspNetUsers" Association="DCModel.FK_UserCartItem_AspNetUsers">
+      <End Role="AspNetUser" EntitySet="AspNetUsers" />
+      <End Role="UserCartItem" EntitySet="UserCartItems" />
+    </AssociationSet>
+    <AssociationSet Name="FK_UserCartItem_AspNetUsers1" Association="DCModel.FK_UserCartItem_AspNetUsers1">
+      <End Role="AspNetUser" EntitySet="AspNetUsers" />
+      <End Role="UserCartItem" EntitySet="UserCartItems" />
+    </AssociationSet>
+    <AssociationSet Name="FK_UserCartItem_MasterBooks" Association="DCModel.FK_UserCartItem_MasterBooks">
+      <End Role="MasterBook" EntitySet="MasterBooks" />
+      <End Role="UserCartItem" EntitySet="UserCartItems" />
+    </AssociationSet>
+    <AssociationSet Name="FK_UserCartItem_UserCart" Association="DCModel.FK_UserCartItem_UserCart">
+      <End Role="UserCart" EntitySet="UserCarts" />
+      <End Role="UserCartItem" EntitySet="UserCartItems" />
+    </AssociationSet>
+    <AssociationSet Name="FK_UserCartItem_UserCartItem" Association="DCModel.FK_UserCartItem_UserCartItem">
+      <End Role="UserCartItem" EntitySet="UserCartItems" />
+      <End Role="UserCartItem1" EntitySet="UserCartItems" />
+    </AssociationSet>
+    <EntitySet Name="CartStatus1" EntityType="DCModel.CartStatus" />
+    <EntitySet Name="CustomerCart" EntityType="DCModel.CustomerCart" />
+    <AssociationSet Name="FK__CustomerC__CartS__2EDAF651" Association="DCModel.FK__CustomerC__CartS__2EDAF651">
+      <End Role="CartStatus" EntitySet="CartStatus1" />
+      <End Role="CustomerCart" EntitySet="CustomerCart" />
+    </AssociationSet>
+    <FunctionImport Name="USP_BookDetails" ReturnType="Collection(DCModel.USP_BookDetails_Result)">
+      <Parameter Name="bookId" Mode="In" Type="String" />
+    </FunctionImport>
+    <FunctionImport Name="USP_CustomerCartDetails" ReturnType="Collection(DCModel.USP_CustomerCartDetails_Result)">
+      <Parameter Name="memberId" Mode="In" Type="String" />
+    </FunctionImport>
+    <FunctionImport Name="OperationOnCartItems">
+      <Parameter Name="BookId" Mode="In" Type="String" />
+      <Parameter Name="CartId" Mode="In" Type="String" />
+      <Parameter Name="Userid" Mode="In" Type="String" />
+      <Parameter Name="Action" Mode="In" Type="String" />
+      <Parameter Name="Message" Mode="InOut" Type="String" />
+    </FunctionImport>
+    <EntitySet Name="PaymentDetails" EntityType="DCModel.PaymentDetails" />
+    <EntitySet Name="OrderDetails" EntityType="DCModel.OrderDetails" />
+    <EntitySet Name="PaymentStatus" EntityType="DCModel.PaymentStatus" />
+    <AssociationSet Name="FK__OrderDeta__Payme__56E8E7AB" Association="DCModel.FK__OrderDeta__Payme__56E8E7AB">
+      <End Role="PaymentStatus" EntitySet="PaymentStatus" />
+      <End Role="OrderDetails" EntitySet="OrderDetails" />
+    </AssociationSet>
+    <FunctionImport Name="USP_InsertUpdateOrderDetails">
+      <Parameter Name="Mode" Mode="In" Type="String" />
+    </FunctionImport>
+    <FunctionImport Name="GetLibraryBooks" IsComposable="true" ReturnType="Collection(DCModel.GetLibraryBooks_Result)">
+      <Parameter Name="AspNetUserId" Mode="In" Type="String" />
+    </FunctionImport>
+    <FunctionImport Name="GetAllLibraryBooks" IsComposable="true" ReturnType="Collection(DCModel.GetAllLibraryBooks_Result)">
+      <Parameter Name="AspNetUserId" Mode="In" Type="String" />
+    </FunctionImport>
+    <FunctionImport Name="GetSchoolBooks" IsComposable="true" ReturnType="Collection(DCModel.GetSchoolBooks_Result)">
+      <Parameter Name="AspNetUserId" Mode="In" Type="String" />
+    </FunctionImport>
+    <EntitySet Name="Orders" EntityType="DCModel.Orders" />
+    <AssociationSet Name="FK__Orders__PaymentS__625A9A57" Association="DCModel.FK__Orders__PaymentS__625A9A57">
+      <End Role="PaymentStatus" EntitySet="PaymentStatus" />
+      <End Role="Orders" EntitySet="Orders" />
+    </AssociationSet>
+    <FunctionImport Name="USP_MyOrderDetails" ReturnType="Collection(DCModel.USP_MyOrderDetails_Result)">
+      <Parameter Name="OrderId" Mode="In" Type="String" />
+    </FunctionImport>
+    <FunctionImport Name="USP_MyOrders" ReturnType="Collection(DCModel.USP_MyOrders_Result)">
+      <Parameter Name="OrderId" Mode="In" Type="String" />
+      <Parameter Name="UserId" Mode="In" Type="String" />
+    </FunctionImport>
+  </EntityContainer>
+  <ComplexType Name="GetSchools_Result">
+    <Property Type="Int32" Name="RowNum" Nullable="true" />
+    <Property Type="String" Name="Id" Nullable="true" MaxLength="128" />
+    <Property Type="String" Name="SchoolCode" Nullable="true" />
+    <Property Type="String" Name="Name" Nullable="true" />
+    <Property Type="String" Name="ContactNo" Nullable="true" />
+    <Property Type="String" Name="State" Nullable="true" MaxLength="500" />
+    <Property Type="String" Name="City" Nullable="true" MaxLength="500" />
+    <Property Type="String" Name="PinCode" Nullable="true" MaxLength="20" />
+    <Property Type="String" Name="Email" Nullable="true" MaxLength="200" />
+    <Property Type="String" Name="AspNetUserId" Nullable="true" MaxLength="128" />
+    <Property Type="Int32" Name="Status" Nullable="true" />
+    <Property Type="String" Name="UserName" Nullable="true" />
+    <Property Type="String" Name="PasswordHash" Nullable="true" />
+    <Property Type="Int64" Name="Strength" Nullable="true" />
+    <Property Type="String" Name="ITIncharge" Nullable="true" />
+    <Property Type="Int64" Name="MasterBoardId" Nullable="true" />
+    <Property Type="String" Name="MasterBoard" Nullable="true" />
+  </ComplexType>
+  <ComplexType Name="GetSchoolStudents_Result">
+    <Property Type="Int32" Name="RowNum" Nullable="true" />
+    <Property Type="String" Name="Id" Nullable="true" MaxLength="128" />
+    <Property Type="String" Name="FirstName" Nullable="true" />
+    <Property Type="String" Name="LastName" Nullable="true" />
+    <Property Type="Int32" Name="Gender" Nullable="true" />
+    <Property Type="DateTime" Name="DOB" Nullable="true" Precision="23" />
+    <Property Type="String" Name="PasswordHash" Nullable="true" />
+    <Property Type="String" Name="UserName" Nullable="true" MaxLength="256" />
+    <Property Type="String" Name="Email" Nullable="true" />
+    <Property Type="DateTime" Name="dtmCreate" Nullable="true" Precision="23" />
+    <Property Type="DateTime" Name="dtmUpdate" Nullable="true" Precision="23" />
+    <Property Type="Int32" Name="Status" Nullable="true" />
+    <Property Type="Int64" Name="MasterClassId" Nullable="true" />
+    <Property Type="Int64" Name="MasterBoardId" Nullable="true" />
+    <Property Type="String" Name="Class" Nullable="true" />
+    <Property Type="String" Name="Board" Nullable="true" />
+    <Property Type="String" Name="SchoolId" Nullable="true" MaxLength="128" />
+    <Property Type="String" Name="UserCode" Nullable="true" MaxLength="200" />
+    <Property Type="String" Name="Name" Nullable="true" />
+    <Property Type="String" Name="RollNo" Nullable="true" MaxLength="50" />
+    <Property Type="String" Name="Session" Nullable="true" MaxLength="50" />
+    <Property Type="String" Name="ContactNo" Nullable="true" MaxLength="50" />
+    <Property Type="String" Name="Address" Nullable="true" MaxLength="500" />
+    <Property Type="String" Name="AdmissionNo" Nullable="true" MaxLength="200" />
+    <Property Type="String" Name="AccountCode" Nullable="true" MaxLength="200" />
+    <Property Type="String" Name="ParentName" Nullable="true" MaxLength="500" />
+    <Property Type="DateTime" Name="DateOfBirth" Nullable="true" Precision="23" />
+  </ComplexType>
+  <ComplexType Name="GetUserBooks_Result">
+    <Property Type="String" Name="Id" Nullable="true" MaxLength="128" />
+    <Property Type="Int64" Name="MasterCategoryId" Nullable="true" />
+    <Property Type="Int64" Name="MasterClassId" Nullable="true" />
+    <Property Type="Int64" Name="MasterBoardId" Nullable="true" />
+    <Property Type="Int64" Name="MasterSubjectid" Nullable="true" />
+    <Property Type="Int64" Name="MasterSeriesid" Nullable="true" />
+    <Property Type="String" Name="Title" Nullable="true" MaxLength="1000" />
+    <Property Type="String" Name="Author" Nullable="true" MaxLength="1000" />
+    <Property Type="String" Name="ISBN" Nullable="true" MaxLength="50" />
+    <Property Type="String" Name="Edition" Nullable="true" MaxLength="50" />
+    <Property Type="String" Name="Image" Nullable="true" MaxLength="150" />
+    <Property Type="Int32" Name="IsAssigned" Nullable="true" />
+  </ComplexType>
+  <ComplexType Name="GetUsers_Result">
+    <Property Type="Int32" Name="RowNum" Nullable="true" />
+    <Property Type="String" Name="Id" Nullable="true" MaxLength="128" />
+    <Property Type="String" Name="FirstName" Nullable="true" />
+    <Property Type="String" Name="LastName" Nullable="true" />
+    <Property Type="Int32" Name="Gender" Nullable="true" />
+    <Property Type="DateTime" Name="DOB" Nullable="true" Precision="23" />
+    <Property Type="Int32" Name="LoginSourse" Nullable="true" />
+    <Property Type="DateTime" Name="dtmCreate" Nullable="true" Precision="23" />
+    <Property Type="DateTime" Name="dtmUpdate" Nullable="true" Precision="23" />
+    <Property Type="DateTime" Name="dtmDelete" Nullable="true" Precision="23" />
+    <Property Type="Int32" Name="Status" Nullable="true" />
+    <Property Type="String" Name="Email" Nullable="true" />
+    <Property Type="Boolean" Name="EmailConfirmed" Nullable="true" />
+    <Property Type="String" Name="PasswordHash" Nullable="true" />
+    <Property Type="String" Name="PhoneNumber" Nullable="true" />
+    <Property Type="Boolean" Name="PhoneNumberConfirmed" Nullable="true" />
+    <Property Type="String" Name="UserName" Nullable="true" MaxLength="256" />
+  </ComplexType>
+  <ComplexType Name="ReadBook_Result">
+    <Property Type="String" Name="Id" Nullable="false" MaxLength="128" />
+    <Property Type="Int64" Name="MasterCategoryId" Nullable="false" />
+    <Property Type="Decimal" Name="EBookPrice" Nullable="false" Precision="18" Scale="2" />
+    <Property Type="String" Name="Title" Nullable="false" MaxLength="1000" />
+    <Property Type="String" Name="Author" Nullable="false" MaxLength="1000" />
+    <Property Type="String" Name="ISBN" Nullable="false" MaxLength="50" />
+    <Property Type="String" Name="Edition" Nullable="false" MaxLength="50" />
+    <Property Type="String" Name="Image" Nullable="false" MaxLength="150" />
+    <Property Type="String" Name="EncriptionKey" Nullable="false" MaxLength="200" />
+  </ComplexType>
+  <ComplexType Name="ReadBooks_Result">
+    <Property Type="String" Name="Id" Nullable="false" MaxLength="128" />
+    <Property Type="Int64" Name="MasterCategoryId" Nullable="false" />
+    <Property Type="Decimal" Name="EBookPrice" Nullable="false" Precision="18" Scale="2" />
+    <Property Type="String" Name="Title" Nullable="false" MaxLength="1000" />
+    <Property Type="String" Name="Author" Nullable="false" MaxLength="1000" />
+    <Property Type="String" Name="ISBN" Nullable="false" MaxLength="50" />
+    <Property Type="String" Name="Edition" Nullable="false" MaxLength="50" />
+    <Property Type="String" Name="Image" Nullable="false" MaxLength="150" />
+    <Property Type="String" Name="EncriptionKey" Nullable="false" MaxLength="200" />
+  </ComplexType>
+  <ComplexType Name="SchoolReadBook_Result">
+    <Property Type="String" Name="Id" Nullable="false" MaxLength="128" />
+    <Property Type="Int64" Name="MasterCategoryId" Nullable="false" />
+    <Property Type="Decimal" Name="EBookPrice" Nullable="false" Precision="18" Scale="2" />
+    <Property Type="String" Name="Title" Nullable="false" MaxLength="1000" />
+    <Property Type="String" Name="Author" Nullable="false" MaxLength="1000" />
+    <Property Type="String" Name="ISBN" Nullable="false" MaxLength="50" />
+    <Property Type="String" Name="Edition" Nullable="false" MaxLength="50" />
+    <Property Type="String" Name="Image" Nullable="false" MaxLength="150" />
+    <Property Type="String" Name="EncriptionKey" Nullable="false" MaxLength="200" />
+  </ComplexType>
+  <ComplexType Name="StudentReadBook_Result">
+    <Property Type="String" Name="Id" Nullable="false" MaxLength="128" />
+    <Property Type="Int64" Name="MasterCategoryId" Nullable="false" />
+    <Property Type="Decimal" Name="EBookPrice" Nullable="false" Precision="18" Scale="2" />
+    <Property Type="String" Name="Title" Nullable="false" MaxLength="1000" />
+    <Property Type="String" Name="Author" Nullable="false" MaxLength="1000" />
+    <Property Type="String" Name="ISBN" Nullable="false" MaxLength="50" />
+    <Property Type="String" Name="Edition" Nullable="false" MaxLength="50" />
+    <Property Type="String" Name="Image" Nullable="false" MaxLength="150" />
+    <Property Type="String" Name="EncriptionKey" Nullable="false" MaxLength="200" />
+  </ComplexType>
+  <EntityType Name="UserCart">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
+    <Property Name="AspNetUserId" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+    <Property Name="CartUniqueId" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+    <Property Name="Discount" Type="Decimal" Precision="10" Scale="2" />
+    <Property Name="Total" Type="Decimal" Precision="18" Scale="2" />
+    <Property Name="CreatedBy" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+    <Property Name="UpdatedBy" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+    <Property Name="CreateDate" Type="DateTime" Precision="3" />
+    <Property Name="UpdateDate" Type="DateTime" Precision="3" />
+    <Property Name="Status" Type="Byte" />
+    <Property Name="IPaddress" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+    <NavigationProperty Name="AspNetUser" Relationship="DCModel.FK_UserCart_AspNetUsers" FromRole="UserCart" ToRole="AspNetUser" />
+    <NavigationProperty Name="AspNetUser1" Relationship="DCModel.FK_UserCart_AspNetUsers1" FromRole="UserCart" ToRole="AspNetUser" />
+    <NavigationProperty Name="AspNetUser2" Relationship="DCModel.FK_UserCart_AspNetUsers2" FromRole="UserCart" ToRole="AspNetUser" />
+    <NavigationProperty Name="UserCartItems" Relationship="DCModel.FK_UserCartItem_UserCart" FromRole="UserCart" ToRole="UserCartItem" />
+  </EntityType>
+  <EntityType Name="UserCartItem">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
+    <Property Name="UserCartId" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+    <Property Name="MasterBookId" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+    <Property Name="CartUniqueId" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+    <Property Name="EbookPrice" Type="Decimal" Precision="18" Scale="2" />
+    <Property Name="Discount" Type="Decimal" Precision="10" Scale="2" />
+    <Property Name="Quantity" Type="Int32" />
+    <Property Name="SubTotal" Type="Decimal" Precision="18" Scale="2" />
+    <Property Name="CreatedBy" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+    <Property Name="UpdatedBy" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+    <Property Name="CreateDate" Type="DateTime" Precision="3" />
+    <Property Name="UpdateDate" Type="DateTime" Precision="3" />
+    <Property Name="Status" Type="Byte" />
+    <Property Name="IPaddress" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+    <NavigationProperty Name="AspNetUser" Relationship="DCModel.FK_UserCartItem_AspNetUsers" FromRole="UserCartItem" ToRole="AspNetUser" />
+    <NavigationProperty Name="AspNetUser1" Relationship="DCModel.FK_UserCartItem_AspNetUsers1" FromRole="UserCartItem" ToRole="AspNetUser" />
+    <NavigationProperty Name="MasterBook" Relationship="DCModel.FK_UserCartItem_MasterBooks" FromRole="UserCartItem" ToRole="MasterBook" />
+    <NavigationProperty Name="UserCart" Relationship="DCModel.FK_UserCartItem_UserCart" FromRole="UserCartItem" ToRole="UserCart" />
+    <NavigationProperty Name="UserCartItem1" Relationship="DCModel.FK_UserCartItem_UserCartItem" FromRole="UserCartItem" ToRole="UserCartItem1" />
+    <NavigationProperty Name="UserCartItem2" Relationship="DCModel.FK_UserCartItem_UserCartItem" FromRole="UserCartItem1" ToRole="UserCartItem" />
+  </EntityType>
+  <Association Name="FK_UserCart_AspNetUsers">
+    <End Type="DCModel.AspNetUser" Role="AspNetUser" Multiplicity="0..1" />
+    <End Type="DCModel.UserCart" Role="UserCart" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="AspNetUser">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="UserCart">
+        <PropertyRef Name="AspNetUserId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_UserCart_AspNetUsers1">
+    <End Type="DCModel.AspNetUser" Role="AspNetUser" Multiplicity="0..1" />
+    <End Type="DCModel.UserCart" Role="UserCart" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="AspNetUser">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="UserCart">
+        <PropertyRef Name="CreatedBy" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_UserCart_AspNetUsers2">
+    <End Type="DCModel.AspNetUser" Role="AspNetUser" Multiplicity="0..1" />
+    <End Type="DCModel.UserCart" Role="UserCart" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="AspNetUser">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="UserCart">
+        <PropertyRef Name="UpdatedBy" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_UserCartItem_AspNetUsers">
+    <End Type="DCModel.AspNetUser" Role="AspNetUser" Multiplicity="0..1" />
+    <End Type="DCModel.UserCartItem" Role="UserCartItem" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="AspNetUser">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="UserCartItem">
+        <PropertyRef Name="CreatedBy" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_UserCartItem_AspNetUsers1">
+    <End Type="DCModel.AspNetUser" Role="AspNetUser" Multiplicity="0..1" />
+    <End Type="DCModel.UserCartItem" Role="UserCartItem" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="AspNetUser">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="UserCartItem">
+        <PropertyRef Name="UpdatedBy" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_UserCartItem_MasterBooks">
+    <End Type="DCModel.MasterBook" Role="MasterBook" Multiplicity="0..1" />
+    <End Type="DCModel.UserCartItem" Role="UserCartItem" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="MasterBook">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="UserCartItem">
+        <PropertyRef Name="MasterBookId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_UserCartItem_UserCart">
+    <End Type="DCModel.UserCart" Role="UserCart" Multiplicity="0..1" />
+    <End Type="DCModel.UserCartItem" Role="UserCartItem" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="UserCart">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="UserCartItem">
+        <PropertyRef Name="UserCartId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_UserCartItem_UserCartItem">
+    <End Type="DCModel.UserCartItem" Role="UserCartItem" Multiplicity="1" />
+    <End Type="DCModel.UserCartItem" Role="UserCartItem1" Multiplicity="0..1" />
+    <ReferentialConstraint>
+      <Principal Role="UserCartItem">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="UserCartItem1">
+        <PropertyRef Name="Id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityType Name="CartStatus">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" />
+    <Property Name="CartStatus1" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <NavigationProperty Name="CustomerCart" Relationship="DCModel.FK__CustomerC__CartS__2EDAF651" FromRole="CartStatus" ToRole="CustomerCart" />
+  </EntityType>
+  <EntityType Name="CustomerCart">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Guid" Nullable="false" />
+    <Property Name="BookId" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+    <Property Name="Userid" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+    <Property Name="CartStatusId" Type="Int32" />
+    <Property Name="AddedOn" Type="DateTime" Precision="3" />
+    <Property Name="UpdatedOn" Type="DateTime" Precision="3" />
+    <NavigationProperty Name="CartStatus" Relationship="DCModel.FK__CustomerC__CartS__2EDAF651" FromRole="CustomerCart" ToRole="CartStatus" />
+  </EntityType>
+  <Association Name="FK__CustomerC__CartS__2EDAF651">
+    <End Type="DCModel.CartStatus" Role="CartStatus" Multiplicity="0..1" />
+    <End Type="DCModel.CustomerCart" Role="CustomerCart" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="CartStatus">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="CustomerCart">
+        <PropertyRef Name="CartStatusId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <ComplexType Name="USP_BookDetails_Result">
+    <Property Type="String" Name="BookId" Nullable="false" MaxLength="128" />
+    <Property Type="String" Name="BookName" Nullable="true" MaxLength="1000" />
+    <Property Type="String" Name="Board" Nullable="true" />
+    <Property Type="String" Name="Catagory" Nullable="true" MaxLength="300" />
+    <Property Type="String" Name="Class" Nullable="true" />
+    <Property Type="String" Name="Subject" Nullable="true" />
+    <Property Type="String" Name="Series" Nullable="true" />
+    <Property Type="String" Name="Author" Nullable="true" MaxLength="1000" />
+    <Property Type="String" Name="ISBN" Nullable="true" MaxLength="50" />
+    <Property Type="String" Name="Image" Nullable="true" MaxLength="150" />
+    <Property Type="String" Name="Description" Nullable="true" />
+    <Property Type="Byte" Name="status" Nullable="true" />
+    <Property Type="String" Name="IPaddress" Nullable="true" MaxLength="20" />
+    <Property Type="Decimal" Name="EbookPrice" Nullable="true" Precision="18" Scale="2" />
+    <Property Type="Decimal" Name="PrintPrice" Nullable="true" Precision="18" Scale="2" />
+    <Property Type="Decimal" Name="discount" Nullable="true" Precision="10" Scale="2" />
+  </ComplexType>
+  <ComplexType Name="USP_CustomerCartDetails_Result">
+    <Property Type="Guid" Name="CartId" Nullable="false" />
+    <Property Type="String" Name="BookId" Nullable="false" MaxLength="128" />
+    <Property Type="String" Name="BookName" Nullable="true" MaxLength="1000" />
+    <Property Type="String" Name="Board" Nullable="true" />
+    <Property Type="String" Name="Catagory" Nullable="true" MaxLength="300" />
+    <Property Type="String" Name="Class" Nullable="true" />
+    <Property Type="String" Name="Subject" Nullable="true" />
+    <Property Type="String" Name="Series" Nullable="true" />
+    <Property Type="String" Name="Author" Nullable="true" MaxLength="1000" />
+    <Property Type="String" Name="ISBN" Nullable="true" MaxLength="50" />
+    <Property Type="String" Name="Image" Nullable="true" MaxLength="150" />
+    <Property Type="String" Name="Description" Nullable="true" />
+    <Property Type="Int32" Name="status" Nullable="true" />
+    <Property Type="String" Name="IPaddress" Nullable="true" MaxLength="20" />
+    <Property Type="Decimal" Name="EbookPrice" Nullable="true" Precision="18" Scale="2" />
+    <Property Type="Decimal" Name="PrintPrice" Nullable="true" Precision="18" Scale="2" />
+    <Property Type="Decimal" Name="discount" Nullable="true" Precision="10" Scale="2" />
+  </ComplexType>
+  <EntityType Name="PaymentDetails">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Guid" Nullable="false" />
+    <Property Name="OrderId" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
+    <Property Name="PaidAmount" Type="Decimal" Precision="18" Scale="0" />
+    <Property Name="UserId" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+    <Property Name="TrackingId" Type="Int64" />
+    <Property Name="BankRefNo" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+    <Property Name="OrderStatus" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+    <Property Name="FailureMessage" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="Mode" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="CardName" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+    <Property Name="CustomerCardId" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+    <Property Name="StatusCode" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+    <Property Name="StatusMessage" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="DiscountValue" Type="Decimal" Precision="18" Scale="0" />
+    <Property Name="Retry" Type="String" MaxLength="5" FixedLength="false" Unicode="true" />
+    <Property Name="ResponseCode" Type="Int32" />
+    <Property Name="TransactionDate" Type="DateTime" Precision="3" />
+    <Property Name="TransactionFees" Type="Decimal" Precision="18" Scale="0" />
+  </EntityType>
+  <EntityType Name="OrderDetails">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Guid" Nullable="false" />
+    <Property Name="OrderId" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
+    <Property Name="BookId" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
+    <Property Name="Userid" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
+    <Property Name="CartId" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
+    <Property Name="PaymentStatusId" Type="Int32" />
+    <Property Name="AddedOn" Type="DateTime" Precision="3" />
+    <Property Name="UpdatedOn" Type="DateTime" Precision="3" />
+    <NavigationProperty Name="PaymentStatus" Relationship="DCModel.FK__OrderDeta__Payme__56E8E7AB" FromRole="OrderDetails" ToRole="PaymentStatus" />
+  </EntityType>
+  <EntityType Name="PaymentStatus">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" />
+    <Property Name="PaymentStatus1" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <NavigationProperty Name="OrderDetails" Relationship="DCModel.FK__OrderDeta__Payme__56E8E7AB" FromRole="PaymentStatus" ToRole="OrderDetails" />
+    <NavigationProperty Name="Orders" Relationship="DCModel.FK__Orders__PaymentS__625A9A57" FromRole="PaymentStatus" ToRole="Orders" />
+  </EntityType>
+  <Association Name="FK__OrderDeta__Payme__56E8E7AB">
+    <End Type="DCModel.PaymentStatus" Role="PaymentStatus" Multiplicity="0..1" />
+    <End Type="DCModel.OrderDetails" Role="OrderDetails" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="PaymentStatus">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="OrderDetails">
+        <PropertyRef Name="PaymentStatusId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <ComplexType Name="GetLibraryBooks_Result">
+    <Property Type="String" Name="Id" Nullable="true" MaxLength="128" />
+    <Property Type="Int64" Name="MasterCategoryId" Nullable="true" />
+    <Property Type="String" Name="Title" Nullable="true" MaxLength="1000" />
+    <Property Type="String" Name="SlugUrl" Nullable="false" MaxLength="1" />
+    <Property Type="String" Name="Image" Nullable="true" MaxLength="150" />
+    <Property Type="String" Name="ISBN" Nullable="true" MaxLength="50" />
+    <Property Type="String" Name="Author" Nullable="true" MaxLength="1000" />
+    <Property Type="String" Name="Edition" Nullable="true" MaxLength="50" />
+    <Property Type="Decimal" Name="EbookPrice" Nullable="true" Precision="18" Scale="2" />
+    <Property Type="Decimal" Name="PrintPrice" Nullable="true" Precision="18" Scale="2" />
+    <Property Type="Int32" Name="EBookType" Nullable="true" />
+    <Property Type="Byte" Name="BookStatus" Nullable="true" />
+    <Property Type="Int32" Name="CartStatusId" Nullable="false" />
+  </ComplexType>
+  <ComplexType Name="GetAllLibraryBooks_Result">
+    <Property Type="String" Name="Id" Nullable="false" MaxLength="128" />
+    <Property Type="Int64" Name="MasterCategoryId" Nullable="true" />
+    <Property Type="String" Name="Title" Nullable="true" MaxLength="1000" />
+    <Property Type="String" Name="SlugUrl" Nullable="false" MaxLength="1" />
+    <Property Type="String" Name="Image" Nullable="true" MaxLength="150" />
+    <Property Type="String" Name="ISBN" Nullable="true" MaxLength="50" />
+    <Property Type="String" Name="Author" Nullable="true" MaxLength="1000" />
+    <Property Type="String" Name="Edition" Nullable="true" MaxLength="50" />
+    <Property Type="Decimal" Name="EbookPrice" Nullable="true" Precision="18" Scale="2" />
+    <Property Type="Decimal" Name="PrintPrice" Nullable="true" Precision="18" Scale="2" />
+    <Property Type="Int32" Name="EBookType" Nullable="true" />
+    <Property Type="String" Name="CartBookId" Nullable="false" MaxLength="128" />
+    <Property Type="String" Name="LibraryBookId" Nullable="false" MaxLength="128" />
+    <Property Type="Int32" Name="BookStatus" Nullable="false" />
+    <Property Type="Int32" Name="CartStatusId" Nullable="false" />
+  </ComplexType>
+  <ComplexType Name="GetSchoolBooks_Result">
+    <Property Type="String" Name="Id" Nullable="true" MaxLength="128" />
+    <Property Type="Int64" Name="MasterCategoryId" Nullable="true" />
+    <Property Type="String" Name="Title" Nullable="true" MaxLength="1000" />
+    <Property Type="String" Name="SlugUrl" Nullable="false" MaxLength="1" />
+    <Property Type="String" Name="Image" Nullable="true" MaxLength="150" />
+    <Property Type="String" Name="ISBN" Nullable="true" MaxLength="50" />
+    <Property Type="String" Name="Author" Nullable="true" MaxLength="1000" />
+    <Property Type="String" Name="Edition" Nullable="true" MaxLength="50" />
+    <Property Type="Decimal" Name="EbookPrice" Nullable="true" Precision="18" Scale="2" />
+    <Property Type="Decimal" Name="PrintPrice" Nullable="true" Precision="18" Scale="2" />
+    <Property Type="Int32" Name="EBookType" Nullable="true" />
+    <Property Type="Int32" Name="CartStatusId" Nullable="false" />
+  </ComplexType>
+  <EntityType Name="Orders">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Guid" Nullable="false" />
+    <Property Name="OrderId" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
+    <Property Name="Userid" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
+    <Property Name="TotalAmount" Type="Decimal" Precision="10" Scale="2" />
+    <Property Name="PaymentStatusId" Type="Int32" />
+    <Property Name="AddedOn" Type="DateTime" Precision="3" />
+    <Property Name="UpdatedOn" Type="DateTime" Precision="3" />
+    <NavigationProperty Name="PaymentStatus" Relationship="DCModel.FK__Orders__PaymentS__625A9A57" FromRole="Orders" ToRole="PaymentStatus" />
+  </EntityType>
+  <Association Name="FK__Orders__PaymentS__625A9A57">
+    <End Type="DCModel.PaymentStatus" Role="PaymentStatus" Multiplicity="0..1" />
+    <End Type="DCModel.Orders" Role="Orders" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="PaymentStatus">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Orders">
+        <PropertyRef Name="PaymentStatusId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <ComplexType Name="USP_MyOrderDetails_Result">
+    <Property Type="String" Name="BookId" Nullable="false" MaxLength="128" />
+    <Property Type="String" Name="BookName" Nullable="true" MaxLength="1000" />
+    <Property Type="String" Name="Board" Nullable="true" />
+    <Property Type="String" Name="Catagory" Nullable="true" MaxLength="300" />
+    <Property Type="String" Name="Class" Nullable="true" />
+    <Property Type="String" Name="Subject" Nullable="true" />
+    <Property Type="String" Name="Series" Nullable="true" />
+    <Property Type="String" Name="Author" Nullable="true" MaxLength="1000" />
+    <Property Type="String" Name="ISBN" Nullable="true" MaxLength="50" />
+    <Property Type="String" Name="Image" Nullable="true" MaxLength="150" />
+    <Property Type="String" Name="Description" Nullable="true" />
+    <Property Type="Byte" Name="status" Nullable="true" />
+    <Property Type="String" Name="IPaddress" Nullable="true" MaxLength="20" />
+    <Property Type="Decimal" Name="EbookPrice" Nullable="true" Precision="18" Scale="2" />
+    <Property Type="Decimal" Name="PrintPrice" Nullable="true" Precision="18" Scale="2" />
+    <Property Type="Decimal" Name="discount" Nullable="true" Precision="10" Scale="2" />
+    <Property Type="Decimal" Name="TotalAmount" Nullable="true" Precision="10" Scale="2" />
+    <Property Type="Int64" Name="trackingid" Nullable="true" />
+    <Property Type="String" Name="OrderId" Nullable="false" MaxLength="100" />
+    <Property Type="String" Name="PaymentStatus" Nullable="true" MaxLength="50" />
+  </ComplexType>
+  <ComplexType Name="USP_MyOrders_Result">
+    <Property Type="String" Name="OrderId" Nullable="false" MaxLength="100" />
+    <Property Type="Decimal" Name="TotalAmount" Nullable="true" Precision="10" Scale="2" />
+    <Property Type="Int64" Name="TrackingId" Nullable="true" />
+    <Property Type="String" Name="OrderStatus" Nullable="true" MaxLength="20" />
+    <Property Type="DateTime" Name="TransactionDate" Nullable="true" Precision="23" />
+  </ComplexType>
+</Schema>

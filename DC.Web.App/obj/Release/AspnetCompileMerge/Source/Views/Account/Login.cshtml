@@ -1,0 +1,222 @@
+﻿@using DC.Web.App.Models
+@model LoginViewModel
+@{
+    ViewBag.Title = "Log in";
+
+}
+
+
+
+@using (Html.BeginForm("Login", "Account", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { autocomplete = "off", name = "frmLogin", id = "frmLogin", @class = "form -horizontal", role = "form" }))
+{
+    @Html.AntiForgeryToken()
+
+
+    <div class="container">
+        <div class="login-form">
+            <div class="main-div">
+                <div class="panel">
+                    <p>Login </p>
+                </div>
+                <div id="Login">
+                @Html.ValidationSummary(false, "", new { @class = "small text-danger form-group" })
+                <div class="form-group">
+                    @Html.TextBoxFor(m => m.Email, new { autocomplete = "off", @class = "form-control", placeholder = "User name" })
+
+
+                </div>
+                <div class="form-group">
+                    @Html.PasswordFor(m => m.Password, new { autocomplete = "off", @class = "form-control", placeholder = Html.DisplayNameFor(model => model.Password) })
+
+                </div>
+
+
+                <div class="capcha-section">
+                    <div class="capcha-box">
+                        <div class="check-box">
+                            @Html.CheckBoxFor(m => m.NotRobot, new { onChange = "SetCaptcha()" })
+                            <label class="form-check-label" for="NotRobot">
+                                @Html.DisplayNameFor(model => model.NotRobot)
+                            </label>
+                        </div>
+
+                    </div>
+                    <div class="capcha-box form-group mb-2">
+                        @Html.TextBoxFor(t => t.CaptchaCodeText, new { autocomplete = "off", disabled = "disabled", maxlength = 5, @class = "form-control", placeholder = Html.DisplayNameFor(model => model.CaptchaCodeText) })
+                        @Html.HiddenFor(t => t.CapImageText)
+                    </div>
+
+                    <div class="capcha-box ">
+                        <img style="border:1px solid #ccc;padding:0px;" id="imgCaptcha" src="@Model.CapImage" />
+                    </div>
+
+                    <div class="capcha-box refresh-sound ">
+
+                        <button type="button" class="btn btn-default btn-1 jsrefresh" disabled title="click for refresh captcha code."><i class="fa fa-refresh"></i></button>
+                        <button type="button" class="btn btn-default  btn-2 jsplaycaptcha" disabled title="click for listen captcha code."><i class="fa fa-volume-up"></i></button>
+
+                        
+                    </div>
+
+                </div>
+
+                <div class="form-group">
+                    <button  disabled id="btnSubmit" type="submit" class="btn btn-lg btn-primary ">Log In</button>
+
+                     
+                </div>
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+    
+
+}
+@if (!string.IsNullOrWhiteSpace(ViewBag.Error))
+{
+    <h4 class="text-danger">@ViewBag.Error</h4>
+}
+
+
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    <script src="~/Scripts/Common.js"></script>
+    <script>
+
+        function leftFillNum(num, width) {
+            return num
+                .toString()
+                .padStart(width, 0)
+        }
+        var d = new Date();
+        var year = d.getFullYear()
+        var month = d.getMonth() + 1
+        var day = d.getDate();
+        var hrs = d.getHours();
+        var min = d.getMinutes();
+        var ses = d.getSeconds();
+        var dtval = leftFillNum(month, 2) + "/" + leftFillNum(day, 2) + "/" + leftFillNum(year, 2) + " " + leftFillNum(hrs, 2) + ":" + leftFillNum(min, 2) + ":" + leftFillNum(ses, 2);
+        //6/10/2019 2:20:14 PM
+        $("#dtmClient").val(dtval);
+
+        $("#CaptchaCodeText").val('@Model.CaptchaCodeText');
+        $("#Email").focus( );
+        document.getElementById("NotRobot").checked = false;
+        function SetCaptcha() {
+            var _this = document.getElementById("NotRobot");
+            $("#dvImgCaptcha button").attr('disabled', 'disabled');
+            $(".jsplaycaptcha").attr('disabled', 'disabled');
+            $(".jsrefresh").attr('disabled', 'disabled');
+            $("#CaptchaCodeText").val("");
+            $("#CaptchaCodeText").attr('disabled', 'disabled');
+            $("#btnSubmit").attr('disabled', 'disabled');
+            /*$(".body-content").css("background-color", "#f7f7f7");*/
+            if (_this.checked) {
+                $("#CaptchaCodeText").removeAttr('disabled');
+                $("#dvImgCaptcha button").removeAttr('disabled');
+                $("#btnSubmit").removeAttr('disabled');
+                $(".jsrefresh").removeAttr('disabled', 'disabled');
+                $("#CaptchaCodeText").focus();
+                //$(".body-content").css("background-color", "#f6f2f2")
+                $(".jsplaycaptcha").removeAttr('disabled', 'disabled');
+            }
+        }
+        function RefreshCaptcha(btn) {
+
+            var btnhtml = $(btn).html();
+            $(btn).html("<i class='fa fa-spinner fa-spin'></i>");
+            $(btn).attr("disabled", "disabled");
+              $.ajax({
+                        type: "POST",
+                        url: '@Url.Action("RefreshCapcha", "Account")',
+                        data: {},
+                        success: function (data) {
+                            $(btn).html(btnhtml);
+                            $(btn).removeAttr("disabled");
+                            if (data.StatusCode == 200) {
+                                $("#imgCaptcha").attr("src", data.img);
+                                $("#CapImageText").val(data.CapImageText);
+                                $(btn).html(btnhtml);
+                                $(btn).removeAttr("disabled");
+                            }
+                            else {
+                                $(btn).html(btnhtml);
+                                $(btn).removeAttr("disabled");
+                            }
+                        },
+                        error: function (data) {
+                             $(btn).html(btnhtml);
+                            $(btn).removeAttr("disabled");
+
+                        },
+                        complete: function (data) {
+                            $(btn).html(btnhtml);
+                            $(btn).removeAttr("disabled");
+                            SetCaptcha();
+                        }
+                    });
+
+        }
+        function PlayCaptcha(btn) {
+            var btnhtml = $(btn).html();
+            $(btn).html("<i class='fa fa-spinner fa-spin'></i>");
+            $(btn).attr("disabled", "disabled");
+
+              $.ajax({
+                        type: "POST",
+                        url: '@Url.Action("SpeechPlay", "Account")',
+                  success: function (data) {
+
+                      var snd = new Audio("data:audio/wav;base64," + data.base64string);
+                      snd.play();
+
+
+                            $(btn).html(btnhtml);
+                            $(btn).removeAttr("disabled");
+                        },
+                        error: function (data) {
+                             $(btn).html(btnhtml);
+                            $(btn).removeAttr("disabled");
+
+                        },
+                        complete: function (data) {
+                            $(btn).html(btnhtml);
+                            $(btn).removeAttr("disabled");
+                        }
+                    });
+
+        }
+        $(function () {
+
+             RefreshCaptcha($(".jsrefresh")[0]);
+            $(document).ajaxSend(function (event, xhr, settings) {
+                $(".jsLoading").attr("disabled", "disabled");
+            });
+            $(document).ajaxComplete(function (event, xhr, settings) {
+                $(".jsLoading").removeAttr("disabled");
+
+            });
+            $(document).on("click", ".jsrefresh", function (e) {
+
+                RefreshCaptcha(this);
+            });
+            $(document).on("click", ".jsplaycaptcha", function (e) {
+
+                PlayCaptcha(this);
+            });
+
+            $(document).on("submit", "#frmLogin", function (e) {
+
+                var btnhtml = $("#btnSubmit").html();
+                $("#btnSubmit").html("Wait.. <i class='fa fa-spinner fa-spin'></i>");
+                $("#btnSubmit").attr("disabled", "disabled");
+                AddLoader();
+            });
+        });
+    </script>
+
+}
+

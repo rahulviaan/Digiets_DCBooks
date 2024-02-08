@@ -1,0 +1,45 @@
+﻿  
+div#preloader {
+    position: fixed;
+    left: 0;
+    top: 0;
+    z-index: 99999;
+    width: 100%;
+    height: 100%;
+    overflow: visible;
+    background: #fff url('../images/preloader.gif') no-repeat center center;
+}
+
+.preloaderopacity {
+    filter: alpha(opacity=50);
+    opacity: 0.5;
+}
+.field-validation-error {
+    color: #f45c42;
+}
+
+.field-validation-valid {
+    display: none;
+}
+
+.input-validation-error {
+    border: 1px solid #f45c42;
+    background: #f2dede;
+}
+
+.validation-summary-errors {
+    color: #f45c42;
+    /*font-weight: bold;
+    font-size: 1.1em;*/
+    text-align: center;
+    border: 1px dotted #f45c42;
+    background: #f2dede;
+    padding: 5px;
+}
+.valid {
+    border: 1px solid #28a745;
+}
+.validation-summary-valid {
+    display: none;
+}
+ 

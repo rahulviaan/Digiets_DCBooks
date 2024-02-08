@@ -1,0 +1,104 @@
+﻿@using Microsoft.AspNet.Identity
+@{
+    dynamic user = HttpContext.Current.User;
+    var username = User.Identity.GetUserName();
+    var claim = ((System.Security.Claims.ClaimsIdentity)User.Identity).FindFirst("FirstName");
+    if (claim != null)
+    {
+        username = claim.Value;
+    }
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="~/favicon.png" rel="icon">
+
+    <title>Malyalam Padavali:: @ViewBag.Title</title>
+    @Scripts.Render("~/bundles/modernizr") 
+    <link href="~/Content/font-awesome.min.css" rel="stylesheet" />
+    <link href="~/Content/bootstrap.min.css" rel="stylesheet" />
+    <link href="~/Content/Site.css" rel="stylesheet" />
+    <link href="~/Content/style.css" rel="stylesheet" />
+    <link href="~/Content/Common.css" rel="stylesheet" />
+
+    @*@Styles.Render("~/Content/css")*@
+</head>
+<body>
+    <header>
+        <div class="container-fluid">
+            <div class="row flex">
+                <div class="col-lg-6">
+                  
+
+                    @if (username != null)
+                    {
+                        <a class="navbar-brand" href="@Url.Action("Index", "Dashboard", new { area = "CP" })">
+                            <img src="~/images/logo.png" class="img-responsive" width="250" alt="">
+                        </a>
+                    }
+                    else
+                    {
+                        <a class="navbar-brand" href="@Url.Action("Login", "Account")">
+                            <img src="~/images/logo.png" class="img-responsive" width="250" alt="">
+                        </a>
+                    }
+                </div>
+                <div class="col-lg-6">
+                    <div class="login-content">
+                        <a href="#" title="login"><span><i class="fa fa-user-circle-o"></i></span>Login</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+    <header>
+        <div class="container-fluid">
+            <div class="row flex">
+                <div class="col-lg-6">
+                    <div class="logo-img">
+
+                        @if (username != null)
+                        {
+                            <a class="navbar-brand" href="@Url.Action("Index", "Dashboard", new { area = "CP" })">
+                                <img src="~/images/logo.png" class="img-responsive" width="250px" alt="">
+                            </a>
+                        }
+                        else
+                        {
+                            <a class="navbar-brand" href="@Url.Action("Login", "Account")">
+                                <img src="~/images/logo.png" class="img-responsive" width="250px" alt="">
+                            </a>
+                        }
+
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <div class="login-content">
+                        <a href="@Url.Action("Login","Account",new {area="" })"> <span><i class="fa fa-user-circle-o"></i></span>Login</a>
+
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <section class="container-section">
+        @RenderBody()
+    </section>
+    <footer>
+        @{Html.RenderPartial("~/Views/Shared/ucFooter.cshtml");}
+    </footer>
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+    @RenderSection("scripts", required: false)
+    <script>
+        window.addEventListener("beforeunload", function (e) {
+            RemoveLoader();
+        });
+    </script>
+</body>
+</html>

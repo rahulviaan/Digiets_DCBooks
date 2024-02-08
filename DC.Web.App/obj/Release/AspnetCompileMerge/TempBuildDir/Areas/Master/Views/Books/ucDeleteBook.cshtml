@@ -1,0 +1,47 @@
+﻿@model DC.CustomMessage<string>
+@{
+    Layout = null;
+
+}
+<div class="col-lg-12 ">
+
+    @using (Html.BeginForm(null, null, FormMethod.Post, new { role = "form", autocomplete = "off", name = "frmDelete", id = "frmDelete", }))
+    {
+        @Html.AntiForgeryToken()
+        @Html.Hidden("DeleteId", Model.Id)
+        @Html.ValidationSummary(true)
+        <div class="form-horizontal form col-lg-12">
+
+            <div class="form-group">
+                You are about to <strong id="spDataName"> </strong> .<br />Once deleted can not undo action.
+                <h4>
+                    @Model.Message
+                </h4>
+            </div> 
+        </div>
+    }
+</div>
+<style>
+    .modal-body {
+        min-height: 130px;
+        background: #f2dede;
+    }
+
+    .modal-header {
+        background: #a94442;
+        color: #fff;
+    }
+
+    .modal-footer {
+        text-align: center;
+    }
+</style>
+@Scripts.Render("~/bundles/jqueryval")
+<script>
+    var title = $(".modal-title");
+    var header = $(".modal-header");
+    var html = '<h4 class="modal-title">' + title[0].innerHTML + '</h4> <button type="button" class="bootbox-close-button close" onclick=" bootbox.hideAll();" aria-hidden="true">×</button>';
+    $(header[0]).html(html);
+    
+</script>
+

@@ -1,0 +1,4 @@
+﻿
+From regedit 
+
+Computer\HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Office\16.0\Common

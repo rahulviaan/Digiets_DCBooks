@@ -1,0 +1,750 @@
+﻿@model DC.BookModel
+@{
+    Layout = null;
+    var indx = 1;
+    var lstBookType = DC.Web.App.Models.EnumHelper.ToSelectLists<DC.BookType>().Where(m => m.Value != "-1");
+    var imgpath = "/images/0image.jpeg";
+
+    var subjectid = Model.MasterSubjectId == 0 ? "" : Model.MasterSubjectId.ToString();
+    var boardid = Model.MasterBoardId == 0 ? "" : Model.MasterBoardId.ToString();
+    var classid = Model.MasterClassId == 0 ? "" : Model.MasterClassId.ToString();
+    var seriesid = Model.MasterSeriesId == 0 ? "" : Model.MasterSeriesId.ToString();
+
+
+    var subjects = new Database.Repository.MasterRepository.SubjectRepository().SelectList();
+    var lstsubjects = new List<SelectListItem>();
+    if (subjects != null && subjects.Count() > 0)
+    {
+        lstsubjects = (from item in subjects
+                       select new SelectListItem
+                       {
+                           Text = item.Title,
+                           Value = item.Id.ToString(),
+                       }).ToList();
+    }
+
+    var boards = new Database.Repository.MasterRepository.BoardRepository().SelectList();
+    var lstboards = new List<SelectListItem>();
+    if (boards != null && boards.Count() > 0)
+    {
+        lstboards = (from item in boards
+                     select new SelectListItem
+                     {
+                         Text = item.Title,
+                         Value = item.Id.ToString(),
+                     }).ToList();
+    }
+
+    var classes = new Database.Repository.MasterRepository.ClassRepository().SelectList();
+    var lstclasses = new List<SelectListItem>();
+    if (classes != null && classes.Count() > 0)
+    {
+        lstclasses = (from item in classes
+                      select new SelectListItem
+                      {
+                          Text = item.Title,
+                          Value = item.Id.ToString(),
+                      }).ToList();
+    }
+
+}
+<style>
+    .tblfile {
+        border: 1px #ccc dotted;
+        margin-bottom: 10px;
+        background: #ccc;
+    }
+
+    .tblfile tr td {
+            padding: 5px;
+    }
+
+    .csstderror {
+        background-color: #fcb2b2;
+    }
+
+    .csstderror > .btn-default {
+            background-color: #efdede;
+    }
+
+    .cssDelete {
+        cursor: pointer;
+        color: #dc3545 !important;
+        border: 1px dotted #dc3545;
+        padding: 1px 10px 1px 10px;
+        border-radius: 5px;
+    }
+
+        .cssDelete:hover {
+            color: #fff !important;
+            background: #dc3545;
+        }
+
+    .btn-default:hover {
+        background: #efdede;
+    }
+
+    .csslast {
+        margin-top: 15px;
+    }
+</style>
+<div class="col-lg-12">
+
+    @using (Html.BeginForm(null, null, FormMethod.Post, new { role = "form", autocomplete = "off", name = "frmAddBook", id = "frmAddBook", }))
+    {
+        @Html.AntiForgeryToken()
+        @Html.HiddenFor(m => m.Id)
+        @Html.HiddenFor(m => m.MasterCategoryId)
+        @Html.HiddenFor(m => m.CreateDate)
+        @Html.Hidden("Status", Model.Status.GetHashCode())
+        @Html.HiddenFor(m => m.IPaddress)
+
+        @*@Html.HiddenFor(m => m.Image)*@
+        @Html.HiddenFor(m => m.DisplayOrder)
+        @Html.HiddenFor(m => m.UpdateDate)
+        @Html.ValidationSummary(true)
+       
+        <div class="row">
+            <div class="col-lg-12">
+             <div class="form-group">
+                <h4 id="h3Title">Create New Book</h4>
+            </div>
+            </div>
+            <div class="col-lg-12">
+               <div class="form-group text-danger" id="dvMessage"></div>
+            </div>
+        </div>
+        <div class="row">
+                <div class="col-lg-6">
+                    <div class="form-group has-feedback " title="* @Html.DisplayNameFor(model => model.vTitle)">
+                        @Html.LabelFor(m => m.vTitle) <strong title="Required." class="text-danger ">*&nbsp; </strong> @Html.ValidationMessageFor(t => t.vTitle, "", new { @class = "small text-danger pull-right" })
+                        @Html.TextBoxFor(t => t.vTitle, new { @class = "form-control", @placeholder = Html.DisplayNameFor(model => model.vTitle) })
+                        <span class="text-danger fa fa-star-o form-control-feedback"></span>
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <div class="  has-feedback form-group" title="* @Html.DisplayNameFor(model => model.Author)">
+                        @Html.LabelFor(m => m.Author) <strong title="Required." class="text-danger ">*&nbsp; </strong> @Html.ValidationMessageFor(t => t.Author, "", new { @class = "small text-danger pull-right" })
+                        @Html.TextBoxFor(t => t.Author, new { @class = "form-control", @placeholder = Html.DisplayNameFor(model => model.Author) })
+                        <span class="text-danger fa fa-star-o form-control-feedback"></span>
+                    </div>
+                </div>
+        </div>
+        <div class="row">
+                <div class="col-lg-3">
+                    <div class="has-feedback form-group" title="* @Html.DisplayNameFor(model => model.MasterSubjectId)">
+                        @Html.LabelFor(m => m.MasterSubjectId) <strong title="Required." class="text-danger ">*&nbsp; </strong> @Html.ValidationMessageFor(t => t.MasterSubjectId, "", new { @class = "small text-danger pull-right" })
+                        @Html.DropDownListFor(m => m.MasterSubjectId, lstsubjects, "Select Subject", new { onchange = "FillSeriesAdd('#MasterSeriesId')", @class = "form-control" })
+
+                        <span class="text-danger fa fa-star-o form-control-feedback"></span>
+                    </div>
+                </div>
+                <div class="col-lg-3">
+                    <div class="  has-feedback form-group" title="* @Html.DisplayNameFor(model => model.MasterSeriesId)">
+                        @Html.LabelFor(m => m.MasterSeriesId) <strong title="Required." class="text-danger ">*&nbsp; </strong> @Html.ValidationMessageFor(t => t.MasterSeriesId, "", new { @class = "small text-danger pull-right" })
+                        @Html.DropDownListFor(m => m.MasterSeriesId, Enumerable.Empty<SelectListItem>(), "Select Series", new { @class = "form-control" })
+                        <span class="text-danger fa fa-star-o form-control-feedback"></span>
+                    </div>
+
+                </div>
+                <div class="col-lg-3">
+                    <div class="  has-feedback form-group" title="* @Html.DisplayNameFor(model => model.MasterClassId)">
+                        @Html.LabelFor(m => m.MasterClassId) <strong title="Required." class="text-danger ">*&nbsp; </strong> @Html.ValidationMessageFor(t => t.MasterClassId, "", new { @class = "small text-danger pull-right" })
+                        @Html.DropDownListFor(m => m.MasterClassId, lstclasses, "Select Class", new { @class = "form-control" })
+                        <span class="text-danger fa fa-star-o form-control-feedback"></span>
+                    </div>
+
+                </div>
+                <div class="col-lg-3">
+                    <div class="  has-feedback form-group" title="* @Html.DisplayNameFor(model => model.MasterBoardId)">
+                        @Html.LabelFor(m => m.MasterBoardId) <strong title="Required." class="text-danger ">*&nbsp; </strong> @Html.ValidationMessageFor(t => t.MasterBoardId, "", new { @class = "small text-danger pull-right" })
+                        @Html.DropDownListFor(m => m.MasterBoardId, lstboards, "Select Board", new { @class = "form-control" })
+                        <span class="text-danger fa fa-star-o form-control-feedback"></span>
+                    </div>
+                </div>
+        </div>
+        <div class="row">
+                <div class="col-lg-3">
+                    <div class="  has-feedback form-group" title="* @Html.DisplayNameFor(model => model.EbookPrice)">
+                        @Html.LabelFor(m => m.EbookPrice) <strong title="Required." class="text-danger ">*&nbsp; </strong> @Html.ValidationMessageFor(t => t.EbookPrice, "", new { @class = "small text-danger pull-right" })
+                        @Html.TextBoxFor(t => t.EbookPrice, new { @class = "form-control", @placeholder = Html.DisplayNameFor(model => model.EbookPrice) })
+                        <span class="text-danger fa fa-star-o form-control-feedback"></span>
+                    </div>
+                </div>
+                <div class="col-lg-3">
+                    <div class="  has-feedback form-group" title="* @Html.DisplayNameFor(model => model.PrintPrice)">
+                        @Html.LabelFor(m => m.PrintPrice) <strong title="Required." class="text-danger ">*&nbsp; </strong> @Html.ValidationMessageFor(t => t.PrintPrice, "", new { @class = "small text-danger pull-right" })
+                        @Html.TextBoxFor(t => t.PrintPrice, new { @class = "form-control", @placeholder = Html.DisplayNameFor(model => model.PrintPrice) })
+                        <span class="text-danger fa fa-star-o form-control-feedback"></span>
+                    </div>
+
+                </div>
+                <div class="col-lg-3">
+                    <div class="form-group ">
+                        @Html.LabelFor(m => m.Discount)   @Html.ValidationMessageFor(t => t.Discount, "", new { @class = "small text-danger pull-right" })
+                        @Html.TextBoxFor(t => t.Discount, new { @class = "form-control", @placeholder = Html.DisplayNameFor(model => model.Discount) })
+                    </div>
+
+                </div>
+                <div class="col-lg-3">
+                    <div class="  has-feedback form-group" title="* @Html.DisplayNameFor(model => model.ISBN)">
+                        @Html.LabelFor(m => m.ISBN) <strong title="Required." class="text-danger ">*&nbsp; </strong> @Html.ValidationMessageFor(t => t.ISBN, "", new { @class = "small text-danger pull-right" })
+                        @Html.TextBoxFor(t => t.ISBN, new { @class = "form-control", @placeholder = Html.DisplayNameFor(model => model.ISBN) })
+                        <span class="text-danger fa fa-star-o form-control-feedback"></span>
+                    </div>
+                </div>
+        </div>
+        <div class="row">
+                <div class="col-lg-6">
+                    <div class="form-group">
+                        @Html.LabelFor(m => m.PageTitle) <strong title="Required." class="text-danger ">&nbsp; </strong> @Html.ValidationMessageFor(t => t.PageTitle, "", new { @class = "small text-danger pull-right" })
+                        @Html.TextBoxFor(t => t.PageTitle, new { @class = "form-control", @placeholder = Html.DisplayNameFor(model => model.PageTitle) })
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <div class="form-group">
+                        @Html.LabelFor(m => m.MetaDescription) <strong title="Required." class="text-danger ">&nbsp; </strong> @Html.ValidationMessageFor(t => t.MetaDescription, "", new { @class = "small text-danger pull-right" })
+                        @Html.TextBoxFor(t => t.MetaDescription, new { @class = "form-control", @placeholder = Html.DisplayNameFor(model => model.MetaDescription) })
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <div class="form-group">
+                        @Html.LabelFor(m => m.OgTitle) <strong title="Required." class="text-danger ">&nbsp; </strong> @Html.ValidationMessageFor(t => t.OgTitle, "", new { @class = "small text-danger pull-right" })
+                        @Html.TextBoxFor(t => t.OgTitle, new { @class = "form-control", @placeholder = Html.DisplayNameFor(model => model.OgTitle) })
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <div class="form-group">
+                        @Html.LabelFor(m => m.KeyWords) <strong title="Required." class="text-danger ">&nbsp; </strong> @Html.ValidationMessageFor(t => t.KeyWords, "", new { @class = "small text-danger pull-right" })
+                        @Html.TextBoxFor(t => t.KeyWords, new { @class = "form-control", @placeholder = Html.DisplayNameFor(model => model.KeyWords) })
+                    </div>
+                </div>
+        </div>
+        <div class="row">
+                <div class="col-lg-6">
+                    <div class="form-group">
+                        @Html.LabelFor(m => m.OgDescription) <strong title="Required." class="text-danger ">&nbsp; </strong> @Html.ValidationMessageFor(t => t.OgDescription, "", new { @class = "small text-danger pull-right" })
+                        @Html.TextBoxFor(t => t.OgDescription, new { @class = "form-control", @placeholder = Html.DisplayNameFor(model => model.OgDescription) })
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <div class="form-group">
+                        @Html.LabelFor(m => m.TwitterTitle) <strong title="Required." class="text-danger ">&nbsp; </strong> @Html.ValidationMessageFor(t => t.TwitterTitle, "", new { @class = "small text-danger pull-right" })
+                        @Html.TextBoxFor(t => t.TwitterTitle, new { @class = "form-control", @placeholder = Html.DisplayNameFor(model => model.TwitterTitle) })
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <div class="form-group">
+                        @Html.LabelFor(m => m.TwitterDescription) <strong title="Required." class="text-danger ">&nbsp; </strong> @Html.ValidationMessageFor(t => t.TwitterDescription, "", new { @class = "small text-danger pull-right" })
+                        @Html.TextBoxFor(t => t.TwitterDescription, new { @class = "form-control", @placeholder = Html.DisplayNameFor(model => model.TwitterDescription) })
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <div class="form-group" style="padding:15px;">
+                        <label class="form-check-label ">
+                            <input class="form-check-input" type="checkbox" id="Pbook" value="0" checked disabled>
+                            @Html.DisplayNameFor(m => m.Pbook)
+                        </label>
+                        <label class="form-check-label">
+                            <input class="form-check-input" type="checkbox" id="Ebook" value="1" checked>
+                            @Html.DisplayNameFor(m => m.Ebook)
+                        </label>
+                        <label class="form-check-label ">
+                            <input class="form-check-input" type="checkbox" id="Audio" value="2">
+                            @Html.DisplayNameFor(m => m.Audio)
+                        </label>
+                    </div>
+
+
+                </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-8">
+                <div class="form-group">
+                    @Html.TextAreaFor(t => t.Description, new { @class = "form-control", @placeholder = Html.DisplayNameFor(model => model.Description) })
+                </div>
+            </div>
+
+            <div class="col-lg-4">
+                <div class="form-group">
+                    <table width="100%" class="tblfile">
+                        <tr>
+                            <td class="bg-light text-center" id="tdFileCoverImage">
+                                @if (string.IsNullOrWhiteSpace(Model.FileCoverImage))
+                                {
+
+                                    imgpath = "/images/0image.jpeg";
+                                    <label class="jsloader btn btn-default btn-block " style="padding:0px;" for="FileCoverImage">
+                                        <input data-id="@Model.Id" type="file" accept="image/*" onchange="UploadImageSingle(event,this)" name="FileCoverImage" id="FileCoverImage" class="hidden jsloader jsFileUpload inputfile">
+                                        <img style="max-height: 100px; max-width: 80px; " onerror="SetImage(this,'/images/0image.jpeg')" id="imgFileCoverImage" src="@imgpath" class="jsImg img-thumbnail" />
+                                        <br />  <span class="text-danger fa fa-star-o  "></span> @Html.DisplayNameFor(m => m.FileCoverImage)
+                                        @Html.ValidationMessageFor(m => m.FileCoverImage, "", new { @class = "small text-danger  " })
+
+                                    </label>
+
+                                    <a data-id="@Model.Id" data-dbimg="@Model.FileCoverImage" data-file="FileCoverImage" id="btnFileCoverImage" data-img="imgFileCoverImage" onclick="return RemoveImage(this,'FileCoverImage')" class="  jsDeleteImage ">  </a>
+
+
+                                }
+                                else
+                                {
+
+                                    imgpath = "/Attatchments/Book/th_" + Model.FileCoverImage;
+                                    <label class="jsloader btn   btn-block" for="FileCoverImage">
+                                        <input data-id="@Model.Id" type="file" accept="image/*" onchange="UploadImageSingle(event,this)" name="FileCoverImage" id="FileCoverImage" class="hidden jsloader jsFileUpload inputfile">
+                                        <img style="max-height: 100px; max-width: 80px; " onerror="SetImage(this,'/images/0image.jpeg')" id="imgFileCoverImage" src="@imgpath" class="jsImg img-thumbnail" />
+                                        <br />
+                                        <span class="text-danger fa fa-star-o  "></span>  @Html.DisplayNameFor(m => m.FileCoverImage)
+                                        @Html.ValidationMessageFor(m => m.FileCoverImage, "", new { @class = "small text-danger  " })
+                                    </label>
+                                    <a data-id="@Model.Id" data-dbimg="@Model.FileCoverImage" data-file="FileCoverImage" id="btnFileCoverImage" data-img="imgFileCoverImage" onclick="return RemoveImage(this,'FileCoverImage')" class="cssDelete  jsDeleteImage ">  <i class="fa fa-trash"></i>  &nbsp; Delete</a>
+
+                                }
+                            </td>
+
+                        </tr>
+                        <tr>
+                            <td class="bg-light text-center" id="tdFileBannerImage">
+
+
+                                @if (string.IsNullOrWhiteSpace(Model.FileBannerImage))
+                                {
+
+                                    imgpath = "/images/0image.jpeg";
+                                    <label class="jsloader btn btn-default btn-block " style="padding:0px;" for="FileBannerImage">
+                                        <input data-id="@Model.Id" type="file" accept="image/*" onchange="UploadImageSingle(event,this)" name="FileBannerImage" id="FileBannerImage" class="hidden jsloader jsFileUpload inputfile">
+                                        <img style="max-height: 100px; max-width: 80px;" onerror="SetImage(this,'/images/0image.jpeg')" id="imgFileBannerImage" src="@imgpath" class="jsImg img-thumbnail" />
+                                        <br />  <span class="text-danger fa fa-star-o  "></span> @Html.DisplayNameFor(m => m.FileBannerImage)
+                                        @Html.ValidationMessageFor(m => m.FileBannerImage, "", new { @class = "small text-danger  " })
+                                    </label>
+                                    <a data-id="@Model.Id" data-dbimg="@Model.FileBannerImage" data-file="FileBannerImage" id="btnFileBannerImage" data-img="imgFileBannerImage" onclick="return RemoveImage(this,'FileBannerImage')" class="  jsDeleteImage ">  </a>
+                                }
+                                else
+                                {
+                                    imgpath = "/Attatchments/Book/th_" + Model.FileBannerImage;
+                                    <label class="jsloader btn btn-default btn-block" for="FileBannerImage">
+                                        <input data-id="@Model.Id" type="file" accept="image/*" onchange="UploadImageSingle(event,this)" name="FileBannerImage" id="FileBannerImage" class="hidden jsloader jsFileUpload inputfile">
+                                        <img style="max-height: 100px; max-width: 80px; " onerror="SetImage(this,'/images/0image.jpeg')" id="imgFileBannerImage" src="@imgpath" class="jsImg img-thumbnail" />
+                                        <br />
+                                        <span class="text-danger fa fa-star-o  "></span>  @Html.DisplayNameFor(m => m.FileBannerImage)
+                                        @Html.ValidationMessageFor(m => m.FileBannerImage, "", new { @class = "small text-danger  " })
+                                    </label>
+                                    <a data-id="@Model.Id" data-dbimg="@Model.FileBannerImage" data-file="FileBannerImage" id="btnFileBannerImage" data-img="imgFileBannerImage" onclick="return RemoveImage(this,'FileBannerImage')" class="cssDelete  jsDeleteImage ">  <i class="fa fa-trash"></i>  &nbsp; Delete</a>
+                                }
+                            </td>
+
+                        </tr>
+
+                    </table>
+                </div>
+            </div>
+            
+            <div class="col-lg-12 text-center">
+                <div class="form-group">
+                    <a href="javascript:void(0);" id="btnCancel" class="btn btn-default btn-lg" onclick="CancelAdd()"> Cancel</a>
+                    @if (!string.IsNullOrWhiteSpace(Model.Id))
+                    {
+                        <button id="btnSubmit" type="submit" class="btn btn-lg btn-primary ">Update Book</button>
+
+                    }
+                    else
+                    {
+                        <button id="btnSubmit" type="submit" class="btn btn-primary btn-lg">Create Book</button>}
+                </div>
+
+
+
+            </div>
+
+        </div>
+ }
+
+</div>
+
+@Scripts.Render("~/bundles/jqueryval")
+<script src="~/Scripts/tinymce/tinymce.min.js"></script>
+<script>
+
+     var FileCoverImage = '@Model.FileCoverImage'
+     var FileBannerImage = '@Model.FileBannerImage'
+    function ValidateForm(obj) {
+
+        var IsValid = true;
+        $("span[data-valmsg-for='FileCoverImage']").removeClass("field-validation-valid");
+        $("span[data-valmsg-for='FileCoverImage']").removeClass("field-validation-error");
+        $("span[data-valmsg-for='FileCoverImage']").html('');
+        $("#tdFileCoverImage").removeClass("csstderror");
+        $("#tdFileCoverImage").addClass("bg-light");
+        if (FileCoverImage == null || FileCoverImage == "") {
+            $("span[data-valmsg-for='FileCoverImage']").removeClass("field-validation-valid");
+            $("span[data-valmsg-for='FileCoverImage']").addClass("field-validation-error");
+            $("span[data-valmsg-for='FileCoverImage']").html('<span id="Image-error" class="">[*Required]</span>');
+            $("#tdFileCoverImage").addClass("csstderror");
+            $("#tdFileCoverImage").removeClass("bg-light");
+            IsValid = false;
+        }
+
+        if ($("#frmAddBook").valid() && IsValid) {
+            return true;
+        }
+        else {
+            var input = $('.input-validation-error:first');
+            if (input) {
+                input.focus();
+            }
+            return false;
+        }
+    }
+    function UploadImageSingle(evt, objFile) {
+        var imageType = /image.*/;
+        var selectedFile = objFile.files[0];
+        if (!selectedFile.type.match(imageType)) {
+            $.toaster({ priority: 'danger', title: 'Error', message: '* You are uploading invalid image file type.' });
+            return false;
+        }
+        var id = objFile.getAttribute("id")
+        $("span[data-valmsg-for='"+id+"']").removeClass("field-validation-valid");
+        $("span[data-valmsg-for='"+id+"']").removeClass("field-validation-error");
+        $("span[data-valmsg-for='" + id + "']").html('');
+
+        $("#td" + id +"").removeClass("csstderror");
+        switch (id) {
+            case "FileCoverImage":
+                FileCoverImage = selectedFile;
+                $("#tdFileCoverImage").addClass("bg-light");
+                break;
+            case "FileBannerImage":
+                FileBannerImage = selectedFile;
+                $("#tdFileBannerImage").addClass("bg-light");
+                break;
+        }
+        $("#" + id + "").attr("type", "");
+        ShowImage(selectedFile, id);
+    }
+    function ShowImage(selectedFile, inputid) {
+        if (selectedFile) {
+            var imageType = /image.*/;
+            var ctrlimg = "img" + inputid;
+            var btn = "#btn" + inputid;
+            if (selectedFile.type.match(imageType)) {
+                var _URL = window.URL || window.webkitURL;
+                img = new Image();
+                img.onload = function () {
+                    document.getElementById(ctrlimg).src = this.src;
+                    $(btn).html(" <i class='fa fa-trash'></i>&nbsp; Delete ");
+                    $(btn).addClass(" text-center cssDelete");
+                    //imageHeight = this.height;
+                    //imageWidth = this.width;
+                };
+                img.onerror = function () {
+                    $.toaster({ priority: 'danger', title: 'Error', message: '* You are uploading invalid image file type.' });
+                    return false;
+                };
+                img.src = _URL.createObjectURL(selectedFile);
+                return false;
+            }
+            else {
+                $.toaster({ priority: 'danger', title: 'Error', message: '* You are uploading invalid image file type.' });
+            }
+        }
+    }
+    function RemoveImage(ctrl, title) {
+        deletectrl = ctrl;
+        var file = $(ctrl).attr("data-file");
+        var img = $(ctrl).attr("data-img");
+        var dbimg = $(ctrl).attr("data-dbimg");
+        var id = $(ctrl).attr("data-id");
+
+        $("#toaster").remove();
+        if (id == "" || dbimg=="") {
+            $("#" + img + "").attr("src", "/images/0image.jpeg");
+            $("#btn" + file).html("");
+            $("#btn" + file).removeClass("cssDelete");
+            $("#" + file + "").attr("type", "file");
+            switch (file) {
+                case "FileCoverImage":
+                    FileCoverImage = null;
+                    break;
+                case "FileBannerImage":
+                    FileBannerImage = null;
+                    break;
+            }
+            return;
+        }
+        bootbox.dialog({
+            title: "<style> .modal-footer {   text-align:center;}  .modal-body {    min-height: 100px;       background: #f2dede;    }.modal-header { background: #a94442;color: #fff; }</style><i class='fa fa-trash'>  </i> | Delete " + title + "",
+            message: '<div class="row"><div class="col-lg-12"><p class="text-center">Are you sure want to delete  <b>' + title + '</b> once deleted can not be undo ?</p></div></div>',
+            closeButton: true,
+            buttons: {
+                cancel: {
+                    className: 'btn-sm btn-outline-primary',
+                    label: '<i class="fa fa-times"></i> Cancel'
+                },
+                confirm: {
+                    className: 'btn-sm btn-danger jsConfirmDelete',
+                    label: '<i class="fa fa-check"></i> Confirm',
+                    callback: function () {
+                        $.ajax({
+                            type: 'POST',
+                            url: '@Url.Action("RemoveImageFile", "Books", new { area = "Master" })',
+                            data: { Id: id, Abbr: file },
+                            dataType: "json",
+                            success: function (data) {
+                                if (data.StatusCode == 200) {
+                                    $.toaster({ priority: 'success', title: "Success", message: data.Message });
+                                    HidePopup();
+                                    RemoveLoader();
+                                    $("#" + img + "").attr("src", "/images/0image.jpeg");
+                                    $("#btn" + file).html("");
+                                    $("#btn" + file).html("");
+                                    $("#btn" + file).attr("data-id","");
+                                    $("#" + file + "").attr("type", "file");
+                                    switch (file) {
+                                        case "FileCoverImage":
+                                            FileCoverImage = null;
+                                            break;
+                                        case "FileBannerImage":
+                                            FileBannerImage = null;
+                                            break;
+                                    }
+
+                                }
+                                else {
+                                    $.toaster({ priority: 'danger', title: "Error", message: data.Message });
+                                    RemoveLoader();
+                                }
+                            },
+                            complete: function (data) {
+                                RemoveLoader();
+                            },
+                            error: function (data) {
+                                RemoveLoader();
+                            }
+                        });
+
+                    }
+                }
+
+            }
+        });
+        var title = $(".modal-title");
+        var header = $(".modal-header");
+        var html = '<h4 class="modal-title">' + title[0].innerHTML + '</h4> <button type="button" class="bootbox-close-button close" onclick=" bootbox.hideAll();" aria-hidden="true">×</button>';
+        $(header[1]).html(html);
+
+    }
+    function AddBookInDB (e) {
+        $("#toaster").html("");
+        var isvalid = ValidateForm();
+        if (!isvalid) {
+            e.preventDefault();
+            $.toaster({ priority: 'danger', title: " Error! ", message: "Please fill all mandatory fileds." });
+            return false;
+        }
+        AddLoader();
+        var btnhtml = $("#btnSubmit").html();
+        $("#btnSubmit").html("Wait.. <i class='fa fa-spinner fa-spin'></i>");
+        $("#btnSubmit").attr("disabled", "disabled");
+        e.preventDefault();
+        var dataString = new FormData();
+
+        var Id = $.trim($("#Id").val());
+        var MasterCategoryId = $.trim($("#MasterCategoryId").val());
+        var CeateDate = $.trim($("#CeateDate").val());
+        var Status = $.trim($("#Status").val());
+        var IPaddress = $.trim($("#IPaddress").val());
+        var Image = $.trim($("#Image").val());
+        var DisplayOrder = $.trim($("#DisplayOrder").val());
+        var UpdateDate = $.trim($("#UpdateDate").val());
+        var Title = $.trim($("#vTitle").val());
+
+        var Description = $.trim($("#Description").val());
+
+        dataString.append("Id", Id);
+        dataString.append("MasterCategoryId", MasterCategoryId);
+        dataString.append("CeateDate", CeateDate);
+        dataString.append("Status", Status);
+        dataString.append("IPaddress", IPaddress);
+        dataString.append("DisplayOrder", DisplayOrder);
+        dataString.append("UpdateDate", UpdateDate);
+        dataString.append("Title", Title);
+        dataString.append("vTitle", Title);
+
+        dataString.append("Description", Description);
+        dataString.append("Image", Image);
+
+        var Author = $.trim($("#Author").val());
+        var ISBN  = $.trim($("#ISBN ").val());
+        var EbookPrice = $.trim($("#EbookPrice").val());
+        if (isNaN(EbookPrice)) {
+            EbookPrice = 0;
+        }
+        var PrintPrice = $.trim($("#PrintPrice").val());
+        if (isNaN(PrintPrice)) {
+            PrintPrice = 0;
+        }
+
+        var Discount = $.trim($("#Discount").val());
+        if (isNaN(Discount)) {
+            Discount = 0;
+        }
+        var PageTitle = $.trim($("#PageTitle").val());
+        var MetaDescription = $.trim($("#MetaDescription").val());
+        var OgTitle = $.trim($("#OgTitle").val());
+        var OgDescription = $.trim($("#OgDescription").val());
+        var TwitterTitle = $.trim($("#TwitterTitle").val());
+        var TwitterDescription = $.trim($("#TwitterDescription").val());
+        var KeyWords = $.trim($("#KeyWords").val());
+
+        var MasterSubjectId = $.trim($("#MasterSubjectId").val());
+        var MasterSeriesId = $.trim($("#MasterSeriesId").val());
+        var MasterClassId = $.trim($("#MasterClassId").val());
+        var MasterBoardId = $.trim($("#MasterBoardId").val());
+
+
+        var Pbook = document.getElementById("Pbook").checked ? 1 : 0;
+        var Ebook = document.getElementById("Ebook").checked ? 1 : 0;
+        var Audio = document.getElementById("Audio").checked ? 1 : 0;
+
+
+        var MasterSubjectId = $.trim($("#MasterSubjectId").val());
+        var MasterSeriesId = $.trim($("#MasterSeriesId").val());
+        var MasterClassId = $.trim($("#MasterClassId").val());
+        var MasterBoardId = $.trim($("#MasterBoardId").val());
+
+        dataString.append("MasterSubjectId", MasterSubjectId);
+        dataString.append("MasterSeriesId", MasterSeriesId);
+        dataString.append("MasterClassId", MasterClassId);
+        dataString.append("MasterBoardId", MasterBoardId);
+
+        dataString.append("Author", Author);
+        dataString.append("Pbook", Pbook);
+        dataString.append("Ebook", Ebook);
+        dataString.append("Audio", Audio);
+        dataString.append("ISBN", ISBN);
+        dataString.append("EbookPrice", EbookPrice);
+        dataString.append("PrintPrice", PrintPrice);
+        dataString.append("Discount", Discount);
+        dataString.append("PageTitle", PageTitle);
+        dataString.append("MetaDescription", MetaDescription);
+        dataString.append("OgTitle", OgTitle);
+        dataString.append("OgDescription", OgDescription);
+        dataString.append("TwitterTitle", TwitterTitle);
+        dataString.append("TwitterDescription", TwitterDescription);
+        dataString.append("KeyWords", KeyWords);
+        dataString.append("FileCoverImage", FileCoverImage);
+        dataString.append("FileBannerImage", FileBannerImage);
+
+        $.ajax({
+            url: '@Url.Action("AddBook", "Books", new {area="Master" })',  //Server script to process data
+            type: 'POST',
+            xhr: function () {  // Custom XMLHttpRequest
+                var myXhr = $.ajaxSettings.xhr();
+                if (myXhr.upload) { // Check if upload property exists
+                }
+                return myXhr;
+            },
+            //Ajax events
+            success: function (data) {
+                if (data.StatusCode == 200) {
+                    files = [];
+                    $.toaster({ priority: 'success', title: Title, message: data.Message });
+                    FillData();
+                    CancelAdd();
+                    RemoveLoader();
+                }
+                else {
+
+                    $("span[data-valmsg-for='Image']").removeClass("field-validation-valid");
+                    $("span[data-valmsg-for='Image']").addClass("field-validation-error");
+                    $("span[data-valmsg-for='Image']").html('<span id="Image-error" class="">' + data.Message+'</span>');
+                    $.toaster({ priority: 'danger', title: " Error! ", message: data.Message });
+                    RemoveLoader();
+                }
+            },
+            error: function (data) {
+                $("#btnSubmit").html(btnhtml);
+                $("#btnSubmit").removeAttr("disabled");
+                $.toaster({ priority: 'danger', title: " Error! ", message: "Some error occurred please try later."});
+                RemoveLoader();
+            },
+            complete: function (data) {
+                $("#btnSubmit").html(btnhtml);
+                $("#btnSubmit").removeAttr("disabled");
+                RemoveLoader();
+            },
+            data: dataString,
+            cache: false,
+            contentType: false,
+            processData: false
+        });
+    }
+
+
+    function FillSeriesAdd(ddn) {
+             var SubjectId = $.trim($("#MasterSubjectId option:selected").val());
+            SubjectId = $.trim(SubjectId) == "" ? 0 : SubjectId;
+            if (SubjectId == 0 ) {
+                $(ddn).html('<option disabled="disabled" value="">Subject not found.</option>');
+                return ;
+            }
+            var selecttext = "Select Series";
+            $(ddn).html('<option disabled="disabled" value="">Please wait...</option>');
+
+            var requrl = '@Url.Action("Gets", "Dashboard", new {area="Series"})';
+            $.ajax({
+                type: 'POST',
+                 data: {SubjectId:SubjectId  },
+                url: requrl,
+                dataType: "json",
+                success: function (data) {
+                    if (data.StatusCode == 200) {
+                        var option = "<option value=''>" + selecttext + "</option>";
+                        $.each(data.results, function () {
+                             option += '<option value=' + this.Id + '>' + this.Title + '</option>'
+                        });
+                        if (data.results.length > 0)
+                        {
+                            $(ddn).html(option);
+                            $(ddn).val('@seriesid')
+                        }
+                    }
+                    else {
+                        if (data.Message != "") {
+                            $(ddn).html('<option disabled="disabled" value="">' + data.Message+'</option>');
+                        }
+                        else {
+                            $(ddn).html('<option disabled="disabled" value="">Data not found try agian.</option>');
+                        }
+                    }
+                },
+                complete: function (data) {
+
+                },
+                error: function (data) {
+                    $(ddn).html('<option disabled="disabled" value="">Some error occured try later.</option>');
+
+                }
+            });
+        }
+    $(function () {
+        FillSeriesAdd("#MasterSeriesId")
+        tinyMCE.init({
+                theme_advanced_toolbar_location: "bottom",
+                selector: "#Description",
+                theme: "modern",
+                plugins: [
+                    "advlist autolink lists link image charmap print preview hr anchor pagebreak",
+                    "searchreplace wordcount visualblocks visualchars code fullscreen",
+                    "insertdatetime media nonbreaking save table contextmenu directionality",
+                    "emoticons template paste textcolor colorpicker textpattern imagetools"
+                ],
+                toolbar1: "insertfile undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent  | forecolor backcolor ",
+                image_advtab: true,
+                templates: [
+                    { title: 'Book 1', content: 'Book 1' },
+                    { title: 'Book 2', content: 'Book 2' }
+                ]
+            });
+    })
+</script>

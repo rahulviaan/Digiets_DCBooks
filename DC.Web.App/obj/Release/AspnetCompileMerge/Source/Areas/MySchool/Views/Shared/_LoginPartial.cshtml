@@ -1,0 +1,141 @@
+﻿@using Microsoft.AspNet.Identity
+@if (Request.IsAuthenticated)
+{
+    dynamic user = HttpContext.Current.User;
+    var username = User.Identity.GetUserName();
+    var claim = ((System.Security.Claims.ClaimsIdentity)User.Identity).FindFirst("FirstName");
+    if (claim != null)
+    {
+        username = claim.Value;
+    }
+    <nav class="navbar navbar-default navbar-expand-lg navbar-custom">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar"
+                        aria-expanded="false" aria-controls="navbar">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+
+                <a class="navbar-brand" href="@Url.Action( username , "school_admin", new { area = "" })">
+                    <img class="img" width="250" src="~/images/logo.png" />
+                </a>
+            </div>
+            <div id="navbar" class="navbar-collapse collapse">
+                @using (Html.BeginForm("LogOff", "Account", new { area = "" }, FormMethod.Post, new { id = "logoutForm", }))
+                {
+                    @Html.AntiForgeryToken()
+
+                <ul class="nav navbar-nav">
+                    <li title="Books" class="@Html.IsActive("Dashboard", "schoolbooks","") jsAddLoader">
+                        <a title="My Library" class="jsAddLoader" href="@Url.Action(username, "school_books", new { area = "" })"> Books</a>
+                    </li>
+                    <li title="Books" class="@Html.IsActive("Dashboard", "students","") jsAddLoader">
+                        <a title="My Library" class="jsAddLoader" href="@Url.Action(username, "school_students", new { area = "" })"> Students</a>
+                    </li>
+                    <li title="My Library" class="">
+                        <a title="My Library" class="jsAddLoader" href="@Url.Action("MyOrder", "Dashboard", new { area = "MyLibrary" })">  My Orders</a>
+                    </li>
+                </ul>
+
+                    <ul class="nav navbar-nav navbar-right">
+                        <li class="jsAddLoader text-left">
+                            <a href="@Url.Action("MyCart","Dashboard",new {area="MyLibrary" })">
+                                <i class="fa fa-shopping-cart"></i>&nbsp;My Cart <sup class="label label-default" id="spnCartItems" style="background:red;">@Session["cartCount"].ToString() </sup>
+                            </a>
+                        </li>
+                        <li class="dropdown">
+                            <a data-toggle="dropdown" class="dropdown-toggle" href="@Url.Action("Index", "Admin", new { area = "CP" })">
+                                <i class="fa fa-cogs"></i>  Hi, @username
+                                <i class="caret"></i>
+                            </a>
+                            <ul class="dropdown-menu p-0">
+                                <li class="jsAddLoader text-left"><a href="@Url.Action("AccountDetail","Manage",new {area="" })"><i class="fa fa-user-circle-o"></i>&nbsp; Account detail</a></li>
+                                <li class="jsAddLoader text-left"><a href="@Url.Action("ChangePassword","Manage",new {area="" })"><i class="fa fa-lock"></i>&nbsp; Change Password</a></li>
+                                @*<li class="jsAddLoader text-left"><a href="#"><i class="fa fa-bell-o"></i><sup>(12)</sup> &nbsp; Notifications</a></li>*@
+                                @*<li class="jsAddLoader text-left"><a href="#"><i class=" fa fa-headphones"></i> Help & Support</a></li>*@
+                                <li class="jsAddLoader text-left"><a href="javascript:document.getElementById('logoutForm').submit()"><i class="glyphicon glyphicon-log-out"></i>&nbsp;Log off</a></li>
+                            </ul>
+                        </li>
+                    </ul>
+
+                }
+
+            </div><!--/.nav-collapse -->
+        </div>
+    </nav>
+}
+
+else
+{
+    <nav class="navbar navbar-default navbar-expand-lg navbar-custom">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar"
+                        aria-expanded="false" aria-controls="navbar">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+
+                <a class="navbar-brand" href="~/">
+                    <img class="img" width="250" src="~/images/logo.png" />
+                </a>
+            </div>
+            <ul class="nav navbar-nav navbar-right">
+                <li>
+                    <a href="@Url.Action("Login","Account",new {area="" })" class="btn btn-sm btn-danger"><i class="glyphicon glyphicon-log-in"></i>&nbsp;Log in</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+}
+
+
+<script src="~/Scripts/jquery-3.3.1.min.js"></script>
+<script>
+    function Statics() {
+            var htmblank = "(--)";
+            var requrl = '@Url.Action("DailyStatics", "Dashboard", new { area = "CP" })';
+            //$("#hdrCompletedOrders").html(htmblank);
+            //$("#hdrPrescription").html(htmblank);
+            //$("#hdrNewOrder").html(htmblank);
+            //$("#hdrOrderInProcess").html(htmblank);
+            $.ajax({
+                type: 'POST',
+                url: requrl,
+                success: function (data) {
+                    if (data.StatusCode == 200) {
+
+                        $("#hdrCompletedOrders").html("(" + data.CompletedOrders+")");
+                        $("#hdrPrescription").html("(" + data.NewPrescription +")");
+                        $("#hdrNewOrder").html("(" + data.NewOrders +")");
+                        $("#hdrOrderInProcess").html("(" + data.OrderInProcess +")");
+                    }
+                    else {
+                        $("#hdrCompletedOrders").html("(0)");
+                        $("#hdrPrescription").html("(0)");
+                        $("#hdrNewOrder").html("(0)");
+                        $("#hdrOrderInProcess").html("(0)");
+                    }
+                },
+                complete: function (data) {
+
+                },
+                error: function (data) {
+                    //$(ddn).html('<option disabled="disabled" value="">Some error occured try later.</option>');
+
+                }
+            });
+
+    }
+    $(function () {
+
+        //setInterval(function () {
+        //    Statics();
+        //}, 5000);
+    });
+</script>

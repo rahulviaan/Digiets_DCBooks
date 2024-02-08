@@ -1,0 +1,297 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{D10572F5-836B-4C68-B18F-BA180DBB59DA}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Database</RootNamespace>
+    <AssemblyName>Database</AssemblyName>
+    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <Deterministic>true</Deterministic>
+    <TargetFrameworkProfile />
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Production|AnyCPU'">
+    <OutputPath>bin\Production\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <LangVersion>7.3</LangVersion>
+    <ErrorReport>prompt</ErrorReport>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.0.0\lib\net45\EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.0.0\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFrameworkExtras.EF6, Version=3.0.5.0, Culture=neutral, PublicKeyToken=afc61983f100d280, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFrameworkExtras.EF6.3.0.5\lib\net45\EntityFrameworkExtras.EF6.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Security" />
+    <Reference Include="System.Transactions" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="AspNetRole.cs">
+      <DependentUpon>DCEntities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="AspNetUser.cs">
+      <DependentUpon>DCEntities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="AspNetUserClaim.cs">
+      <DependentUpon>DCEntities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="AspNetUserLogin.cs">
+      <DependentUpon>DCEntities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="CartStatus.cs">
+      <DependentUpon>DCEntities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="CustomerCart.cs">
+      <DependentUpon>DCEntities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="C__MigrationHistory.cs">
+      <DependentUpon>DCEntities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DCEntities.Context.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>DCEntities.Context.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DCEntities.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>DCEntities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DCEntities.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>DCEntities.edmx</DependentUpon>
+    </Compile>
+    <Compile Include="fun_CategoryAll_Result.cs">
+      <DependentUpon>DCEntities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="fun_CategoryBookCount_Result.cs">
+      <DependentUpon>DCEntities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="fun_CategoryBook_Result.cs">
+      <DependentUpon>DCEntities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="fun_CategoryChild_Result.cs">
+      <DependentUpon>DCEntities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="fun_CategoryHierarchyL2_Result.cs">
+      <DependentUpon>DCEntities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="fun_CategoryHierarchy_Result.cs">
+      <DependentUpon>DCEntities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="fun_CategoryParent_Result.cs">
+      <DependentUpon>DCEntities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="fun_Category_Result.cs">
+      <DependentUpon>DCEntities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="GetAllLibraryBooks_Result.cs">
+      <DependentUpon>DCEntities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="GetLibraryBooks_Result.cs">
+      <DependentUpon>DCEntities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="GetSchoolBooks_Result.cs">
+      <DependentUpon>DCEntities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="GetSchoolStudents_Result.cs">
+      <DependentUpon>DCEntities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="GetSchools_Result.cs">
+      <DependentUpon>DCEntities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="GetStudentLibraryBooks_Result.cs">
+      <DependentUpon>DCEntities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="GetStudent_Result.cs">
+      <DependentUpon>DCEntities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="GetUserBooks_Result.cs">
+      <DependentUpon>DCEntities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="GetUsers_Result.cs">
+      <DependentUpon>DCEntities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="History_UserExcelData.cs">
+      <DependentUpon>DCEntities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="MasterBoard.cs">
+      <DependentUpon>DCEntities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="MasterBook.cs">
+      <DependentUpon>DCEntities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="MasterCategory.cs">
+      <DependentUpon>DCEntities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="MasterClass.cs">
+      <DependentUpon>DCEntities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="MasterSery.cs">
+      <DependentUpon>DCEntities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="MasterSubject.cs">
+      <DependentUpon>DCEntities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ModelExtension.cs" />
+    <Compile Include="MyLibrary.cs">
+      <DependentUpon>DCEntities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="OrderDetails.cs">
+      <DependentUpon>DCEntities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Orders.cs">
+      <DependentUpon>DCEntities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="PartialClasses.cs" />
+    <Compile Include="PaymentDetails.cs">
+      <DependentUpon>DCEntities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="PaymentStatus.cs">
+      <DependentUpon>DCEntities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ReadBooks_Result.cs">
+      <DependentUpon>DCEntities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ReadBook_Result.cs">
+      <DependentUpon>DCEntities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Repository\AspNetRolesRepository.cs" />
+    <Compile Include="Repository\AspNetUsersRepository.cs" />
+    <Compile Include="Repository\BaseRepository\BaseRepository.cs" />
+    <Compile Include="Repository\DTO\BookDetails.cs" />
+    <Compile Include="Repository\MasterRepository\BoardRepository.cs" />
+    <Compile Include="Repository\MasterRepository\CartRepository.cs" />
+    <Compile Include="Repository\MasterRepository\OrderDetailsRepository.cs" />
+    <Compile Include="Repository\MasterRepository\OrderRepository.cs" />
+    <Compile Include="Repository\MasterRepository\PaymentRepository.cs" />
+    <Compile Include="Repository\MasterRepository\SchoolRepository.cs" />
+    <Compile Include="Repository\MasterRepository\ClassRepository.cs" />
+    <Compile Include="Repository\MasterRepository\SeriesRepository.cs" />
+    <Compile Include="Repository\MasterRepository\SubjectRepository.cs" />
+    <Compile Include="Repository\UserBookRepository.cs" />
+    <Compile Include="Repository\MylibraryRepository.cs" />
+    <Compile Include="Repository\MasterRepository\BookRepository.cs" />
+    <Compile Include="Repository\MasterRepository\CategoryRepository.cs" />
+    <Compile Include="School.cs">
+      <DependentUpon>DCEntities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="SchoolReadBook_Result.cs">
+      <DependentUpon>DCEntities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="StudentReadBook_Result.cs">
+      <DependentUpon>DCEntities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="UserBook.cs">
+      <DependentUpon>DCEntities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="UserCart.cs">
+      <DependentUpon>DCEntities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="UserCartItem.cs">
+      <DependentUpon>DCEntities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="UserDetail.cs">
+      <DependentUpon>DCEntities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="UserExcelData.cs">
+      <DependentUpon>DCEntities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="UserExcelMetaData.cs">
+      <DependentUpon>DCEntities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="USP_BookDetails_Result.cs">
+      <DependentUpon>DCEntities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="USP_CustomerCartDetails_Result.cs">
+      <DependentUpon>DCEntities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="USP_MyOrderDetails_Result.cs">
+      <DependentUpon>DCEntities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="USP_MyOrders_Result.cs">
+      <DependentUpon>DCEntities.tt</DependentUpon>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.Config" />
+    <EntityDeploy Include="DCEntities.edmx">
+      <Generator>EntityModelCodeGenerator</Generator>
+      <LastGenOutput>DCEntities.Designer.cs</LastGenOutput>
+    </EntityDeploy>
+    <None Include="DCEntities.edmx.diagram">
+      <DependentUpon>DCEntities.edmx</DependentUpon>
+    </None>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="dBscript.txt" />
+    <Content Include="DCEntities.Context.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>DCEntities.edmx</DependentUpon>
+      <LastGenOutput>DCEntities.Context.cs</LastGenOutput>
+    </Content>
+    <Content Include="DCEntities.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>DCEntities.edmx</DependentUpon>
+      <LastGenOutput>DCEntities.cs</LastGenOutput>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\ErrorLogger\ErrorLogger.csproj">
+      <Project>{398fe549-d2fc-48bb-bf8c-00a1db7e16fe}</Project>
+      <Name>ErrorLogger</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Model\Model.csproj">
+      <Project>{c798c0ee-f6e1-43af-97fe-e05b15c92358}</Project>
+      <Name>Model</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup />
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>

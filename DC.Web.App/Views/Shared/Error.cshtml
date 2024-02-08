@@ -1,0 +1,44 @@
+﻿@model System.Web.Mvc.HandleErrorInfo
+@{
+    ViewBag.Title = "DC Book::Error";
+}
+ 
+<style>
+    .col-example {
+        padding: 1rem;
+        
+        color: #838383;
+        text-align: center;
+        margin-top: 5%;
+    }
+</style>
+ 
+<div id="" class="col-lg-6 text-center col-lg-offset-3  col-example">
+    <div id="pnlbody" class="text-center text-danger">
+        <h3><i class="fa fa-book fa-4x text-warning"></i></h3>
+        <hr />
+        <h2 class="text-center">Some problem occur please check internet and refresh the page.</h2>
+        <hr />
+        <div class="panel-body">
+            <p class="text-muted  ">@ViewBag.Message </p>
+            @if (Model != null && Model.Exception != null && ViewBag.Message == "")
+            {
+                <p class="text-muted  ">@Model.Exception.Message </p>
+            }
+        </div>
+    </div>
+</div> 
+<style>
+    .navbar-inverse .navbar-nav > li > a, .navbar-inverse .navbar-nav > li > a {
+        color: whitesmoke;
+        background-color: transparent;
+        font-weight: 600;
+       
+        padding: 23px 15px;
+    }
+    .navbar-inverse .navbar-nav > .active > a, .navbar-inverse .navbar-nav > .active > a:hover, .navbar-inverse .navbar-nav > .active > a:focus {
+        color: #fff;
+        background-color: #080808;
+        margin: 20px;
+    }
+</style>

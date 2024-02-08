@@ -1,0 +1,134 @@
+﻿@model DC.BookModel
+@{
+    Layout = null;
+}
+<div class="row">
+    <div class="col-lg-12 " style="background-color:#fff; "> 
+        <table class="table table-bordered table-responsive">
+            <tr>
+                <th width="29%"> @Html.LabelFor(model => model.vTitle)</th>
+                <th width="1%">:</th>
+                <td width="79%"> @Html.DisplayFor(model => model.vTitle)</td>
+            </tr>
+            <tr>
+                <th>  @Html.LabelFor(m => m.Author)</th>
+                <th>:</th>
+                <td>  @Html.DisplayFor(m => m.Author)</td>
+            </tr>
+            <tr>
+                <th>@Html.LabelFor(m => m.ISBN)</th>
+                <th>:</th>
+                <td>@Html.DisplayFor(m => m.ISBN)</td>
+            </tr>
+            <tr>
+                <th>@Html.LabelFor(m => m.EbookPrice)</th>
+                <th>:</th>
+                <td>@Html.DisplayFor(m => m.EbookPrice)</td>
+            </tr>
+            <tr>
+                <th> @Html.LabelFor(m => m.PrintPrice)</th>
+                <th>:</th>
+                <td> @Html.DisplayFor(m => m.PrintPrice)</td>
+            </tr>
+            <tr>
+                <th> @Html.LabelFor(m => m.Discount)</th>
+                <th> :</th>
+                <td> @Html.DisplayFor(m => m.PrintPrice)</td>
+            </tr>
+            <tr>
+                <th> @Html.LabelFor(m => m.PageTitle) </th>
+                <th>: </th>
+                <td> @Html.DisplayFor(m => m.PageTitle) </td>
+            </tr>
+            <tr>
+                <th> @Html.LabelFor(m => m.MetaDescription)</th>
+                <th>:</th>
+                <td> @Html.DisplayFor(m => m.MetaDescription)</td>
+            </tr>
+            <tr>
+                <th> @Html.LabelFor(m => m.OgTitle)</th>
+                <th>:</th>
+                <td> @Html.DisplayFor(m => m.OgTitle)</td>
+            </tr>
+            <tr>
+                <th> @Html.LabelFor(m => m.OgDescription)</th>
+                <th>:</th>
+                <td> @Html.DisplayFor(m => m.OgDescription)</td>
+            </tr>
+            <tr>
+                <th> @Html.LabelFor(m => m.TwitterTitle)</th>
+                <th>:</th>
+                <td> @Html.DisplayFor(m => m.TwitterTitle)</td>
+            </tr>
+            <tr>
+                <th> @Html.LabelFor(m => m.TwitterDescription)</th>
+                <th>:</th>
+                <td> @Html.DisplayFor(m => m.TwitterDescription)</td>
+            </tr>
+            <tr>
+                <th> @Html.LabelFor(m => m.KeyWords)</th>
+                <th>:</th>
+                <td> @Html.DisplayFor(m => m.KeyWords)</td>
+            </tr>
+            <tr>
+                <th> @Html.LabelFor(m => m.Pbook)</th>
+                <th>:</th>
+                <td>
+                    @{ var Pbook = Model.Pbook == 0 ? "NO" : "Yes";}
+                    @Pbook
+                </td>
+            </tr>
+            <tr>
+                <th> @Html.LabelFor(m => m.Ebook)</th>
+                <th>:</th>
+                <td>
+                    @{ var ebook= Model.Ebook== 0 ? "NO" : "Yes";}
+                    @ebook
+                </td>
+            </tr>
+            <tr>
+                <th> @Html.LabelFor(m => m.Audio)</th>
+                <th>:</th>
+                <td>
+                    @{ var Audio = Model.Audio == 0 ? "NO" : "Yes";}
+                    @Audio
+                </td>
+            </tr>
+            <tr>
+                <th> @Html.LabelFor(m => m.FileCoverImage)</th>
+                <th>:</th>
+                <td>
+                    <img style="max-height: 100px; max-width: 80px; " onerror="SetImage(this,'/images/0image.jpeg')" id="imgFileCoverImage" src="/Attatchments/Book/th_@Model.FileCoverImage" class="jsImg img-thumbnail" />
+                </td>
+            </tr>
+            <tr>
+                <th> @Html.LabelFor(m => m.BannerImage)</th>
+                <th>:</th>
+                <td>
+                    <img style="max-height: 100px; max-width: 80px; " onerror="SetImage(this,'/images/0image.jpeg')" id="imgFileCoverImage" src="/Attatchments/Book/th_@Model.BannerImage" class="jsImg img-thumbnail" />
+                </td>
+            </tr>
+            <tr>
+                <th> @Html.LabelFor(m => m.Description)</th>
+                <th>:</th>
+                <td> @Html.Raw(Model.Description)</td>
+            </tr>
+        </table>
+    </div>
+</div>
+
+
+<style type="text/css">
+    .modal-dialog {
+        max-width: 80% !important;
+        margin: 1.75rem auto;
+       
+    }
+    .modal-body {
+        max-height: 80Vh !important;
+        overflow-y: auto;
+    }
+    .modal-footer {
+        text-align: center;
+    }
+</style>

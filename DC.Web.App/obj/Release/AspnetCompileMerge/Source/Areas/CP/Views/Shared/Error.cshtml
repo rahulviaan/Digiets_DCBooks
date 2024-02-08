@@ -1,0 +1,19 @@
+﻿@model System.Web.Mvc.HandleErrorInfo
+@{
+    ViewBag.Title = "DC Book::Error";
+}
+
+
+<div id="" class="col-lg-12 text-center">
+    <div id="pnlbody" class="text-center text-danger">
+        <h3><i class="fa fa-exclamation-triangle fa-4x text-danger"></i></h3>
+        <h2 class="text-center">Error.</h2>
+        <div class="panel-body">
+            <p class="text-muted  ">@ViewBag.Message </p>
+            @if (Model != null && Model.Exception != null)
+            {
+                <p class="text-muted  ">@Model.Exception.Message </p>
+            }
+        </div>
+    </div>
+</div> 

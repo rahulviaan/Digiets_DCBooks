@@ -1,0 +1,60 @@
+﻿@model DC.SeriesModel
+@{
+    Layout = null;
+
+}
+<div class="col-lg-12 table-responsive" style="background-color:#fff; padding:15px;">
+
+
+    <table class="table table-bordered">
+        <tr>
+            <th width="20%">@Html.DisplayNameFor(m => m.Title)</th>
+            <th width="1%" class="text-center">:</th>
+            <td>@Model.Title</td>
+        </tr>
+        <tr>
+            <th width="20%">@Html.DisplayNameFor(m => m.MasterPublisherId)</th>
+            <th width="1%" class="text-center">:</th>
+            <td id="tdPublisher">##</td>
+        </tr>
+        <tr>
+            <th width="20%">@Html.DisplayNameFor(m => m.MasterSubjectId)</th>
+            <th width="1%" class="text-center">:</th>
+            <td id="tdSubject">##</td>
+        </tr>
+
+      
+        <tr>
+            <th>@Html.DisplayNameFor(m => m.Description)</th>
+            <th class="text-center">:</th>
+            <td>@Model.Description</td>
+        </tr>
+        <tr>
+            <th width="20%">@Html.DisplayNameFor(m => m.DisplayOrder)</th>
+            <th width="1%" class="text-center">:</th>
+            <td>@Model.DisplayOrder</td>
+        </tr>
+        <tr>
+            <th>@Html.DisplayNameFor(m => m.Status)</th>
+            <th class="text-center">:</th>
+            @if (Model.Status == DC.Status.Active)
+            {
+                <td class="text-success"><i class="fa fa-check"></i> @Model.Status</td>
+            }
+            else
+            {
+                <td class="text-muted"><i class="fa fa-times"></i> @Model.Status</td>
+            }
+        </tr>
+    </table>
+</div>
+<script>
+    var title = $(".modal-title");
+    var header = $(".modal-header");
+    var html = '<h4 class="modal-title">' + title[1].innerHTML + '</h4> <button type="button" class="bootbox-close-button close" onclick=" bootbox.hideAll();" aria-hidden="true">×</button>';
+    $(header[1]).html(html);
+    var publisher = $("#ddnPublisher option[value='@Model.MasterPublisherId']").text();
+    $("#tdPublisher").html(publisher)
+    var subject = $("#ddnSubject option[value='@Model.MasterSubjectId']").text();
+    $("#tdSubject").html(subject)
+</script>

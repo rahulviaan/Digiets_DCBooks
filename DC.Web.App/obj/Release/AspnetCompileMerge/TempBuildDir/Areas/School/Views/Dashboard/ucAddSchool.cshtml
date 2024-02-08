@@ -1,0 +1,525 @@
+﻿@model DC.SchoolModel
+@{
+    Layout = null;
+    var indx = 1;
+    var imgpath = "/images/0image.jpeg";
+
+    var results = new Database.Repository.MasterRepository.BoardRepository().SelectList();
+    var lstBoard = new List<SelectListItem>();
+    if (results != null && results.Count() > 0)
+    {
+        lstBoard = (from item in results
+                    select new SelectListItem
+                    {
+                        Text = item.Title,
+                        Value = item.Id.ToString(),
+                    }).ToList();
+    }
+
+}
+<style>
+    .tblfile {
+        border: 1px #ccc dotted;
+        margin-bottom: 10px;
+        background: #ccc;
+    }
+
+        .tblfile tr td {
+            padding: 5px;
+        }
+
+    .csstderror {
+        background-color: #fcb2b2;
+    }
+
+        .csstderror > .btn-default {
+            background-color: #efdede;
+        }
+
+    .cssDelete {
+        cursor: pointer;
+        color: #dc3545 !important;
+        border: 1px dotted #dc3545;
+        padding: 1px 10px 1px 10px;
+        border-radius: 5px;
+    }
+
+        .cssDelete:hover {
+            color: #fff !important;
+            background: #dc3545;
+        }
+
+    .btn-default:hover {
+        background: #efdede;
+    }
+
+    .csslast {
+        margin-top: 15px;
+    }
+</style>
+<div class="col-lg-12">
+    @using (Html.BeginForm(null, null, FormMethod.Post, new { role = "form", autocomplete = "off", name = "frmAddSchool", id = "frmAddSchool", }))
+    {
+        @Html.AntiForgeryToken()
+        @Html.HiddenFor(m => m.Id)
+        @Html.HiddenFor(m => m.CreateDate)
+        @Html.HiddenFor(m => m.AspNetUserId)
+        @Html.Hidden("Status", Model.Status.GetHashCode())
+        @Html.HiddenFor(m => m.IPaddress)
+        @Html.ValidationSummary(true)
+    <div class="col-lg-12">
+        <div class="form-group">
+            <h4 id="h3Title">Create New School</h4>
+        </div>
+        <div class="form-group text-danger" id="dvMessage"></div>
+        <div class="row">
+            <div class="col-lg-4">
+                <div class="form-group  has-feedback " title="* @Html.DisplayNameFor(model => model.vTitle)">
+                    @Html.LabelFor(m => m.vTitle) <strong title="Required." class="text-danger ">*&nbsp; </strong> @Html.ValidationMessageFor(t => t.vTitle, "", new { @class = "small text-danger pull-right" })
+                    @Html.TextBoxFor(t => t.vTitle, new { @class = "form-control", @placeholder = Html.DisplayNameFor(model => model.vTitle) })
+                    <span class="text-danger fa fa-star-o form-control-feedback"></span>
+                </div>
+            </div>
+            <div class="col-lg-4">
+                <div class="form-group">
+                    @Html.LabelFor(m => m.Principle)  @Html.ValidationMessageFor(t => t.Principle, "", new { @class = "small text-danger pull-right" })
+                    @Html.TextBoxFor(t => t.Principle, new { @class = "form-control", @placeholder = Html.DisplayNameFor(model => model.Principle) })
+                </div>
+
+            </div>
+            <div class="col-lg-4">
+                <div class="form-group  has-feedback " title="* @Html.DisplayNameFor(model => model.EmailId)">
+                    @Html.LabelFor(m => m.EmailId) <strong title="Required." class="text-danger ">*&nbsp; </strong> @Html.ValidationMessageFor(t => t.EmailId, "", new { @class = "small text-danger pull-right" })
+                    @Html.TextBoxFor(t => t.EmailId, new { @class = "form-control", @placeholder = Html.DisplayNameFor(model => model.EmailId) })
+                    <span class="text-danger fa fa-star-o form-control-feedback"></span>
+                </div>
+            </div>
+            <div class="col-lg-4">
+
+                <div class="form-group  has-feedback " title="* @Html.DisplayNameFor(model => model.ContactNo)">
+                    @Html.LabelFor(m => m.ContactNo) <strong title="Required." class="text-danger ">*&nbsp; </strong> @Html.ValidationMessageFor(t => t.ContactNo, "", new { @class = "small text-danger pull-right" })
+                    @Html.TextBoxFor(t => t.ContactNo, new { @class = "form-control", @placeholder = Html.DisplayNameFor(model => model.ContactNo) })
+                    <span class="text-danger fa fa-star-o form-control-feedback"></span>
+                </div>
+            </div>
+            <div class="col-lg-4">
+                <div class="form-group  has-feedback " title="@Html.DisplayNameFor(model => model.AlterNateContactNo)">
+                    @Html.LabelFor(m => m.AlterNateContactNo)  @Html.ValidationMessageFor(t => t.AlterNateContactNo, "", new { @class = "small text-danger pull-right" })
+                    @Html.TextBoxFor(t => t.AlterNateContactNo, new { @class = "form-control", @placeholder = Html.DisplayNameFor(model => model.AlterNateContactNo) })
+
+                </div>
+            </div>
+            <div class="col-lg-4">
+                <div class="form-group">
+                    @Html.LabelFor(m => m.PrincipleContactNo)  @Html.ValidationMessageFor(t => t.Principle, "", new { @class = "small text-danger pull-right" })
+                    @Html.TextBoxFor(t => t.PrincipleContactNo, new { @class = "form-control", @placeholder = Html.DisplayNameFor(model => model.PrincipleContactNo) })
+                </div>
+            </div>
+
+        </div>
+
+        <div class="row">
+
+            <div class="col-lg-4">
+                <div class="form-group  has-feedback " title="* @Html.DisplayNameFor(model => model.AddressLine1)">
+                    @Html.LabelFor(m => m.AddressLine1) <strong title="Required." class="text-danger ">*&nbsp; </strong> @Html.ValidationMessageFor(t => t.AddressLine1, "", new { @class = "small text-danger pull-right" })
+                    @Html.TextBoxFor(t => t.AddressLine1, new { @class = "form-control", @placeholder = Html.DisplayNameFor(model => model.AddressLine1) })
+                    <span class="text-danger fa fa-star-o form-control-feedback"></span>
+                </div>
+
+            </div>
+            <div class="col-lg-4">
+                <div class="form-group">
+                    @Html.LabelFor(m => m.AddressLine2)   @Html.ValidationMessageFor(t => t.AddressLine2, "", new { @class = "small text-danger pull-right" })
+                    @Html.TextBoxFor(t => t.AddressLine2, new { @class = "form-control", @placeholder = Html.DisplayNameFor(model => model.AddressLine2) })
+                </div>
+
+            </div>
+            <div class="col-lg-4">
+                <div class="form-group">
+                    @Html.LabelFor(m => m.AddressLine3)   @Html.ValidationMessageFor(t => t.AddressLine3, "", new { @class = "small text-danger pull-right" })
+                    @Html.TextBoxFor(t => t.AddressLine3, new { @class = "form-control", @placeholder = Html.DisplayNameFor(model => model.AddressLine3) })
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+
+            <div class="col-lg-4">
+                <div class="form-group  has-feedback " title="  @Html.DisplayNameFor(model => model.ITIncharge)">
+                    @Html.LabelFor(m => m.ITIncharge) <strong title="Required." class="text-danger ">*&nbsp; </strong> @Html.ValidationMessageFor(t => t.ITIncharge, "", new { @class = "small text-danger pull-right" })
+                    @Html.TextBoxFor(t => t.ITIncharge, new { @class = "form-control", @placeholder = Html.DisplayNameFor(model => model.ITIncharge) })
+                </div>
+            </div>
+            <div class="col-lg-4">
+                <div class="form-group">
+                    @Html.LabelFor(m => m.Strength)   @Html.ValidationMessageFor(t => t.Strength, "", new { @class = "small text-danger pull-right" })
+                    @Html.TextBoxFor(t => t.Strength, new { @class = "form-control", @placeholder = Html.DisplayNameFor(model => model.Strength) })
+                </div>
+            </div>
+            <div class="col-lg-4">
+                <div class="form-group  has-feedback ">
+                    @Html.LabelFor(m => m.MasterBoardId)   @Html.ValidationMessageFor(t => t.MasterBoardId, "", new { @class = "small text-danger pull-right" })
+                    @Html.DropDownListFor(m => m.MasterBoardId, lstBoard, "Select Board", new { @class = "form-control" })
+                    <span class="text-danger fa fa-star-o form-control-feedback"></span>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-lg-8">
+                <div class="form-group">
+                    @Html.LabelFor(m => m.Description) <strong title="Required." class="text-danger ">&nbsp; </strong> @Html.ValidationMessageFor(t => t.Description, "", new { @class = "small text-danger pull-right" })
+                    @Html.TextAreaFor(t => t.Description, new { @style = "height:200px;max-height:200px; ", @class = "form-control", @placeholder = Html.DisplayNameFor(model => model.Description) })
+                </div>
+            </div>
+            <div class="col-lg-4">
+                <div class="form-group">
+                    @Html.LabelFor(m => m.Pincode)   @Html.ValidationMessageFor(t => t.Pincode, "", new { @class = "small text-danger pull-right" })
+                    @Html.TextBoxFor(t => t.Pincode, new { @class = "form-control", @placeholder = Html.DisplayNameFor(model => model.Pincode) })
+
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(m => m.City)   @Html.ValidationMessageFor(t => t.City, "", new { @class = "small text-danger pull-right" })
+                    @Html.TextBoxFor(t => t.City, new { @class = "form-control", @placeholder = Html.DisplayNameFor(model => model.City) })
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelFor(m => m.State)   @Html.ValidationMessageFor(t => t.State, "", new { @class = "small text-danger pull-right" })
+                    @Html.TextBoxFor(t => t.State, new { @class = "form-control", @placeholder = Html.DisplayNameFor(model => model.State) })
+                </div>
+                <div class="form-group bg-light text-center" id="tdLogo">
+                    @if (string.IsNullOrWhiteSpace(Model.Logo))
+                    {
+
+                        imgpath = "/images/0image.jpeg";
+                        <label class="jsloader btn btn-default btn-block " style="padding:0px;" for="Logo">
+                            <input data-id="@Model.Id" type="file" accept="image/*" onchange="UploadImageSingle(event,this)" name="Logo" id="Logo" class="hidden jsloader jsFileUpload inputfile">
+                            <img style="max-height: 100px; max-width: 80px; " onerror="SetImage(this,'/images/0image.jpeg')" id="imgLogo" src="@imgpath" class="jsImg img-thumbnail" />
+                            <br />    @Html.DisplayNameFor(m => m.Logo)
+                            @Html.ValidationMessageFor(m => m.Logo, "", new { @class = "small text-danger  " })
+                        </label>
+                        <a data-id="@Model.Id" data-dbimg="@Model.Logo" data-file="Logo" id="btnLogo" data-img="imgLogo" onclick="return RemoveImage(this,'Logo')" class="  jsDeleteImage ">  </a>
+
+                    }
+                    else
+                    {
+                        imgpath = "/Attatchments/th_" + Model.Logo;
+                        <label class="jsloader btn   btn-block" for="Logo">
+                            <input data-id="@Model.Id" type="file" accept="image/*" onchange="UploadImageSingle(event,this)" name="Logo" id="Logo" class="hidden jsloader jsFileUpload inputfile">
+                            <img style="max-height: 100px; max-width: 80px; " onerror="SetImage(this,'/images/0image.jpeg')" id="imgLogo" src="@imgpath" class="jsImg img-thumbnail" />
+                            <br />
+                            @Html.DisplayNameFor(m => m.Logo)
+                            @Html.ValidationMessageFor(m => m.Logo, "", new { @class = "small text-danger  " })
+                        </label>
+                        <a data-id="@Model.Id" data-dbimg="@Model.Logo" data-file="Logo" id="btnLogo" data-img="imgLogo" onclick="return RemoveImage(this,'Logo')" class="cssDelete  jsDeleteImage ">  <i class="fa fa-trash"></i>  &nbsp; Delete</a>
+                    }
+                </div>
+            </div>
+        </div>
+        
+        <div class="form-group text-center">
+            <a href="javascript:void(0);" id="btnCancel" class="btn btn-default btn-lg" onclick="CancelAdd()"> Cancel</a>
+            @if (!string.IsNullOrWhiteSpace(Model.Id))
+            {
+                <button id="btnSubmit" type="submit" class="btn btn-lg btn-primary ">Update School</button>
+            }
+            else
+            {
+                <button id="btnSubmit" type="submit" class="btn btn-primary btn-lg">Create School</button>
+            }
+        </div>
+    </div>
+    }
+
+</div>
+
+@Scripts.Render("~/bundles/jqueryval")
+<script src="~/Scripts/tinymce/tinymce.min.js"></script>
+<script>
+
+     var Logo = '@Model.Logo'
+
+    function ValidateForm(obj) {
+
+        var IsValid = true;
+        $("span[data-valmsg-for='Logo']").removeClass("field-validation-valid");
+        $("span[data-valmsg-for='Logo']").removeClass("field-validation-error");
+        $("span[data-valmsg-for='Logo']").html('');
+        $("#tdLogo").removeClass("csstderror");
+        $("#tdLogo").addClass("bg-light");
+        if (Logo == null || Logo == "") {
+            $("span[data-valmsg-for='Logo']").removeClass("field-validation-valid");
+            $("span[data-valmsg-for='Logo']").addClass("field-validation-error");
+            $("span[data-valmsg-for='Logo']").html('<span id="Logo-error" class="">[*Required]</span>');
+            $("#tdLogo").addClass("csstderror");
+            $("#tdLogo").removeClass("bg-light");
+            IsValid = false;
+        }
+
+        if ($("#frmAddSchool").valid() && IsValid) {
+            return true;
+        }
+        else {
+            var input = $('.input-validation-error:first');
+            if (input) {
+                input.focus();
+            }
+            return false;
+        }
+    }
+    function UploadImageSingle(evt, objFile) {
+        var imageType = /image.*/;
+        var selectedFile = objFile.files[0];
+        if (!selectedFile.type.match(imageType)) {
+            $.toaster({ priority: 'danger', title: 'Error', message: '* You are uploading invalid image file type.' });
+            return false;
+        }
+        var id = objFile.getAttribute("id")
+        $("span[data-valmsg-for='"+id+"']").removeClass("field-validation-valid");
+        $("span[data-valmsg-for='"+id+"']").removeClass("field-validation-error");
+        $("span[data-valmsg-for='" + id + "']").html('');
+
+        $("#td" + id +"").removeClass("csstderror");
+        switch (id) {
+            case "Logo":
+                Logo = selectedFile;
+                $("#tdLogo").addClass("bg-light");
+                break;
+
+        }
+        $("#" + id + "").attr("type", "");
+        ShowImage(selectedFile, id);
+    }
+    function ShowImage(selectedFile, inputid) {
+        if (selectedFile) {
+            var imageType = /image.*/;
+            var ctrlimg = "img" + inputid;
+            var btn = "#btn" + inputid;
+            if (selectedFile.type.match(imageType)) {
+                var _URL = window.URL || window.webkitURL;
+                img = new Image();
+                img.onload = function () {
+                    document.getElementById(ctrlimg).src = this.src;
+                    $(btn).html(" <i class='fa fa-trash'></i>&nbsp; Delete ");
+                    $(btn).addClass(" text-center cssDelete");
+                    //imageHeight = this.height;
+                    //imageWidth = this.width;
+                };
+                img.onerror = function () {
+                    $.toaster({ priority: 'danger', title: 'Error', message: '* You are uploading invalid image file type.' });
+                    return false;
+                };
+                img.src = _URL.createObjectURL(selectedFile);
+                return false;
+            }
+            else {
+                $.toaster({ priority: 'danger', title: 'Error', message: '* You are uploading invalid image file type.' });
+            }
+        }
+    }
+    function RemoveImage(ctrl, title) {
+        deletectrl = ctrl;
+        var file = $(ctrl).attr("data-file");
+        var img = $(ctrl).attr("data-img");
+        var dbimg = $(ctrl).attr("data-dbimg");
+        var id = $(ctrl).attr("data-id");
+
+        $("#toaster").remove();
+        if (id == "" || dbimg=="") {
+            $("#" + img + "").attr("src", "/images/0image.jpeg");
+            $("#btn" + file).html("");
+            $("#btn" + file).removeClass("cssDelete");
+            $("#" + file + "").attr("type", "file");
+            switch (file) {
+                case "Logo":
+                    Logo = null;
+                    break;
+
+            }
+            return;
+        }
+        bootbox.dialog({
+            title: "<style> .modal-footer {   text-align:center;}  .modal-body {    min-height: 100px;       background: #f2dede;    }.modal-header { background: #a94442;color: #fff; }</style><i class='fa fa-trash'>  </i> | Delete " + title + "",
+            message: '<div class="row"><div class="col-lg-12"><p class="text-center">Are you sure want to delete  <b>' + title + '</b> once deleted can not be undo ?</p></div></div>',
+            closeButton: true,
+            buttons: {
+                cancel: {
+                    className: 'btn-sm btn-outline-primary',
+                    label: '<i class="fa fa-times"></i> Cancel'
+                },
+                confirm: {
+                    className: 'btn-sm btn-danger jsConfirmDelete',
+                    label: '<i class="fa fa-check"></i> Confirm',
+                    callback: function () {
+                        $.ajax({
+                            type: 'POST',
+                            url: '@Url.Action("RemoveImageFile", "Dashboard", new { area = "School" })',
+                            data: { Id: id, Abbr: file },
+                            dataType: "json",
+                            success: function (data) {
+                                if (data.StatusCode == 200) {
+                                    $.toaster({ priority: 'success', title: "Success", message: data.Message });
+                                    HidePopup();
+                                    RemoveLoader();
+                                    $("#" + img + "").attr("src", "/images/0image.jpeg");
+                                    $("#btn" + file).html("");
+                                    $("#btn" + file).html("");
+                                    $("#btn" + file).attr("data-id","");
+                                    $("#" + file + "").attr("type", "file");
+                                    switch (file) {
+                                        case "Logo":
+                                            Logo = null;
+                                            break;
+                                    }
+
+                                }
+                                else {
+                                    $.toaster({ priority: 'danger', title: "Error", message: data.Message });
+                                    RemoveLoader();
+                                }
+                            },
+                            complete: function (data) {
+                                RemoveLoader();
+                            },
+                            error: function (data) {
+                                RemoveLoader();
+                            }
+                        });
+
+                    }
+                }
+
+            }
+        });
+        var title = $(".modal-title");
+        var header = $(".modal-header");
+        var html = '<h4 class="modal-title">' + title[0].innerHTML + '</h4> <button type="button" class="bootbox-close-button close" onclick=" bootbox.hideAll();" aria-hidden="true">×</button>';
+        $(header[1]).html(html);
+
+    }
+    function AddSchoolInDB (e) {
+        $("#toaster").html("");
+        var isvalid = ValidateForm();
+        if (!isvalid) {
+            e.preventDefault();
+            $.toaster({ priority: 'danger', title: " Error! ", message: "Please fill all mandatory fileds." });
+            return false;
+        }
+        AddLoader();
+        var btnhtml = $("#btnSubmit").html();
+        $("#btnSubmit").html("Wait.. <i class='fa fa-spinner fa-spin'></i>");
+        $("#btnSubmit").attr("disabled", "disabled");
+        e.preventDefault();
+        var dataString = new FormData();
+
+        var Id = $.trim($("#Id").val());
+        var vTitle = $.trim($("#vTitle").val());
+        var Principle = $.trim($("#Principle").val());
+        var EmailId = $.trim($("#EmailId").val());
+        var ContactNo = $.trim($("#ContactNo").val());
+        var AlterNateContactNo = $.trim($("#AlterNateContactNo").val());
+        var PrincipleContactNo = $.trim($("#PrincipleContactNo").val());
+        var AddressLine1 = $.trim($("#AddressLine1").val());
+        var AddressLine2 = $.trim($("#AddressLine2").val());
+        var AddressLine3 = $.trim($("#AddressLine3").val());
+        var Pincode = $.trim($("#Pincode").val());
+        var State = $.trim($("#State").val());
+        var City = $.trim($("#City").val());
+        var Description = $.trim($("#Description").val());
+        var AspNetUserId = $.trim($("#AspNetUserId").val());
+      
+        var MasterBoardId = $.trim($("#MasterBoardId option:selected").val());
+        var Strength = $.trim($("#Strength").val());
+        var ITIncharge = $.trim($("#ITIncharge").val());
+
+
+        dataString.append("Id", Id);
+        dataString.append("Title", vTitle);
+        dataString.append("vTitle", vTitle);
+        dataString.append("Principle", Principle);
+        dataString.append("EmailId", EmailId);
+        dataString.append("ContactNo", ContactNo);
+        dataString.append("AlterNateContactNo", AlterNateContactNo);
+        dataString.append("ContactNo", ContactNo);
+        dataString.append("PrincipleContactNo", PrincipleContactNo);
+        dataString.append("AddressLine1", AddressLine1);
+        dataString.append("AddressLine2", AddressLine2);
+        dataString.append("AddressLine3", AddressLine3);
+        dataString.append("Pincode", Pincode);
+        dataString.append("State", State);
+        dataString.append("City", City);
+        dataString.append("Description", Description);
+        dataString.append("Logo", Logo);
+        dataString.append("AspNetUserId", AspNetUserId);
+        dataString.append("MasterBoardId", MasterBoardId);
+        dataString.append("Strength", Strength);
+        dataString.append("ITIncharge", ITIncharge);
+
+
+        $.ajax({
+            url: '@Url.Action("AddSchool", "Dashboard", new {area="School" })',  //Server script to process data
+            type: 'POST',
+            xhr: function () {  // Custom XMLHttpRequest
+                var myXhr = $.ajaxSettings.xhr();
+                if (myXhr.upload) { // Check if upload property exists
+                }
+                return myXhr;
+            },
+            //Ajax events
+            success: function (data) {
+                if (data.StatusCode == 200) {
+                    files = [];
+                    $.toaster({ priority: 'success', title: vTitle, message: data.Message });
+                    FillData();
+                    CancelAdd();
+                    RemoveLoader();
+                }
+                else {
+
+                    $("span[data-valmsg-for='Logo']").removeClass("field-validation-valid");
+                    $("span[data-valmsg-for='Logo']").addClass("field-validation-error");
+                    $("span[data-valmsg-for='Logo']").html('<span id="Logo-error" class="">' + data.Message+'</span>');
+                    $.toaster({ priority: 'danger', title: " Error! ", message: data.Message });
+                    RemoveLoader();
+                }
+            },
+            error: function (data) {
+                $("#btnSubmit").html(btnhtml);
+                $("#btnSubmit").removeAttr("disabled");
+                $.toaster({ priority: 'danger', title: " Error! ", message: "Some error occurred please try later."});
+                RemoveLoader();
+            },
+            complete: function (data) {
+                $("#btnSubmit").html(btnhtml);
+                $("#btnSubmit").removeAttr("disabled");
+                RemoveLoader();
+            },
+            data: dataString,
+            cache: false,
+            contentType: false,
+            processData: false
+        });
+     }
+    $(function () {
+        tinyMCE.init({
+                theme_advanced_toolbar_location: "bottom",
+                selector: "#Description",
+                theme: "modern",
+                plugins: [
+                    "advlist autolink lists link image charmap print preview hr anchor pagebreak",
+                    "searchreplace wordcount visualblocks visualchars code fullscreen",
+                    "insertdatetime media nonbreaking save table contextmenu directionality",
+                    "emoticons template paste textcolor colorpicker textpattern imagetools"
+                ],
+                toolbar1: "insertfile undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent  | forecolor backcolor ",
+                image_advtab: true,
+                templates: [
+                    { title: 'Book 1', content: 'Book 1' },
+                    { title: 'Book 2', content: 'Book 2' }
+                 ],
+
+        });
+
+    })
+</script>

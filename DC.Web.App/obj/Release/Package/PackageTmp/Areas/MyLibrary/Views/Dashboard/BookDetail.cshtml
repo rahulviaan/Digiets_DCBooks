@@ -1,0 +1,128 @@
+﻿
+@{
+    ViewBag.Title = "Book Detail";
+
+    if (User.IsInRole("Admin") || User.IsInRole("SuperAdmin"))
+    {
+        Layout = "~/Areas/CP/Views/Shared/_LayoutM.cshtml";
+    }
+    if (User.IsInRole("User"))
+    {
+        Layout = "~/Areas/MyLibrary/Views/Shared/_LayoutM.cshtml";
+    }
+    if (User.IsInRole("School"))
+    {
+        Layout = "~/Areas/MySchool/Views/Shared/_LayoutM.cshtml";
+    }
+    if (User.IsInRole("Student"))
+    {
+        Layout = "~/Areas/Student/Views/Shared/_LayoutM.cshtml";
+    }
+}
+
+@model Database.USP_BookDetails_Result
+
+
+
+<!--Start product Details-->
+
+
+<div class="servicefinal">
+
+
+
+    <div class="container" style="padding-top:100px">
+        <div class="servicefinalLeft fl" style="padding-left:220px;">
+            <div style="padding-top:10px;">
+                <a class="btn btn-default" onclick="history.back()" style="background: #9ACE48">Back</a>
+            </div>
+            <!--Start servicesdetailsBox-->
+            <div class="col-md-6" style="padding-top:20px;">
+                <img src="~/Attatchments/Book/@Model.Image" alt="" style="width:300px;height:400px;" />
+
+
+            </div>
+            <!--End servicesdetailsBox-->
+            <!--Start Description-->
+            <div class="col-md-6" style="padding-top: 100px;">
+                <div style="padding-top:10px">
+                    <h4>@Model.BookName</h4>
+                    Author : <b>@Model.Author</b>
+                </div>
+                <!--Start aboutMe-->
+                <div style="padding-top:10px">
+
+                    ISBN  : <b>@Model.ISBN</b>
+                </div>
+                <div style="padding-top:10px">
+
+                    Board  : <b>@Model.Board</b>
+                </div>
+                <div style="padding-top:10px">
+
+                    Catagory  : <b>@Model.Catagory</b>
+                </div>
+                <div style="padding-top:10px">
+
+                    Class  : <b>@Model.Class</b>
+                </div>
+                <div style="padding-top:10px">
+
+                    Subject  : <b>@Model.Subject</b>
+                </div>
+                <div style="padding-top:10px">
+
+                    Series  : <b>@Model.Series</b>
+                </div>
+                <div style="padding-top:10px">
+
+                    Price  : <i class="fa fa-inr"></i><b>@Model.EbookPrice</b>
+                </div>
+                <div style="padding-top:10px;">
+                    <a data-bookid="@Model.BookId" id="@Model.BookId" href="javascript:void(0);" onclick="AddToCart(this)" class="viewmorebutton" style="display:none;">
+                        Add To Cart
+                    </a>
+                </div>
+                <!--End aboutMe-->
+            </div>
+            <!--End Description-->
+        </div>
+
+        <!--Start Add product to cart-->
+
+
+    </div>
+</div>
+
+@section Scripts {
+
+    <link href="~/Content/my_library.css" rel="stylesheet" />
+    <script src="~/Scripts/jquery.toaster.js"></script>
+    <script src="~/Scripts/bootbox.min.js"></script>
+    <script src="~/Scripts/Common.js"></script>
+    <script src="~/Scripts/jquery.toaster.js"></script>
+}
+<script src="~/Scripts/eBook/jquery-1.9.1.js"></script>
+<script>
+    $(document).ready(function () {
+   
+        isInCart();
+
+    })
+    function isInCart() {
+        $.ajax({
+            type: 'POST',
+            url: '/MyLibrary/Dashboard/IsInCart',
+            data: { BookId: "@Model.BookId" },
+            dataType: "json",
+            success: function (data) {
+          
+                if (!data) {
+                    $("#@Model.BookId").css("display", "inline");
+                }
+
+            }
+        });
+    }
+</script>
+

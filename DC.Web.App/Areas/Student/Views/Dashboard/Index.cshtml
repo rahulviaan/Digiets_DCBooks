@@ -1,0 +1,614 @@
+﻿@model DC.Web.App.Models.RegisterStudentModel
+@{
+    ViewBag.Title = Model.Name + "" + Model.UserCode;
+
+    var DOB = Model.DOB != null ? ((DateTime)Model.DOB).ToString("yyyy-MM-dd") : "";
+    var strDOB = Model.DOB != null && ((DateTime)Model.DOB).ToString("dd-MMM-yyyy") != "01-Jan-1900" ? ((DateTime)Model.DOB).ToString("dd-MMM-yyyy") : "";
+
+    ViewBag.Title = "View Sturebt";
+    var genderList = DC.Web.App.Models.EnumHelper.ToSelectLists<DC.Gender>().Where(m => m.Value != "-1");
+    var gender = genderList.FirstOrDefault(m => m.Value == Convert.ToString(Model.Gender.GetHashCode()));
+    var sgender = gender == null ? "" : gender.Text;
+    var status = DC.Web.App.Models.EnumHelper.GetEnumDescription(Model.Status);
+
+    var css = Model.Status == DC.Status.Active ? "" : "td-inactive";
+
+    var boards = new Database.Repository.MasterRepository.BoardRepository().SelectList();
+    var lstboards = new List<SelectListItem>();
+    if (boards != null && boards.Count() > 0)
+    {
+        lstboards = (from item in boards
+                     select new SelectListItem
+                     {
+                         Text = item.Title,
+                         Value = item.Id.ToString(),
+                     }).ToList();
+    }
+
+    var sessions = new List<string>();
+    var i = DateTime.Now.Year + 1;
+    for (int j = 0; j < 5; j++)
+    {
+        sessions.Add((i - j).ToString());
+    }
+    var lstsessions = (from item in sessions
+                       select new SelectListItem
+                       {
+                           Text = item,
+                           Value = item,
+                       }).ToList();
+
+    var classes = new Database.Repository.MasterRepository.ClassRepository().SelectList();
+    var lstclasses = new List<SelectListItem>();
+    if (classes != null && classes.Count() > 0)
+    {
+        lstclasses = (from item in classes
+                      select new SelectListItem
+                      {
+                          Text = item.Title,
+                          Value = item.Id.ToString(),
+                      }).ToList();
+    }
+
+}
+<style>
+    .btn-file {
+        position: relative;
+        overflow: hidden;
+        cursor: pointer;
+    }
+
+        .btn-file:hover {
+            position: relative;
+            overflow: hidden;
+            cursor: pointer;
+            background: white;
+        }
+
+        .btn-file input[type=file] {
+            position: absolute;
+            top: 0;
+            right: 0;
+            min-width: 100%;
+            min-height: 100%;
+            font-size: 100px;
+            text-align: right;
+            filter: alpha(opacity=0);
+            opacity: 0;
+            outline: none;
+            background: white;
+            cursor: inherit;
+            display: block;
+        }
+
+    .table.table-borderless td, .table.table-borderless th {
+        border: 0 !important;
+    }
+
+    .table.table-borderless {
+        margin-bottom: 0px;
+    }
+
+    .uimgcirle {
+        width: 100px;
+        height: 100px;
+        max-width: 100px;
+        max-height: 100px;
+        -webkit-border-radius: 50%;
+        -moz-border-radius: 50%;
+        border-radius: 50%;
+        border: 5px solid rgba(255,255,255,0.5);
+    }
+
+    .csslast {
+        margin: 20px;
+    }
+</style>
+<ol class="breadcrumb" id="olBredcrumb">
+    <li class="breadcrumb-item">
+        <a href="@Url.Action(Model.UserCode,"student-panel",new {area="" })">Home</a>
+    </li>
+    <li class="breadcrumb-item active "> @Model.FirstName @Model.UserCode </li>
+</ol>
+<div class="col-md-6 col-lg-offset-3" style="background:#e6e6e6;padding:10px;" id="dvView">
+    <a href="javascript:void(0);" onclick="EditUser()" class="btn btn-sm pull-right btn-primary"> Edit Detail</a>
+    <table class="table table-bordered" style="background:#fff;padding:10px;">
+        <tr>
+            <td colspan="3">
+                @Html.HiddenFor(m => m.Image)
+                @{
+                    var img = "/images/blankuser.png";
+                    if (File.Exists(Server.MapPath("~/Attatchments/" + Model.Image)))
+                    {
+                        img = "/Attatchments/"+Model.Image ;
+                    }
+
+                }
+                <div title="click to upload image." class="col-lg-12  btn-file text-center">
+                    <img   id="img1" name="img1" title="click to upload image." class="uimgcirle" src="@img" />
+                    <br />
+                    <i class="fa fa-camera"></i> Browse <input id="flUserImage" name="flUserImage" onchange="UploadImage(event,this)" title="click to upload image." type="file">
+                </div>
+            </td>
+        </tr>
+        <tr class="@css">
+            <th width="15%">@Html.Label("Name")</th>
+            <th width="1%" class="text-center">:</th>
+            <td width="84%"> @Html.DisplayFor(t => t.FirstName) @Html.DisplayFor(t => t.LastName)</td>
+        </tr>
+        <tr class="@css">
+            <th>@Html.LabelFor(m => m.Class)</th>
+            <th class="text-center">:</th>
+            <td>   @Model.Class</td>
+        </tr>
+        <tr class="@css">
+            <th>@Html.LabelFor(m => m.Board)</th>
+            <th class="text-center">:</th>
+            <td>   @Model.Board</td>
+        </tr>
+        <tr class="@css">
+            <th>@Html.LabelFor(m => m.Session)</th>
+            <th class="text-center">:</th>
+            <td>   @Model.Session</td>
+        </tr>
+        <tr class="@css">
+            <th>@Html.LabelFor(m => m.RollNo)</th>
+            <th class="text-center">:</th>
+            <td>   @Model.RollNo</td>
+        </tr>
+        <tr class="@css">
+            <th> @Html.LabelFor(m => m.PhoneNumber)</th>
+            <th class="text-center">:</th>
+            <td> @Html.DisplayFor(t => t.PhoneNumber)</td>
+        </tr>
+        <tr class="@css">
+            <th>  @Html.LabelFor(m => m.Email)</th>
+            <th class="text-center">:</th>
+            <td>@Html.DisplayFor(t => t.Email)</td>
+        </tr>
+        <tr class="@css">
+            <th> @Html.LabelFor(m => m.Password)</th>
+            <th class="text-center">:</th>
+            <td>
+                @{var pwd = Model.Password.Substring(0, 1);
+                    foreach (var item in Model.Password.Substring(2, Model.Password.Length - 2).ToCharArray())
+                    {
+                        pwd = pwd + "*";
+                    }
+                    pwd += Model.Password.Substring(Model.Password.Length - 1, 1);
+
+                }
+                <span data-pwd="@Model.Password" data-user="@Model.UserName" name="@Model.FirstName @Model.LastName" onclick="return CopyData(this)" title="click for copy credentials." class="fa fa-lock btn "> @pwd</span>
+            </td>
+        </tr>
+        <tr class="@css">
+            <th>@Html.LabelFor(m => m.DOB)</th>
+            <th class="text-center">:</th>
+            <td>@strDOB</td>
+        </tr>
+        <tr class="@css">
+            <th> @Html.LabelFor(m => m.Gender)</th>
+            <th class="text-center">:</th>
+            <td id="txtGender">@sgender</td>
+        </tr>
+        <tr class="@css">
+            <th>@Html.LabelFor(m => m.Address)</th>
+            <th class="text-center">:</th>
+            <td>   @Model.Address</td>
+        </tr>
+    </table>
+</div>
+<div class="col-lg-6 col-lg-offset-3  hidden" id="dvEdit" style="background:#e6e6e6;padding:10px;">
+    <div class="col-lg-12 " style="background:#fff;">
+        <div class="col-lg-12">
+            @using (Html.BeginForm(null, null, FormMethod.Post, new { role = "form", autocomplete = "off", name = "frmAddUser", id = "frmAddUser", }))
+            {
+                @Html.ValidationSummary(true, "", new { @class = "text-danger small" })
+                @Html.AntiForgeryToken()
+                @Html.HiddenFor(m => m.Id)
+                @Html.HiddenFor(m => m.SchoolId)
+                @Html.HiddenFor(m => m.RoleId)
+                <div class="row ">
+                    <div class="col-lg-12">
+                        <h4 style="margin-bottom: 3px;" id="h3Title"> Update Student  </h4>
+                        <div>@Model.School - @Model.SchoolCode</div>
+                        <hr />
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <div class="row">
+                                <div class="col-lg-12">
+                                    @Html.LabelFor(m => m.FirstName)
+                                    @Html.ValidationMessageFor(m => m.FirstName, "", new { @class = "small text-danger pull-right" })
+                                </div>
+                                <div class="col-lg-12">
+                                    <div class="form-group has-feedback " title="@Html.DisplayNameFor(model => model.FirstName).">
+                                        @Html.TextBoxFor(t => t.FirstName, new { maxlength = "200", @class = "form-control", @placeholder = Html.DisplayNameFor(model => model.FirstName) })
+                                        <span class="text-danger fa fa-star-o form-control-feedback"></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-lg-6">
+                            <div class="row">
+                                <div class="col-lg-12">
+                                    @Html.LabelFor(m => m.RollNo)
+                                    @Html.ValidationMessageFor(m => m.RollNo, "", new { @class = "small text-danger pull-right" })
+                                </div>
+                                <div class="col-lg-12">
+
+                                    <div class="form-group has-feedback " title="* @Html.DisplayNameFor(model => model.RollNo) reuired.">
+                                        @Html.TextBoxFor(t => t.RollNo, new { maxlength = "4", @class = "form-control", @placeholder = Html.DisplayNameFor(model => model.RollNo) })
+                                        <span class="text-danger fa fa-star-o form-control-feedback"></span>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-6">
+                            <div class="row">
+                                <div class="col-lg-12">
+                                    @Html.LabelFor(m => m.MasterClassId)
+                                    @Html.ValidationMessageFor(m => m.MasterClassId, "", new { @class = "small text-danger pull-right" })
+                                </div>
+                                <div class="col-lg-12">
+
+                                    <div class="form-group has-feedback " title="* @Html.DisplayNameFor(model => model.MasterClassId) reuired.">
+                                        @Html.DropDownListFor(t => t.MasterClassId, lstclasses, Html.SelectText(Html.DisplayNameFor(model => model.MasterClassId).ToString()), new { @class = "form-control" })
+                                        <span class="text-danger fa fa-star-o form-control-feedback"></span>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-lg-6">
+                            <div class="row">
+                                <div class="col-lg-12">
+                                    @Html.LabelFor(m => m.MasterBoardId)
+                                    @Html.ValidationMessageFor(m => m.MasterBoardId, "", new { @class = "small text-danger pull-right" })
+                                </div>
+                                <div class="col-lg-12">
+
+                                    <div class="form-group has-feedback " title="* @Html.DisplayNameFor(model => model.MasterBoardId) reuired.">
+                                        @Html.DropDownListFor(t => t.MasterBoardId, lstboards, Html.SelectText(Html.DisplayNameFor(model => model.MasterBoardId).ToString()), new { @class = "form-control" })
+                                        <span class="text-danger fa fa-star-o form-control-feedback"></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-lg-6">
+                            <div class="row">
+                                <div class="col-lg-12">
+                                    @Html.LabelFor(m => m.Session)
+                                    @Html.ValidationMessageFor(m => m.Session, "", new { @class = "small text-danger pull-right" })
+                                </div>
+                                <div class="col-lg-12">
+
+                                    <div class="form-group has-feedback " title="* @Html.DisplayNameFor(model => model.Session) reuired.">
+                                        @Html.DropDownListFor(t => t.Session, lstsessions, "--Select Session--", new { @class = "form-control" })
+                                        <span class="text-danger fa fa-star-o form-control-feedback"></span>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-lg-6">
+                            <div class="row">
+                                <div class="col-lg-12">
+                                    @Html.LabelFor(m => m.PhoneNumber)
+                                    @Html.ValidationMessageFor(m => m.PhoneNumber, "", new { @class = "small text-danger pull-right" })
+                                </div>
+                                <div class="col-lg-12">
+                                    <div class="form-group has-feedback " title="* @Html.DisplayNameFor(model => model.PhoneNumber) reuired.">
+                                        @Html.TextBoxFor(t => t.PhoneNumber, new { @class = "form-control", @placeholder = Html.DisplayNameFor(model => model.PhoneNumber) })
+                                        <span class="text-danger fa fa-star-o form-control-feedback"></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-6">
+                            <div class="row">
+                                <div class="col-lg-12">
+                                    @Html.LabelFor(m => m.Email)
+                                    @Html.ValidationMessageFor(m => m.Email, "", new { @class = "small text-danger pull-right" })
+                                </div>
+                                <div class="col-lg-12">
+                                    <div class="form-group has-feedback " title="Enter @Html.DisplayNameFor(model => model.Email).">
+                                        @Html.TextBoxFor(t => t.Email, new { @class = "form-control", @placeholder = Html.DisplayNameFor(model => model.Email) })
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-6">
+                            <div class="row">
+                                <div class="col-lg-12">
+                                    @Html.LabelFor(m => m.DOB)
+                                    @Html.ValidationMessageFor(t => t.DOB, "", new { @class = "small  pull-right text-danger" })
+                                </div>
+                                <div class="col-lg-12">
+                                    <div class="form-group has-feedback " title="@Html.DisplayNameFor(model => model.DOB).">
+                                        <input class="form-control" title="@Html.DisplayNameFor(model => model.DOB)" id="DOB" name="DOB" type="date">
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-6">
+                            <div class="row">
+                                <div class="col-lg-12">
+                                    @Html.LabelFor(m => m.Gender)
+                                    @Html.ValidationMessageFor(t => t.Gender, "", new { @class = "small  pull-right text-danger" })
+                                </div>
+                                <div class="col-lg-12">
+                                    <div class="form-group has-feedback " title="@Html.DisplayNameFor(model => model.Gender).">
+                                        @Html.DropDownListFor(m => m.Gender, genderList, "--Select Gender--", new { @class = "form-control" })
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+
+                        <div class="col-lg-12">
+                            <div class="row">
+                                <div class="col-lg-12">
+                                    @Html.LabelFor(m => m.Address)
+                                    @Html.ValidationMessageFor(t => t.Address, "", new { @class = "small  pull-right text-danger" })
+                                </div>
+                                <div class="col-lg-12">
+                                    <div class="form-group has-feedback " title="@Html.DisplayNameFor(model => model.Address).">
+                                        @Html.TextAreaFor(t => t.Address, new { maxlength = "500", @class = "form-control", @placeholder = Html.DisplayNameFor(model => model.Address) })
+
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <hr />
+                        </div>
+                    </div>
+                    <div class="row csslast">
+
+
+                        <div class="col-lg-12 text-center">
+                            <a href="javascript:void(0);" id="btnCancel" class="btn btn-lg   btn-default " onclick="CancelEdit()"> Cancel</a>
+
+                            <button id="btnSubmit" type="submit" class="btn btn-lg btn-primary   ">Update Student</button>
+
+
+                        </div>
+
+                    </div>
+
+
+                </div>
+
+
+            }
+        </div>
+    </div>
+</div>
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    <script src="~/Scripts/jquery.toaster.js"></script>
+    <script src="~/Scripts/bootbox.min.js"></script>
+    <script src="~/Scripts/Common.js"></script>
+    <script>
+
+
+        var files = [];
+
+        function copyToClipboard(text) {
+
+
+            navigator.clipboard.writeText(text);
+
+            $("#toaster").html("");
+            $.toaster({ priority: 'success', title: "Copy student credential", message: "Data has been copied at clipboard." });
+            return false;
+        }
+        function CopyData(obj) {
+
+        var uname = $(obj).attr("data-user")
+        var pwd = $(obj).attr("data-pwd")
+        var copyText = "User name: " + uname + " , Password: " + pwd + "";
+        copyToClipboard(copyText);
+        return false;
+        }
+        function UploadImage(evt, objFile) {
+
+            $("#toaster").html("");
+            files = [];
+            var maxsize = 10485760;//10 MB
+            var imageType = /image.*/;
+            if (objFile.files.length > 5) {
+                $.toaster({ priority: 'danger', title: 'Error', message: '* You can upload only five images.' });
+                return false;
+            }
+            var FileSize = 0;
+
+            for (var i = 0; i < objFile.files.length; i++) {
+                var selectedFile = objFile.files[i];
+                if (selectedFile.type.match(imageType)) {
+                    files.push(selectedFile);
+                    FileSize += selectedFile.size;
+                }
+                else {
+                    $.toaster({ priority: 'danger', title: "Sucess", message: "* Oops! You can only upload .jpeg, .jpg, .png or .gif files that are less than 10MB in size." });
+                    break;
+                }
+            }
+
+            if (FileSize == 0 || FileSize > maxsize) {
+                $.toaster({ priority: 'danger', title: "Sucess", message: "* Oops! You can only upload .jpeg, .jpg, .png or .gif files that are less than 10MB in size." });
+                return;
+            }
+
+            for (var i = 0; i < files.length; i++) {
+                var selectedFile = files[i];
+                if (selectedFile.type.match(imageType)) {
+                    SetImageShow(selectedFile, (i + 1));
+                }
+            }
+        }
+        function SetImageShow(selectedFile, ctrlid) {
+            if (selectedFile) {
+                var FileSize = 0;
+
+                var ctrlimg = "img" + ctrlid;
+
+                var _URL = window.URL || window.webkitURL;
+                img = new Image();
+                img.onload = function () {
+                    document.getElementById(ctrlimg).src = this.src;
+                    $("#" + ctrlimg + "").attr("img-height", this.height)
+                    $("#" + ctrlimg + "").attr("img-width", this.width)
+                    SubmitUserImage();
+                };
+                img.onerror = function () {
+                    $.toaster({ priority: 'danger', title: 'Error', message: '* You are uploading invalid image file type.' });
+                    return false;
+                };
+                img.src = _URL.createObjectURL(selectedFile);
+                return false;
+            }
+        }
+        function SubmitUserImage() {
+            AddLoader();
+            var dataString = new FormData();
+            $.each(files, function (index, element) {
+                //var img = "#img" + (index + 1);
+                //var height = $(img).attr("img-height")  ;
+                //var width = $(img).attr("img-width");
+                dataString.append("fl" + index + "", this);
+
+            });
+
+            $.ajax({
+                url: '@Url.Action("UploadUserImage", "Manage", new {area= "" })',  //Server script to process data
+                type: 'POST',
+                xhr: function () {  // Custom XMLHttpRequest
+                    var myXhr = $.ajaxSettings.xhr();
+                    if (myXhr.upload) { // Check if upload property exists
+                    }
+                    return myXhr;
+                },
+                //Ajax events
+                success: function (data) {
+                    if (data.StatusCode == 200) {
+                        files = [];
+                        $("#img1").attr("src", data.Title)
+                        $.toaster({ priority: 'success', title: " Success! ", message: data.Message });
+                        RemoveLoader();
+                    }
+                    else {
+                        $("#img1").attr("src", $("#Data_Image").val());
+                        $.toaster({ priority: 'danger', title: " Error! ", message: data.Message });
+                        RemoveLoader();
+                    }
+                },
+                error: function (data) {
+                    $("#img1").attr("src", $("#Data_Image").val());
+                    $.toaster({ priority: 'danger', title: " Error! ", message: "Some error occurred please try again."});
+                    RemoveLoader();
+                },
+                complete: function (data) {
+                    RemoveLoader();
+                },
+                data: dataString,
+                cache: false,
+                contentType: false,
+                processData: false
+            });
+        }
+        function CancelEdit() {
+            $("#dvView").removeClass("hidden");
+            $("#dvEdit").addClass("hidden");
+
+        }
+        function EditUser() {
+            $("#dvView").addClass("hidden");
+            $("#dvEdit").removeClass("hidden");
+        }
+        function UpdateUser() {
+        var btnhtml = $("#btnSubmit").html();
+        $("#btnSubmit").html("Wait.. <i class='fa fa-spinner fa-spin'></i>");
+        $("#btnSubmit").attr("disabled", "disabled");
+        var Id = $.trim($("#Id").val());
+        var FirstName = $.trim($("#FirstName").val());
+        var LastName = $.trim($("#LastName").val());
+        var PhoneNumber = $.trim($("#PhoneNumber").val());
+        var Email = $.trim($("#Email").val());
+        var Password = '@Model.Password';
+        var DOB = $.trim($("#DOB").val());
+        var Gender = $.trim($("#Gender option:selected").val());
+
+        var MasterClassId = $.trim($("#MasterClassId option:selected").val());
+        var MasterBoardId = $.trim($("#MasterBoardId option:selected").val());
+        var Session = $.trim($("#Session option:selected").val());
+        var Address = $.trim($("#Address").val());
+        var RollNo = $.trim($("#RollNo").val());
+        var SchoolId = $.trim($("#SchoolId").val());
+            Gender = Gender == "" ? -1 : parseInt(Gender);
+            console.log(Gender)
+        var RoleId = $.trim($("#RoleId").val());
+        AddLoader();
+           $.ajax({
+            type: "POST",
+            url: '@Url.Action("updatestudent", "student-panel", new {area= "" })',
+            data: {
+                Id: Id, RoleId: RoleId, FirstName: FirstName, LastName: LastName, MobNo: PhoneNumber, PhoneNumber: PhoneNumber, EmailId:Email,
+                Password: Password, DOB: DOB, iGender: Gender, Gender: Gender, MasterClassId: MasterClassId, MasterBoardId: MasterBoardId,
+                Session: Session, Address: Address, SchoolId: SchoolId, RollNo: RollNo
+                },
+            success: function (data) {
+                $("#btnSubmit").html(btnhtml);
+                $("#btnSubmit").removeAttr("disabled");
+                if (data.StatusCode == 200) {
+                    $.toaster({ priority: 'success', title: " Success! ", message: data.Message });
+                    window.location.reload();
+
+                }
+                else {
+                    $.toaster({ priority: 'danger', title: " Error! ", message: data.Message });
+                    RemoveLoader();
+                }
+            },
+            error: function (data) {
+                $("#btnSubmit").html(btnhtml);
+                $("#btnSubmit").removeAttr("disabled");
+                RemoveLoader();
+            },
+            complete: function (data) {
+                $("#btnSubmit").html(btnhtml);
+                $("#btnSubmit").removeAttr("disabled");
+                RemoveLoader();
+            }
+        });
+    }
+        $(function () {
+
+            $(document).ajaxSend(function (event, xhr, settings) {
+                $(".jsLoading").attr("disabled", "disabled");
+            });
+            $(document).ajaxComplete(function (event, xhr, settings) {
+                $(".jsLoading").removeAttr("disabled");
+            });
+            $("#DOB").val('@DOB');
+            $(document).on("submit", "#frmAddUser", function (e) {
+                e.preventDefault();
+                UpdateUser();
+            });
+        });
+
+    </script>
+}

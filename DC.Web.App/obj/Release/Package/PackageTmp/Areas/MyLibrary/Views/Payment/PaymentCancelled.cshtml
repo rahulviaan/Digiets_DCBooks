@@ -1,0 +1,40 @@
+﻿@model DC.Web.App.Models.PaymentDetails
+@{
+    ViewBag.Title = "Cart Detail";
+
+    if (User.IsInRole("Admin") || User.IsInRole("SuperAdmin"))
+    {
+        Layout = "~/Areas/CP/Views/Shared/_LayoutM.cshtml";
+    }
+    if (User.IsInRole("User"))
+    {
+        Layout = "~/Areas/MyLibrary/Views/Shared/_LayoutM.cshtml";
+    }
+    if (User.IsInRole("School"))
+    {
+        Layout = "~/Areas/MySchool/Views/Shared/_LayoutM.cshtml";
+    }
+    if (User.IsInRole("Student"))
+    {
+        Layout = "~/Areas/Student/Views/Shared/_LayoutM.cshtml";
+    }
+}
+<div id="dvFilterSearch" style="margin-top:30px;">
+    <div class="mainServices clearfix">
+        <div class="container">
+            <div style="background-color:white;margin-top:40px;padding:30px">
+                <h2 style="margin:20px;text-align:center;font-weight:bold;color:green;">
+                    Congratulations!!! Your Order is Placed Successfully
+                </h2>
+                <div class="servicesRight1">
+                    <table>
+                        <tr><td><b>Payment Details:</b></td><td>&nbsp;</td></tr>
+                        <tr><td>Order Id:</td><td>@Model.OrderId</td></tr>
+                        <tr><td>Amount Paid:</td><td>@Model.AmountPaid</td></tr>
+                        <tr><td>Payment Type:</td><td>@Model.PaymentType</td></tr>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

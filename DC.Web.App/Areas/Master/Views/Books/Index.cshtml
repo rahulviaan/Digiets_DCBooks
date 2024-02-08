@@ -1,0 +1,719 @@
+﻿@model DC.KeyValue
+@{
+    ViewBag.Title = "Manage Books";
+
+}
+<div class="container">
+<div class="row">
+<div class="col-lg-12">
+<ol class="breadcrumb" id="olBredcrumb">
+    <li class="breadcrumb-item">
+        <a href="@Url.Action("Index","Dashboard",new {area="CP" })">Home</a>
+    </li>
+    <li class="breadcrumb-item active "> <a href="@Url.Action("Index","Books",new {area="Master" })">Manage Books</a></li>
+</ol>
+</div>
+</div>
+
+<div class="row">
+  <div class="col-lg-12">
+     <div id="pageAdd" class="form-data"></div>
+ </div>
+</div>
+
+<div class="row">
+<div id="pageData" class="text-center">
+    <div class="col-lg-8 col-xs-8">
+        <div class="form-group has-feedback ">
+            <input onkeyup="Search()" type="text" class="form-control" id="txtSearch" name="txtSearch" placeholder="Search By Name">
+            <span class="fa fa-search form-control-feedback"></span>
+        </div>
+    </div>
+    <div class="col-lg-4 col-xs-4 text-right ">
+        @Html.Hidden("ParentId", Model.Id)
+        <button type="button" title="Click refresh data." class="btn btn-sm  btn-primary" onclick="return FillData();"><i class="fa fa-refresh"></i></button>
+        <button type="button" id="btnAdd" onclick="return Add('Create category','0');" title="Click for add ." class="btn btn-sm btn-primary"><i class="fa fa-plus"></i></button>
+        @*<button type="button" id="btnCleanImages" onclick="return CleanImages();" title="Click for clean images ." class="btn btn-sm btn-primary">Clean Images</button>*@
+
+    </div>
+
+<div class="col-lg-12">  
+    <div id="divData">
+    <h4>Data not found. </h4>
+</div>
+</div>
+</div>
+</div>
+</div>
+@section Scripts {
+    <style>
+        small, small {
+            font-size: 70%;
+            font-weight: 400;
+        }
+
+        .toggle-off {
+            background: #bd2130;
+            color: #fff;
+        }
+
+
+        .cssWhiteOverlay {
+            position: absolute;
+            background-color: white;
+            z-index: 1 !important;
+            overflow: hidden;
+            width: 100%;
+            height: 100%;
+            padding: 0px;
+            -moz-opacity: 0.5;
+            opacity: .50;
+            filter: alpha(opacity=50);
+        }
+
+        .cssBlackOverlay {
+            background-color: #000000 !important;
+            z-index: 0 !important;
+            -moz-opacity: 0.5;
+            opacity: .50;
+            filter: alpha(opacity=50);
+            padding: 0px;
+        }
+
+        .groups {
+            border: 1px solid #eee;
+            background: #fff;
+            text-align: center;
+            margin: 10px 20px 10px 20px;
+            min-height: 250px;
+            overflow: hidden;
+        }
+
+        .group {
+            margin: 14px;
+        }
+
+        .icon {
+        }
+
+        .title {
+        }
+
+        span.title {
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .title-sub {
+            height: 15px;
+        }
+
+        .actions {
+            position: absolute;
+            bottom: 5px;
+            width: 100%;
+        }
+    </style>
+
+    <script src="~/Scripts/jquery.toaster.js"></script>
+    <script src="~/Scripts/bootbox.min.js"></script>
+    <script src="~/Scripts/Common.js"></script>
+    <script>
+
+        function AddBreadCrumb(bc) {
+              var bredcrumb = ' <li class="breadcrumb-item"> <a href="@Url.Action("Index","Admin",new {area="CP" })">Home</a></li>'
+                            + '<li class="breadcrumb-item"> <a title="Click for view all child category." data-id="0"  data-title="" class="jsCategory" href="javascript:void(0);">Parent Category</a></li>';
+                        $.each(bc, function () {
+                            bredcrumb += '<li class="breadcrumb-item"> <a title="Click for view all child category from ' + this.Title + '." data-id ="' + this.Id + '"  data-title="' + this.Title + '" class="jsCategory" href="javascript:void(0);">' + this.Title + '</a></li>';
+                        });
+                        $(".breadcrumb").html(bredcrumb);
+        }
+        function CancelAdd() {
+
+            $("#pageData").css({ "display": "" })
+            $("#pageAdd").css({ "display": "none" })
+        }
+        function Search() {
+            var input, filter, table, tr, td, i;
+            input = document.getElementById("txtSearch");
+            filter = input.value.toUpperCase();
+            table = $(".jsCategory") ;
+            $.each($(".jsCategory"), function () {
+
+                var title = $(this).attr("data-title");
+                var catid = $(this).attr("data-id");
+
+
+                if (title.toUpperCase().indexOf(filter) > -1) {
+                    $("#Cat_" + catid + "").removeClass("hidden");
+                } else {
+                    $("#Cat_" + catid + "").addClass("hidden");
+                }
+            });
+        }
+
+        
+
+        function LoadChildCategoryCount() {
+            $.each($(".jsLoadTotalCategory"), function () {
+                var catcountconatiner = this;
+                var dataid = $(this).attr("data-id");
+                  $.ajax({
+                type: "GET",
+                url: '@Url.Action("Count", "Books", new {area="Master" })',
+                data: { Id: dataid },
+                success: function (data) {
+                    $(catcountconatiner).attr("title", "" + data.CatCount +" child categories.");
+                    $(catcountconatiner).html("Child Cat: "+data.CatCount +" | ");
+
+                },
+                complete: function (data) {
+
+                },
+                error: function (data) {
+                    $(catcountconatiner).attr("title", "Child category not find.");
+                    $(catcountconatiner).html("..");
+                }
+            });
+            });
+
+            $.each($(".jsLoadNoProduct"), function () {
+                var productcountconatiner = this;
+                var dataid = $(this).attr("data-id");
+                  $.ajax({
+                type: "GET",
+                url: '@Url.Action("BookCount", "Books", new {area="Master" })',
+                data: { Id: dataid },
+                success: function (data) {
+                    $(productcountconatiner).attr("title", "Books in category " + data.ProductCount +".");
+                    $(productcountconatiner).html("Books : " + data.ProductCount+"");
+
+                },
+                complete: function (data) {
+
+                },
+                error: function (data) {
+                    $(productcountconatiner).attr("title", "Books not found.");
+                    $(productcountconatiner).html("Books : 0");
+                }
+            });
+            });
+
+
+        }
+
+        function Add(title,id) {
+
+            var ParentId = $.trim($("#ParentId").val());
+            if (isNaN(ParentId)) {
+                ParentId = 0;
+            }
+            var btnhtml = $("#btnAdd").html();
+            $("#btnAdd").html("Wait.. <i class='fa fa-spinner fa-spin'></i>");
+            $("#btnAdd").attr("disabled", "disabled");
+            AddLoader();
+            $.ajax({
+                type: "GET",
+                url: '@Url.Action("Add", "Books", new {area="Master" })',
+                data: { Id: id, ParentId: ParentId, Title: ''},
+                success: function (data) {
+                    $("#btnAdd").html(btnhtml);
+                    $("#btnAdd").removeAttr("disabled");
+                    $("#pageAdd").css({ "display": "" });
+                    $("#pageData").css({ "display": "none" });
+
+                    $("#pageAdd").html(data);
+                    var parentnode = $("#olBredcrumb li a").last().attr("data-title");
+                    title = title ==""? "Create New Category" : title;
+                    parentnode = parentnode == "" ? title : "" + title+" under <strong class='text-muted'> " + parentnode+"</strong>";
+                    $("#h3Title").html(parentnode);
+                },
+                complete: function (data) {
+                    $("#btnAdd").html(btnhtml);
+                    $("#btnAdd").removeAttr("disabled");
+                    RemoveLoader();
+                },
+                error: function (data) {
+
+                    $("#btnAdd").html(btnhtml);
+                    $("#btnAdd").removeAttr("disabled");
+                    RemoveLoader();
+                }
+            });
+        } 
+        function FillData() {
+            $("#toaster").html("");
+            CancelAdd();
+            var ParentId =  $.trim($("#ParentId").val()) ;
+            if (isNaN(ParentId)) {
+                ParentId = 0;
+            }
+            AddLoader();
+            $.ajax({
+                type: 'POST',
+                url: '@Url.Action("Gets", "Books", new {area="Master"})',
+                data: { ParentId: ParentId },
+                dataType: "json",
+                success: function (data) {
+                    var dvData = '<div class="row">';
+                    if (data.StatusCode == 200) {
+                        var currentstatus = ""; 
+                        $.each(data.results, function () {
+                            if (this.Status == '@DC.Status.Active.GetHashCode()') {
+                                currentstatus = '<button data-id="' + this.Id + '"  data-title="' + this.Title + '" title="Currennt category status is Active click to In-Active category : ' + this.Title + '." type="button" class="jsLoading jsActiveInactive btn btn-outline-info text-danger btn-sm"><i class="fa fa-check-square"></i></button>';
+                            }
+                            else {
+                                currentstatus = '<button data-id="' + this.Id + '"  data-title="' + this.Title + '" title="Currennt category status is In-Active click to Active category : ' + this.Title + '." type="button" class="jsLoading jsActiveInactive btn btn-outline-info text-success btn-sm"><i class="fa fa-close"></i></button>'
+                            }
+
+                           
+                            dvData += "<div id='Cat_" + this.Id + "' class='col-sm-6 col-md-3 mb-5'>"
+                                +'<div class="book-box">'
+                                +'<div class="book-item">'
+                                +'<a title="Click for view all child category from :' + this.Title + '" data-id="' + this.Id + '"  data-title="' + this.Title + '" class="jsCategory" href="javascript:void(0)">'
+
+                                +'<div title="Category:' + this.Title + ' " id="" class="group icon">'
+                                +'<a hreef="#" class="thumbnail">'  
+                                +'<img class="img-responsive" onerror="SetSquareImageDefault(this)"  src="/Attatchments/Category/th_'+this.Image+'" />'
+                                +'</a>'
+                                
+                                + ' <div class="caption"> '
+                                + ' <div class="child_cat"> '
+                                + '<a data-id="' + this.Id + '"  data-title="' + this.Title + '" class="jsLoadTotalCategory" title="Loading child categories:" ><img src = "/images/inlineloader.gif" />..</a>'
+                                + '<a data-id="' + this.Id + '"  data-title="' + this.Title + '" class="jsLoadNoProduct text-primary" title="Loading products in Category ' + this.Title + '." ><img src = "/images/inlineloader.gif" />..</a></div>'
+                                + ' <h5  class="ellipsis-title" id="CatTitle_' + this.Id + '">' + this.Title + '</h5>'
+                               
+                                + '<div class="btn-group btn-group-icon">'
+                                + '<button data-id="' + this.Id + '"  data-title="' + this.Title + '" title="Edit category ' + this.Title + '" type="button"  class="jsEdit jsLoading btn btn-outline-info text-primary btn-sm"><i class="fa fa-edit "></i></button>'
+                                + currentstatus 
+                                + '<button data-id="' + this.Id + '" data-file="'+this.Image+'" data-title="' + this.Title + '" title="Delete Book ' + this.Title + '" type="button"  class="jsDelete jsLoading btn btn-outline-info text-primary btn-sm"><i class="fa fa-trash "></i></button>'
+                                + '<a href="@Url.Action("", "Book", new { area = "" })/' + this.SlugUrl + '?catid=' + this.Id + '" data-id="' + this.Id + '"  data-title="' + this.Title + '" title="Add Books in category ' + this.Title + '" type="button"  class="jsLoading btn btn-outline-info text-primary btn-sm"><i class="fa fa-plus "></i> Book</a>'
+                                + '</div>'
+
+                                + '</div>'
+                                + '</div>'
+
+                               
+                               
+                               
+                                + '</a>'
+                                + '</div>'
+                                + '</div>'
+                              
+                                + '</div> ';
+
+                        });
+
+                        if (data.results.length > 0) {
+                            $("#divData").html(dvData + "</div>");
+                            LoadChildCategoryCount();
+                            RemoveLoader();
+                            Search();
+                        }
+                        else {
+                            $.toaster({ priority: 'danger', title: "Error", message: data.Message });
+                            RemoveLoader();
+                        }
+                        AddBreadCrumb(data.bc);
+
+                    }
+                    else if (data.StatusCode == 202) {
+                        $('.breadcrumb li:last-child').remove();
+                        AddBreadCrumb(data.bc);
+                        var dataid = $("#olBredcrumb li a").last().attr("data-id");
+                        $("#ParentId").val(dataid);
+                        $("#divData").html(data.Message);
+                        RemoveLoader();
+                    }
+                    else if (data.StatusCode == 201) {
+                        $.toaster({ priority: 'info', title: "Info", message: data.Message });
+                        AddBreadCrumb(data.bc);
+                        $('.breadcrumb li:last-child').remove();
+                        var dataid = $("#olBredcrumb li a").last().attr("data-id");
+                        $("#ParentId").val(dataid);
+                        RemoveLoader();
+                    }
+                    else {
+                        $.toaster({ priority: 'danger', title: "Error", message: "Some error occur try later." });
+                        RemoveLoader();
+                    }
+                },
+                complete: function (data) {
+                    RemoveLoader();
+                },
+                error: function (data) {
+                    $.toaster({ priority: 'danger', title: "Error", message: "Some error occur try later." });
+
+                    RemoveLoader();
+                },
+            });
+        } 
+        function ActiveInactive(Id) {
+            AddLoader();
+            $.ajax({
+                type: 'POST',
+                url: '@Url.Action("ActiveInactive", "Books", new {area="Master"})',
+                data: { Id: Id},
+                dataType: "json",
+                success: function (data) {
+                    if (data.StatusCode == 200) {
+                        FillData();
+                        $.toaster({ priority: 'success', title: "Active/Inactive", message: data.Message });
+                        RemoveLoader();
+                    }
+                    else
+                    {
+
+                        $.toaster({ priority: 'danger', title: '', message: data.Message });
+                        RemoveLoader();
+                    }
+                },
+                complete: function (data) {
+                    RemoveLoader();
+                },
+                error: function (data) {
+                    RemoveLoader();
+                }
+
+            });
+        }
+
+        
+        function CheckDelete(popupTitle, id,file) {
+            AddLoader();
+            $.ajax({
+
+                type: "GET",
+                url: '@Url.Action("CheckForDelete", "Books", new {area="Master" })',
+                data: { Id:id },
+                success: function (data) {
+                    bootbox.dialog({
+                        size: "large",
+                        title: "<i class='fa fa-trash'>  </i> | Delete Data : " + popupTitle+"",
+                        message: data,
+                        closeButton: true,
+                        buttons: {
+                            cancel: {
+                            className: 'btn-sm btn-outline-primary',
+                            label: '<i class="fa fa-times"></i> Cancel'
+                        },
+                        confirm: {
+                            className: 'btn-sm btn-outline-danger jsConfirmDelete',
+                            label: '<i class="fa fa-check"></i> Confirm',
+                            callback: function () {
+                                $("#DeleteImage").val(file);
+                                 $("#frmDelete").submit();
+                                 return false;
+                            }
+                        }
+
+                        }
+                    });
+                    RemoveLoader();
+                },
+                complete: function (data) {
+                    RemoveLoader();
+                },
+                error: function (data) {
+                    RemoveLoader();
+                }
+            });
+        }
+        function DeleteCategoryImage(Id, fileName, index) {
+            $("#toaster").html("");
+                AddLoader()
+                $.ajax({
+                type: 'POST',
+                url: '@Url.Action("DeleteImage", "Books", new {area="Master"})',
+                    data: { Id: Id, fileName: fileName},
+                dataType: "json",
+                success: function (data) {
+                    if (data.StatusCode == 200) {
+                        $.toaster({ priority: 'success', title: "Success", message: data.Message });
+                        $("#dvImage" + index + "").remove();
+                        HidePopup();
+                        RemoveLoader();
+                    }
+                    else {
+                        $.toaster({ priority: 'danger', title: "Error", message: data.Message });
+                        HidePopup();
+                        RemoveLoader();
+                    }
+                },
+                complete: function (data) {
+                    HidePopup();
+                    RemoveLoader();
+                },
+                    error: function (data) {
+                        $.toaster({ priority: 'danger', title: "Error", message: "Some error occur try later." });
+                        HidePopup();
+                        RemoveLoader();
+                }
+            });
+        }
+        $(function () {
+            FillData();
+            $(document).on("click", ".jsCategory", function (e) {
+                $("#txtSearch").val("");
+                var datatitle = $(this).attr("data-title");
+                var dataid = $(this).attr("data-id");
+                $("#ParentId").val(dataid);
+                FillData(ParentId);
+            });
+            $(document).on("click", ".jsDelete", function (e) {
+                var id = $(this).attr("data-id");
+                var title = $(this).attr("data-title");
+                var file = $(this).attr("data-file");
+
+                CheckDelete(title, id, file);
+            });
+            $(document).ajaxSend(function (event, xhr, settings) {
+                $(".jsLoading").attr("disabled", "disabled");
+            });
+            $(document).ajaxComplete(function (event, xhr, settings) {
+                $(".jsLoading").removeAttr("disabled");
+
+            });
+            $(document).on("submit", "#frmDelete", function (e) {
+                AddLoader()
+                e.preventDefault();
+                var Id = $.trim($("#DeleteId").val());
+                var Password = $.trim($("#Password").val());
+                var filename = $.trim($("#DeleteImage").val());
+
+                $.ajax({
+                type: 'POST',
+                url: '@Url.Action("Delete", "Books", new {area="Master"})',
+                    data: { Id: Id, Password: Password, filename: filename},
+                dataType: "json",
+                success: function (data) {
+                    if (data.StatusCode == 200) {
+                        $.toaster({ priority: 'success', title: "Category ", message: data.Message });
+                        $("#Cat_" + Id + "").remove();
+                        HidePopup();
+                        RemoveLoader();
+                    }
+                    else {
+                        $.toaster({ priority: 'danger', title: "Error", message: data.Message });
+                        RemoveLoader();
+                    }
+                },
+                complete: function (data) {
+                    RemoveLoader();
+                },
+                error: function (data) {
+                    RemoveLoader();
+                }
+            });
+            });
+
+            $(document).on("submit", "#frmCategory", function (e) {
+                $("#toaster").html("");
+                AddLoader();
+                var btnhtml = $("#btnSubmit").html();
+                $("#btnSubmit").html("Wait.. <i class='fa fa-spinner fa-spin'></i>");
+                $("#btnSubmit").attr("disabled", "disabled");
+                 e.preventDefault();
+                var dataString = new FormData();
+                var Id = $.trim($("#Id").val());
+                var CeateDate = $.trim($("#CeateDate").val());
+                var Status = $.trim($("#Status").val());
+                var IPaddress = $.trim($("#IPaddress").val());
+                var Hide = $.trim($("#Hide").val());
+                var Image = $.trim($("#Image").val());
+                var DisplayOrder = $.trim($("#DisplayOrder").val());
+                var UpdateDate = $.trim($("#UpdateDate").val());
+                var Title = $.trim($("#vTitle").val());
+                var Description = $.trim($("#Description").val());
+                var ParentId = $.trim($("#ParentId").val());
+               
+                var OldImage = $.trim($("#OldImage").val());
+                OldImage = OldImage == "" ? "" : OldImage;
+                var Image = $.trim($("#Image").val());
+                Image = Image == "" ? "" : Image;
+                if (isNaN(ParentId)) {
+                    ParentId = 0;
+                }
+                var PageTitle = $.trim($("#PageTitle").val());
+                var MetaDescription = $.trim($("#MetaDescription").val());
+                var OgTitle = $.trim($("#OgTitle").val());
+                var OgDescription = $.trim($("#OgDescription").val());
+                var TwitterTitle = $.trim($("#TwitterTitle").val());
+                var TwitterDescription = $.trim($("#TwitterDescription").val());
+                var Author = $.trim($("#Author").val());
+                var KeyWords = $.trim($("#KeyWords").val());
+
+                dataString.append("PageTitle", PageTitle);
+                dataString.append("MetaDescription", MetaDescription);
+                dataString.append("OgTitle", OgTitle);
+                dataString.append("OgDescription", OgDescription);
+                dataString.append("TwitterTitle", TwitterTitle);
+                dataString.append("TwitterDescription", TwitterDescription);
+                dataString.append("Author", Author);
+                dataString.append("KeyWords", KeyWords);
+
+                dataString.append("Id", Id);
+                dataString.append("CeateDate", CeateDate);
+                dataString.append("Status", Status);
+                dataString.append("IPaddress", IPaddress); 
+                dataString.append("DisplayOrder", DisplayOrder);
+                dataString.append("UpdateDate", UpdateDate);
+                dataString.append("Title", Title);
+                dataString.append("Description", Description);
+                dataString.append("ParentId", ParentId); 
+                dataString.append("Image", Image);
+                dataString.append("OldImage", OldImage);
+
+                var CatImages = [];
+                var Size = 0;
+                $.each(files, function (index, element) {
+                    var img = "#img" + (index + 1);
+                    var height = $(img).attr("img-height");
+                    var width = $(img).attr("img-width");
+                    dataString.append("fl" + index + "", this);
+                    dataString.append("Height" + index + "", height);
+                    dataString.append("Width" + index + "", width);
+                    CatImages.push({
+                        'Title': "Image #" + parseInt( index)+1 + "",
+                        'Name': this.name,
+                        'Size': this.size,
+                        'Height': height,
+                        'Width': width,
+                    });
+                    Size = Size + this.size;
+                });
+                $.each(files1, function (index, element) {
+                    var img = "#img" + (index + 1);
+                    var height = $(img).attr("img-height");
+                    var width = $(img).attr("img-width");
+                    dataString.append("flBanner" + index + "", this);
+                    dataString.append("Height" + index + "", height);
+                    dataString.append("Width" + index + "", width);
+                    CatImages.push({
+                        'Title': "Image #" + parseInt(index) + 1 + "",
+                        'Name': this.name,
+                        'Size': this.size,
+                        'Height': height,
+                        'Width': width,
+                    });
+                    Size = Size + this.size;
+                });
+
+                dataString.append("Size", Size);
+                dataString.append("NoOfUpload", files.length);
+                dataString.append("CatImages", JSON.stringify(CatImages));
+                $.ajax({
+                   url: '@Url.Action("Add", "Books", new {area="Master" })',  //Server script to process data
+                  type: 'POST',
+                  xhr: function () {  // Custom XMLHttpRequest
+                      var myXhr = $.ajaxSettings.xhr();
+                      if (myXhr.upload) { // Check if upload property exists
+                      }
+                      return myXhr;
+                  },
+                  //Ajax events
+                  success: function (data) {
+                      if (data.StatusCode == 200) {
+                          files = [];
+                          $.toaster({ priority: 'success', title: Title, message: data.Message });
+                          FillData();
+                          CancelAdd();
+                          RemoveLoader();
+                      }
+                      else {
+
+                          $("span[data-valmsg-for='Image']").removeClass("field-validation-valid");
+                          $("span[data-valmsg-for='Image']").addClass("field-validation-error");
+                          $("span[data-valmsg-for='Image']").html('<span id="Image-error" class="">' + data.Message+'</span>');
+                          $.toaster({ priority: 'danger', title: " Error! ", message: data.Message });
+                          RemoveLoader();
+                      }
+                  },
+                  error: function (data) {
+                      $("#btnSubmit").html(btnhtml);
+                      $("#btnSubmit").removeAttr("disabled");
+                      $.toaster({ priority: 'danger', title: " Error! ", message: "Some error occurred please try later."});
+                      RemoveLoader();
+                  },
+                  complete: function (data) {
+                      $("#btnSubmit").html(btnhtml);
+                      $("#btnSubmit").removeAttr("disabled");
+                      RemoveLoader();
+                  },
+                  data: dataString,
+                  cache: false,
+                  contentType: false,
+                  processData: false
+              });
+            });
+            $(document).on("submit", "#frmCategory1", function (e) {
+                var btnhtml = $("#btnSubmit").html();
+                $("#btnSubmit").html("Wait.. <i class='fa fa-spinner fa-spin'></i>");
+                $("#btnSubmit").attr("disabled", "disabled");
+                var Id = $.trim($("#Id").val());
+                var dtmCreate = $.trim($("#dtmCreate").val());
+                var Status = $.trim($("#Status").val());
+                var IPaddress = $.trim($("#IPaddress").val());
+                var Hide = $.trim($("#Hide").val());
+                var Image = $.trim($("#Image").val());
+                var DisplayOrder = $.trim($("#DisplayOrder").val());
+                var dtmUpdate = $.trim($("#dtmUpdate").val());
+                var Title = $.trim($("#vTitle").val());
+                var Description = $.trim($("#Description").val());
+                var ParentId = $.trim($("#ParentId").val());
+                if (isNaN(ParentId)) {
+                    ParentId = 0;
+                }
+                e.preventDefault();
+                AddLoader();
+                $.ajax({
+                    type: "POST",
+                    url: '@Url.Action("Add", "Books", new {area="Master" })',
+                    data: {
+                        Id: Id, dtmCreate: dtmCreate, Status: Status, IPaddress: IPaddress, Hide: Hide, Image: Image,
+                        DisplayOrder: DisplayOrder, dtmUpdate: dtmUpdate, Title: Title, Description: Description, ParentId: ParentId
+                        },
+                    success: function (data) {
+                        $("#btnSubmit").html(btnhtml);
+                        $("#btnSubmit").removeAttr("disabled");
+                        if (data.StatusCode == 200) {
+                            $.toaster({ priority: 'success', title: Title, message: data.Message });
+                            FillData();
+                            CancelAdd();
+                            RemoveLoader();
+                        }
+                        else {
+                            $.toaster({ priority: 'danger', title: Title, message: data.Message });
+                            RemoveLoader();
+                        }
+                    },
+                    error: function (data) {
+                        $("#btnSubmit").html(btnhtml);
+                        $("#btnSubmit").removeAttr("disabled");
+                        RemoveLoader();
+                    },
+                    complete: function (data) {
+                        $("#btnSubmit").html(btnhtml);
+                        $("#btnSubmit").removeAttr("disabled");
+                        RemoveLoader();
+                    }
+                });
+            });
+            $(document).on("click", ".jsEdit", function (e) {
+                var id = $(this).attr("data-id");
+                var title = $(this).attr("data-title");
+                Add("Update category.",id);
+            });
+            $(document).on("click", ".jsActiveInactive", function () {
+                var id = $(this).attr("data-id");
+                var title = $(this).attr("data-title");
+                ActiveInactive(id);
+            });
+            $(document).on("click", ".jsHideUnHide", function () {
+                var id = $(this).attr("data-id");
+                var title = $(this).attr("data-title");
+                HideUnHide(id);
+            });
+        });
+    </script>
+}

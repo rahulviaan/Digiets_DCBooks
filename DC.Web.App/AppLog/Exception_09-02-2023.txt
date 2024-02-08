@@ -1,0 +1,141 @@
+
+02-09-2023 03:36:11 PM Begin | ----------------------------------------------------------------- 
+ControllerUnknownAction:: 
+02-09-2023 03:36:11 PM   End | ----------------------------------------------------------------- 
+
+02-09-2023 03:37:15 PM Begin | ----------------------------------------------------------------- 
+ControllerOnException:: System.InvalidOperationException: The model item passed into the dictionary is of type 'System.IO.DirectoryNotFoundException', but this dictionary requires a model item of type 'System.Web.Mvc.HandleErrorInfo'.
+   at System.Web.Mvc.ViewDataDictionary`1.SetModel(Object value)
+   at System.Web.Mvc.ViewDataDictionary..ctor(ViewDataDictionary dictionary)
+   at System.Web.Mvc.WebViewPage`1.SetViewData(ViewDataDictionary viewData)
+   at System.Web.Mvc.RazorView.RenderView(ViewContext viewContext, TextWriter writer, Object instance)
+   at System.Web.Mvc.BuildManagerCompiledView.Render(ViewContext viewContext, TextWriter writer)
+   at System.Web.Mvc.ViewResultBase.ExecuteResult(ControllerContext context)
+   at System.Web.Mvc.ControllerActionInvoker.InvokeActionResult(ControllerContext controllerContext, ActionResult actionResult)
+   at System.Web.Mvc.ControllerActionInvoker.InvokeActionResultFilterRecursive(IList`1 filters, Int32 filterIndex, ResultExecutingContext preContext, ControllerContext controllerContext, ActionResult actionResult)
+   at System.Web.Mvc.ControllerActionInvoker.InvokeActionResultFilterRecursive(IList`1 filters, Int32 filterIndex, ResultExecutingContext preContext, ControllerContext controllerContext, ActionResult actionResult)
+   at System.Web.Mvc.ControllerActionInvoker.InvokeActionResultFilterRecursive(IList`1 filters, Int32 filterIndex, ResultExecutingContext preContext, ControllerContext controllerContext, ActionResult actionResult)
+   at System.Web.Mvc.ControllerActionInvoker.InvokeActionResultWithFilters(ControllerContext controllerContext, IList`1 filters, ActionResult actionResult)
+   at System.Web.Mvc.Async.AsyncControllerActionInvoker.<>c__DisplayClass3_6.<BeginInvokeAction>b__4()
+   at System.Web.Mvc.Async.AsyncControllerActionInvoker.<>c__DisplayClass3_1.<BeginInvokeAction>b__1(IAsyncResult asyncResult)
+02-09-2023 03:37:15 PM   End | ----------------------------------------------------------------- 
+
+02-09-2023 03:42:31 PM Begin | ----------------------------------------------------------------- 
+ControllerUnknownAction:: 
+02-09-2023 03:42:31 PM   End | ----------------------------------------------------------------- 
+
+02-09-2023 03:49:16 PM Begin | ----------------------------------------------------------------- 
+ControllerOnException:: System.InvalidOperationException: The view 'ChangePassword' or its master was not found or no view engine supports the searched locations. The following locations were searched:
+~/Areas/MyLibrary/Views/Dashboard/ChangePassword.aspx
+~/Areas/MyLibrary/Views/Dashboard/ChangePassword.ascx
+~/Areas/MyLibrary/Views/Shared/ChangePassword.aspx
+~/Areas/MyLibrary/Views/Shared/ChangePassword.ascx
+~/Views/Dashboard/ChangePassword.aspx
+~/Views/Dashboard/ChangePassword.ascx
+~/Views/Shared/ChangePassword.aspx
+~/Views/Shared/ChangePassword.ascx
+~/Areas/MyLibrary/Views/Dashboard/ChangePassword.cshtml
+~/Areas/MyLibrary/Views/Dashboard/ChangePassword.vbhtml
+~/Areas/MyLibrary/Views/Shared/ChangePassword.cshtml
+~/Areas/MyLibrary/Views/Shared/ChangePassword.vbhtml
+~/Views/Dashboard/ChangePassword.cshtml
+~/Views/Dashboard/ChangePassword.vbhtml
+~/Views/Shared/ChangePassword.cshtml
+~/Views/Shared/ChangePassword.vbhtml
+   at System.Web.Mvc.ViewResult.FindView(ControllerContext context)
+   at System.Web.Mvc.ViewResultBase.ExecuteResult(ControllerContext context)
+   at System.Web.Mvc.ControllerActionInvoker.InvokeActionResult(ControllerContext controllerContext, ActionResult actionResult)
+   at System.Web.Mvc.ControllerActionInvoker.InvokeActionResultFilterRecursive(IList`1 filters, Int32 filterIndex, ResultExecutingContext preContext, ControllerContext controllerContext, ActionResult actionResult)
+   at System.Web.Mvc.ControllerActionInvoker.InvokeActionResultFilterRecursive(IList`1 filters, Int32 filterIndex, ResultExecutingContext preContext, ControllerContext controllerContext, ActionResult actionResult)
+   at System.Web.Mvc.ControllerActionInvoker.InvokeActionResultFilterRecursive(IList`1 filters, Int32 filterIndex, ResultExecutingContext preContext, ControllerContext controllerContext, ActionResult actionResult)
+   at System.Web.Mvc.ControllerActionInvoker.InvokeActionResultWithFilters(ControllerContext controllerContext, IList`1 filters, ActionResult actionResult)
+   at System.Web.Mvc.Async.AsyncControllerActionInvoker.<>c__DisplayClass3_6.<BeginInvokeAction>b__4()
+   at System.Web.Mvc.Async.AsyncControllerActionInvoker.<>c__DisplayClass3_1.<BeginInvokeAction>b__1(IAsyncResult asyncResult)
+02-09-2023 03:49:16 PM   End | ----------------------------------------------------------------- 
+
+02-09-2023 04:07:27 PM Begin | ----------------------------------------------------------------- 
+ControllerUnknownAction:: 
+02-09-2023 04:07:27 PM   End | ----------------------------------------------------------------- 
+
+02-09-2023 04:08:11 PM Begin | ----------------------------------------------------------------- 
+ControllerOnException:: Microsoft.CSharp.RuntimeBinder.RuntimeBinderException: 'System.Collections.Generic.List<Database.GetLibraryBooks_Result>' does not contain a definition for 'SchoolCode'
+   at CallSite.Target(Closure , CallSite , Object )
+   at System.Dynamic.UpdateDelegates.UpdateAndExecute1[T0,TRet](CallSite site, T0 arg0)
+   at ASP._Page_Areas_MySchool_Views_Shared__LoginPartial_cshtml.Execute() in E:\Avanish\Prachi\GIT_Projects\DCReader\DC.Web.App\Areas\MySchool\Views\Shared\_LoginPartial.cshtml:line 10
+   at System.Web.WebPages.WebPageBase.ExecutePageHierarchy()
+   at System.Web.Mvc.WebViewPage.ExecutePageHierarchy()
+   at System.Web.WebPages.WebPageBase.ExecutePageHierarchy(WebPageContext pageContext, TextWriter writer, WebPageRenderingBase startPage)
+   at System.Web.Mvc.RazorView.RenderView(ViewContext viewContext, TextWriter writer, Object instance)
+   at System.Web.Mvc.BuildManagerCompiledView.Render(ViewContext viewContext, TextWriter writer)
+   at System.Web.Mvc.HtmlHelper.RenderPartialInternal(String partialViewName, ViewDataDictionary viewData, Object model, TextWriter writer, ViewEngineCollection viewEngineCollection)
+   at System.Web.Mvc.Html.RenderPartialExtensions.RenderPartial(HtmlHelper htmlHelper, String partialViewName)
+   at ASP._Page_Areas_MySchool_Views_Shared__LayoutM_cshtml.Execute() in E:\Avanish\Prachi\GIT_Projects\DCReader\DC.Web.App\Areas\MySchool\Views\Shared\_LayoutM.cshtml:line 25
+   at System.Web.WebPages.WebPageBase.ExecutePageHierarchy()
+   at System.Web.Mvc.WebViewPage.ExecutePageHierarchy()
+   at System.Web.WebPages.WebPageBase.ExecutePageHierarchy(WebPageContext pageContext, TextWriter writer, WebPageRenderingBase startPage)
+   at System.Web.WebPages.WebPageBase.<>c__DisplayClass40_0.<RenderPageCore>b__0(TextWriter writer)
+   at System.Web.WebPages.HelperResult.WriteTo(TextWriter writer)
+   at System.Web.WebPages.WebPageBase.Write(HelperResult result)
+   at System.Web.WebPages.WebPageBase.RenderSurrounding(String partialViewName, Action`1 body)
+   at System.Web.WebPages.WebPageBase.PopContext()
+   at System.Web.WebPages.WebPageBase.ExecutePageHierarchy(WebPageContext pageContext, TextWriter writer, WebPageRenderingBase startPage)
+   at System.Web.Mvc.RazorView.RenderView(ViewContext viewContext, TextWriter writer, Object instance)
+   at System.Web.Mvc.BuildManagerCompiledView.Render(ViewContext viewContext, TextWriter writer)
+   at System.Web.Mvc.ViewResultBase.ExecuteResult(ControllerContext context)
+   at System.Web.Mvc.ControllerActionInvoker.InvokeActionResult(ControllerContext controllerContext, ActionResult actionResult)
+   at System.Web.Mvc.ControllerActionInvoker.InvokeActionResultFilterRecursive(IList`1 filters, Int32 filterIndex, ResultExecutingContext preContext, ControllerContext controllerContext, ActionResult actionResult)
+   at System.Web.Mvc.ControllerActionInvoker.InvokeActionResultFilterRecursive(IList`1 filters, Int32 filterIndex, ResultExecutingContext preContext, ControllerContext controllerContext, ActionResult actionResult)
+   at System.Web.Mvc.ControllerActionInvoker.InvokeActionResultFilterRecursive(IList`1 filters, Int32 filterIndex, ResultExecutingContext preContext, ControllerContext controllerContext, ActionResult actionResult)
+   at System.Web.Mvc.ControllerActionInvoker.InvokeActionResultWithFilters(ControllerContext controllerContext, IList`1 filters, ActionResult actionResult)
+   at System.Web.Mvc.Async.AsyncControllerActionInvoker.<>c__DisplayClass3_6.<BeginInvokeAction>b__4()
+   at System.Web.Mvc.Async.AsyncControllerActionInvoker.<>c__DisplayClass3_1.<BeginInvokeAction>b__1(IAsyncResult asyncResult)
+02-09-2023 04:08:11 PM   End | ----------------------------------------------------------------- 
+
+02-09-2023 04:08:42 PM Begin | ----------------------------------------------------------------- 
+ControllerOnException:: Microsoft.CSharp.RuntimeBinder.RuntimeBinderException: 'System.Collections.Generic.List<Database.GetLibraryBooks_Result>' does not contain a definition for 'SchoolCode'
+   at CallSite.Target(Closure , CallSite , Object )
+   at ASP._Page_Areas_MySchool_Views_Shared__LoginPartial_cshtml.Execute() in E:\Avanish\Prachi\GIT_Projects\DCReader\DC.Web.App\Areas\MySchool\Views\Shared\_LoginPartial.cshtml:line 10
+   at System.Web.WebPages.WebPageBase.ExecutePageHierarchy()
+   at System.Web.Mvc.WebViewPage.ExecutePageHierarchy()
+   at System.Web.WebPages.WebPageBase.ExecutePageHierarchy(WebPageContext pageContext, TextWriter writer, WebPageRenderingBase startPage)
+   at System.Web.Mvc.RazorView.RenderView(ViewContext viewContext, TextWriter writer, Object instance)
+   at System.Web.Mvc.BuildManagerCompiledView.Render(ViewContext viewContext, TextWriter writer)
+   at System.Web.Mvc.HtmlHelper.RenderPartialInternal(String partialViewName, ViewDataDictionary viewData, Object model, TextWriter writer, ViewEngineCollection viewEngineCollection)
+   at System.Web.Mvc.Html.RenderPartialExtensions.RenderPartial(HtmlHelper htmlHelper, String partialViewName)
+   at ASP._Page_Areas_MySchool_Views_Shared__LayoutM_cshtml.Execute() in E:\Avanish\Prachi\GIT_Projects\DCReader\DC.Web.App\Areas\MySchool\Views\Shared\_LayoutM.cshtml:line 25
+   at System.Web.WebPages.WebPageBase.ExecutePageHierarchy()
+   at System.Web.Mvc.WebViewPage.ExecutePageHierarchy()
+   at System.Web.WebPages.WebPageBase.ExecutePageHierarchy(WebPageContext pageContext, TextWriter writer, WebPageRenderingBase startPage)
+   at System.Web.WebPages.WebPageBase.<>c__DisplayClass40_0.<RenderPageCore>b__0(TextWriter writer)
+   at System.Web.WebPages.HelperResult.WriteTo(TextWriter writer)
+   at System.Web.WebPages.WebPageBase.Write(HelperResult result)
+   at System.Web.WebPages.WebPageBase.RenderSurrounding(String partialViewName, Action`1 body)
+   at System.Web.WebPages.WebPageBase.PopContext()
+   at System.Web.WebPages.WebPageBase.ExecutePageHierarchy(WebPageContext pageContext, TextWriter writer, WebPageRenderingBase startPage)
+   at System.Web.Mvc.RazorView.RenderView(ViewContext viewContext, TextWriter writer, Object instance)
+   at System.Web.Mvc.BuildManagerCompiledView.Render(ViewContext viewContext, TextWriter writer)
+   at System.Web.Mvc.ViewResultBase.ExecuteResult(ControllerContext context)
+   at System.Web.Mvc.ControllerActionInvoker.InvokeActionResult(ControllerContext controllerContext, ActionResult actionResult)
+   at System.Web.Mvc.ControllerActionInvoker.InvokeActionResultFilterRecursive(IList`1 filters, Int32 filterIndex, ResultExecutingContext preContext, ControllerContext controllerContext, ActionResult actionResult)
+   at System.Web.Mvc.ControllerActionInvoker.InvokeActionResultFilterRecursive(IList`1 filters, Int32 filterIndex, ResultExecutingContext preContext, ControllerContext controllerContext, ActionResult actionResult)
+   at System.Web.Mvc.ControllerActionInvoker.InvokeActionResultFilterRecursive(IList`1 filters, Int32 filterIndex, ResultExecutingContext preContext, ControllerContext controllerContext, ActionResult actionResult)
+   at System.Web.Mvc.ControllerActionInvoker.InvokeActionResultWithFilters(ControllerContext controllerContext, IList`1 filters, ActionResult actionResult)
+   at System.Web.Mvc.Async.AsyncControllerActionInvoker.<>c__DisplayClass3_6.<BeginInvokeAction>b__4()
+   at System.Web.Mvc.Async.AsyncControllerActionInvoker.<>c__DisplayClass3_1.<BeginInvokeAction>b__1(IAsyncResult asyncResult)
+02-09-2023 04:08:42 PM   End | ----------------------------------------------------------------- 
+
+02-09-2023 04:28:21 PM Begin | ----------------------------------------------------------------- 
+ControllerUnknownAction:: 
+02-09-2023 04:28:21 PM   End | ----------------------------------------------------------------- 
+
+02-09-2023 06:20:17 PM Begin | ----------------------------------------------------------------- 
+ControllerUnknownAction:: 
+02-09-2023 06:20:17 PM   End | ----------------------------------------------------------------- 
+
+02-09-2023 06:35:35 PM Begin | ----------------------------------------------------------------- 
+ControllerUnknownAction:: 
+02-09-2023 06:35:35 PM   End | ----------------------------------------------------------------- 
+
+02-09-2023 10:20:00 PM Begin | ----------------------------------------------------------------- 
+ControllerUnknownAction:: 
+02-09-2023 10:20:00 PM   End | ----------------------------------------------------------------- 

@@ -1,0 +1,57 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon" href="~/favicon.png" type="image/x-icon">
+
+
+
+    <title>Malyalam Padavali Admin:: @ViewBag.Title</title>
+
+    @Scripts.Render("~/bundles/modernizr")
+    <!-- Latest compiled and minified CSS -->
+    <link href="~/Content/font-awesome.min.css" rel="stylesheet" />
+    <link href="~/Content/bootstrap.min.css" rel="stylesheet" />
+    <link href="~/Content/Site.css" rel="stylesheet" />
+    <link href="~/Content/style.css" rel="stylesheet" />
+    <link href="~/Content/Common.css" rel="stylesheet" />
+</head>
+
+<body class="body-content" cz-shortcut-listen="true">
+    <!-- header -->
+    <header>
+        @{Html.RenderPartial("~/Areas/Student/Views/Shared/_LoginPartial.cshtml");}
+
+    </header>
+    <section class="container-section">
+        @RenderBody()
+    </section>
+    <div class="clearfix"></div>
+    <!-- footer -->
+    <footer>
+        @{Html.RenderPartial("~/Views/Shared/ucFooter.cshtml");}
+
+    </footer>
+
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+    @RenderSection("scripts", required: false)
+    <script>
+
+        $(function () {
+
+            $(document).on("click", ".jsAddLoader", function (e) {
+
+                AddLoader();
+
+            });
+            window.addEventListener("beforeunload", function (e) {
+                RemoveLoader();
+            });
+        });
+    </script>
+</body>
+
+</html>

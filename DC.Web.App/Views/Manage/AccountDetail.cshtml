@@ -1,0 +1,527 @@
+﻿@model DC.Response<DC.AspNetUserModel>
+@using Microsoft.AspNet.Identity
+@{
+    ViewBag.Title = Model.Title;
+    var UserId = User.Identity.GetUserId();
+    var role = new Database.Repository.AspNetRoleRepository().Get(m => m.Name == Model.Data.Role);
+    var DOB = Model.Data.DOB != null ? ((DateTime)Model.Data.DOB).ToString("yyyy-MM-dd") : "";
+    var strDOB = Model.Data.DOB != null ? ((DateTime)Model.Data.DOB).ToString("dd-MMM-yyyy") : "N/A";
+    if (role.Name == "Admin" || role.Name == "SuperAdmin")
+    {
+        Layout = "~/Areas/CP/Views/Shared/_LayoutM.cshtml";
+    }
+    if (role.Name == "User" )
+    {
+        Layout = "~/Areas/MyLibrary/Views/Shared/_LayoutM.cshtml";
+    }
+    if (role.Name == "School")
+    {
+        Layout = "~/Areas/MySchool/Views/Shared/_LayoutM.cshtml";
+    }
+    var genderList = DC.Web.App.Models.EnumHelper.ToSelectLists<DC.Gender>().Where(m => m.Value != "-1");
+}
+
+<style>
+    .btn-file {
+        position: relative;
+        overflow: hidden;
+        cursor: pointer;
+    }
+
+        .btn-file:hover {
+            position: relative;
+            overflow: hidden;
+            cursor: pointer;
+            background: white;
+        }
+
+        .btn-file input[type=file] {
+            position: absolute;
+            top: 0;
+            right: 0;
+            min-width: 100%;
+            min-height: 100%;
+            font-size: 100px;
+            text-align: right;
+            filter: alpha(opacity=0);
+            opacity: 0;
+            outline: none;
+            background: white;
+            cursor: inherit;
+            display: block;
+        }
+
+    .table.table-borderless td, .table.table-borderless th {
+        border: 0 !important;
+    }
+
+    .table.table-borderless {
+        margin-bottom: 0px;
+    }
+
+    .uimgcirle {
+        width: 100px;
+        height: 100px;
+        max-width: 100px;
+        max-height: 100px;
+        -webkit-border-radius: 50%;
+        -moz-border-radius: 50%;
+        border-radius: 50%;
+        border: 5px solid rgba(255,255,255,0.5);
+    }
+</style>
+
+<div class="container">
+
+<div class="row">
+    @if (Model.Status == 200)
+    {
+<div id="dvOrder" class="dvOrder">
+            
+    <div id="dvHeader">
+            <div class="col-lg-12 h4"> @Model.Title</div>
+            <div class="col-lg-12"><hr></div>
+    </div>
+
+ <div id="dvData">
+    <div class="col-lg-6">
+             <strong>Login Information</strong>
+             <hr/>
+                            
+        <div class="upload-box">
+            <table class="table table-borderless  table-striped">
+                                    <tr>
+                                        <td colspan="2">
+                                            @Html.HiddenFor(m => m.Data.Image)
+                                            <div title="click to upload image." class="col-lg-12  btn-file text-center">
+                                                <img onerror="BlankUSer(this)" id="img1" name="img1" title="click to upload image." class="uimgcirle" src="~/Attatchments/@Model.Data.Image" />
+                                                <br />
+                                                <i class="fa fa-camera"></i> Browse <input id="flUserImage" name="flUserImage" onchange="UploadImage(event,this)" title="click to upload image." type="file">
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr id="trPhoneNo">
+                                        <td style="width:140px;">@Html.LabelFor(m => m.Data.PhoneNumber)</td>
+                                        <td>
+                                            <span id="spnMobNo">@Model.Data.PhoneNumber</span>
+                                            <a href="javascript:void(0);" onclick="EdintMobNo()" class="pull-right"><i class="fa fa-edit"></i>&nbsp; Modify</a>
+                                        </td>
+                                    </tr>
+                                    <tr id="trPhoneNoEdit" class="hidden">
+                                        <td style="width:140px;"> @Html.LabelFor(m => m.Data.PhoneNumber)</td>
+                                        <td>
+                                            @using (Html.BeginForm(null, null, FormMethod.Post, new { role = "form", autocomplete = "off", name = "frmUpdatePhNo", id = "frmUpdatePhNo", }))
+                                            {
+                                                @Html.TextBoxFor(m => m.Data.PhoneNumber)
+                                                <button id="btnUpdateMobNo" style="margin-left:10px;" type="submit" class="pull-right  btn btn-primary"> Update</button>
+
+                                                <button type="button" class="pull-right btn btn-default " onclick="CancelEdintMobNo()"> Cancel</button>
+                                                <br />
+                                                @Html.ValidationMessageFor(m => m.Data.PhoneNumber, "", new { @class = "small text-danger" })
+
+                                            }
+                                        </td>
+                                    </tr>
+
+            </table>
+
+        </div>
+    </div>
+                        
+   <div class="col-lg-6">
+      <strong>
+        Personal Information
+        <a id="lnkEditUser" class="pull-right btn btn-primary btn-sm" onclick="VUpdateUser();"><i class="fa fa-edit"></i>&nbsp; Modify</a>
+      </strong>
+       <hr/>
+      <div class="upload-box">
+                                <table id="tblUD" class="table table-borderless table-striped">
+                                    <tr>
+                                        <td style="width:140px;">Name</td>
+                                        <td> @Model.Data.FirstName @Model.Data.LastName</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Email</td>
+                                        <td> @Model.Data.Email</td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            @Html.LabelFor(m => m.Data.DOB)
+                                        </td>
+                                        <td>
+                                            @strDOB
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>Gender</td>
+                                        <td>@DC.EnumHelpers.GetEnumDescription((DC.Gender)Model.Data.Gender) </td>
+                                    </tr>
+
+                                </table>
+                                @using (Html.BeginForm(null, null, FormMethod.Post, new { role = "form", autocomplete = "off", name = "frmUpdatePhNo", id = "frmUpdateUser", }))
+                                {
+                                    <table id="tblEditUD" class="table table-borderless table-striped hidden">
+                                        <tr>
+                                            <td style="width:140px;">@Html.LabelFor(m => m.Data.FirstName)</td>
+                                            <td>
+                                                @Html.TextBoxFor(t => t.Data.FirstName, new { maxlength = "200", @class = "form-control", @placeholder = Html.DisplayNameFor(model => model.Data.FirstName) })
+                                                @Html.ValidationMessageFor(m => m.Data.FirstName, "", new { @class = "small text-danger pull-right" })
+
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>@Html.LabelFor(m => m.Data.LastName)</td>
+                                            <td>
+                                                @Html.TextBoxFor(t => t.Data.LastName, new { maxlength = "200", @class = "form-control", @placeholder = Html.DisplayNameFor(model => model.Data.LastName) })
+                                                @Html.ValidationMessageFor(m => m.Data.LastName, "", new { @class = "small text-danger pull-right" })
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                @Html.LabelFor(m => m.Data.Email)
+                                            </td>
+                                            <td>
+                                                @Html.TextBoxFor(t => t.Data.Email, new { @class = "form-control", @placeholder = Html.DisplayNameFor(model => model.Data.Email) })
+                                                @Html.ValidationMessageFor(m => m.Data.Email, "", new { @class = "small text-danger pull-right" })
+
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                @Html.LabelFor(m => m.Data.DOB)
+                                            </td>
+                                            <td>
+                                                <input class="form-control" title="@Html.DisplayNameFor(model => model.Data.DOB)" id="Data_DOB" name="Data.DOB" type="date">
+                                                @Html.ValidationMessageFor(t => t.Data.DOB, "", new { @class = "small  pull-right text-danger" })
+
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                @Html.LabelFor(m => m.Data.Gender)
+                                            </td>
+                                            <td>
+                                                @Html.DropDownListFor(m => m.Data.Gender, genderList, "--Select Gender--", new { @class = "form-control" })
+                                                @Html.ValidationMessageFor(m => m.Data.Gender, "", new { @class = "small text-danger pull-right" })
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td colspan="2">
+                                                <button id="btnUpdateUser" style="margin-left:10px;" type="submit" class="pull-right  btn btn-primary"> Update</button>
+
+                                                <button type="button" class="pull-right btn btn-default " onclick="CancelUpdateUser()"> Cancel</button>
+
+                                            </td>
+                                        </tr>
+                                    </table>
+                                }
+
+      </div>
+
+   </div>
+
+ </div>
+    <div id="dvFooter"></div>
+</div>
+        
+    }
+    else if (Model.Status == 201 || Model.Status == 203 || Model.Status == 202)
+    {
+        <div class="col-lg-12" style="min-height:500px;">
+            <div class="col-lg-4">
+            </div>
+            <div class="col-lg-4 text-center">
+                <div class="col-lg-12">
+                    <i class="fa fa-user-circle" style="font-size: 120px;"></i>
+                </div>
+                <div style="font-size: 20px;margin:20px 0px;" class="col-lg-12 text-muted text-center">
+                    Account detail is not fetched.
+                    <br />
+                    @Model.Title
+                </div>
+                <div style="font-size: 20px;color:#d4542d;padding:20px;" class="col-lg-12 ">
+                    @Model.Detail
+                </div>
+
+            </div>
+            <div class="col-lg-4">
+            </div>
+        </div>
+    }
+    else
+    {
+        <div class="col-lg-12 " style="min-height:500px; ">
+            <div class="col-lg-4">
+            </div>
+            <div class="col-lg-4 text-center">
+                <div class="col-lg-12 text-muted text-center">
+                    <i class="fa fa-user-circle" style="font-size: 120px;"></i><br />
+                    @Model.Title
+                </div>
+                <div style="font-size: 20px;color:#d4542d;padding:20px;" class="col-lg-12 ">
+                    @Model.Detail
+                </div>
+            </div>
+            <div class="col-lg-4">
+            </div>
+        </div>
+    }
+</div>
+</div>
+
+
+<script>
+    function BlankUSer(ctrl) {
+
+        $(ctrl).attr("src", "/images/blankuser.png");
+    }
+    function EdintMobNo() {
+        $("#trPhoneNoEdit").removeClass("hidden")
+        $("#trPhoneNo").addClass("hidden")
+    }
+    function CancelEdintMobNo() {
+        $("#trPhoneNoEdit").addClass("hidden")
+        $("#trPhoneNo").removeClass("hidden")
+    }
+    function VUpdateUser() {
+        $("#lnkEditUser").addClass("hidden")
+        $("#tblEditUD").removeClass("hidden")
+        $("#tblUD").addClass("hidden")
+    }
+    function CancelUpdateUser() {
+        $("#tblEditUD").addClass("hidden")
+        $("#tblUD").removeClass("hidden")
+        $("#lnkEditUser").removeClass("hidden")
+    }
+    
+</script>
+@section scripts {
+    <script src="~/Scripts/Common.js"></script>
+    <script src="~/Scripts/jquery.toaster.js"></script>
+    <script src="~/Scripts/bootbox.min.js"></script>
+
+    @Scripts.Render("~/bundles/jqueryval")
+    @if (Model.Status == 200)
+    {
+<script>
+        var files = [];
+        function UploadImage(evt, objFile) {
+
+            $("#toaster").html("");
+            files = [];
+            var maxsize = 10485760;//10 MB
+            var imageType = /image.*/;
+            if (objFile.files.length > 5) {
+                $.toaster({ priority: 'danger', title: 'Error', message: '* You can upload only five images.' });
+                return false;
+            }
+            var FileSize = 0;
+
+            for (var i = 0; i < objFile.files.length; i++) {
+                var selectedFile = objFile.files[i];
+                if (selectedFile.type.match(imageType)) {
+                    files.push(selectedFile);
+                    FileSize += selectedFile.size;
+                }
+                else {
+                    $.toaster({ priority: 'danger', title: "Sucess", message: "* Oops! You can only upload .jpeg, .jpg, .png or .gif files that are less than 10MB in size." });
+                    break;
+                }
+            }
+
+            if (FileSize == 0 || FileSize > maxsize) {
+                $.toaster({ priority: 'danger', title: "Sucess", message: "* Oops! You can only upload .jpeg, .jpg, .png or .gif files that are less than 10MB in size." });
+                return;
+            }
+
+            for (var i = 0; i < files.length; i++) {
+                var selectedFile = files[i];
+                if (selectedFile.type.match(imageType)) {
+                    SetImageShow(selectedFile, (i + 1));
+                }
+            }
+        }
+        function SetImageShow(selectedFile, ctrlid) {
+            if (selectedFile) {
+                var FileSize = 0;
+
+                var ctrlimg = "img" + ctrlid;
+
+                var _URL = window.URL || window.webkitURL;
+                img = new Image();
+                img.onload = function () {
+                    document.getElementById(ctrlimg).src = this.src;
+                    $("#" + ctrlimg + "").attr("img-height", this.height)
+                    $("#" + ctrlimg + "").attr("img-width", this.width)
+                    SubmitUserImage();
+                };
+                img.onerror = function () {
+                    $.toaster({ priority: 'danger', title: 'Error', message: '* You are uploading invalid image file type.' });
+                    return false;
+                };
+                img.src = _URL.createObjectURL(selectedFile);
+                return false;
+            }
+        }
+        function SubmitUserImage() {
+            AddLoader();
+            var dataString = new FormData();
+            $.each(files, function (index, element) {
+                //var img = "#img" + (index + 1);
+                //var height = $(img).attr("img-height")  ;
+                //var width = $(img).attr("img-width");
+                dataString.append("fl" + index + "", this);
+
+            });
+
+            $.ajax({
+                url: '@Url.Action("UploadUserImage", "Manage", new {area= "" })',  //Server script to process data
+                type: 'POST',
+                xhr: function () {  // Custom XMLHttpRequest
+                    var myXhr = $.ajaxSettings.xhr();
+                    if (myXhr.upload) { // Check if upload property exists
+                    }
+                    return myXhr;
+                },
+                //Ajax events
+                success: function (data) {
+                    if (data.StatusCode == 200) {
+                        files = [];
+                        $("#img1").attr("src", data.Title)
+                        $.toaster({ priority: 'success', title: " Success! ", message: data.Message });
+                        RemoveLoader();
+                    }
+                    else {
+                        $("#img1").attr("src", $("#Data_Image").val());
+                        $.toaster({ priority: 'danger', title: " Error! ", message: data.Message });
+                        RemoveLoader();
+                    }
+                },
+                error: function (data) {
+                    $("#img1").attr("src", $("#Data_Image").val());
+                    $.toaster({ priority: 'danger', title: " Error! ", message: "Some error occurred please try again."});
+                    RemoveLoader();
+                },
+                complete: function (data) {
+                    RemoveLoader();
+                },
+                data: dataString,
+                cache: false,
+                contentType: false,
+                processData: false
+            });
+        }
+        function UpdateMobileNo() {
+            $("#toaster").remove();
+            var btnhtml = $("#btnUpdateMobNo").html();
+            $("#btnUpdateMobNo").html("Wait.. <i class='fa fa-spinner fa-spin'></i>");
+            $("#btnUpdateMobNo").attr("disabled", "disabled");
+            var PhoneNumber = $.trim($("#Data_PhoneNumber").val());
+            AddLoader();
+            $.ajax({
+            type: "POST",
+            url: '@Url.Action("UpdateMobileNo", "Manage", new {area= "" })',
+            data: {
+                MobNo: PhoneNumber
+            },
+            success: function (data) {
+                $("#btnUpdateMobNo").html(btnhtml);
+                $("#btnUpdateMobNo").removeAttr("disabled");
+                if (data.StatusCode == 200) {
+                    $("#spnMobNo").html(PhoneNumber)
+                    $.toaster({ priority: 'success', title: " Success! ", message: data.Message });
+                    CancelEdintMobNo();
+                    RemoveLoader();
+                }
+                else {
+                    $.toaster({ priority: 'danger', title: " Error! ", message: data.Message });
+                    RemoveLoader();
+                }
+            },
+            error: function (data) {
+                $("#btnUpdateMobNo").html(btnhtml);
+                $("#btnUpdateMobNo").removeAttr("disabled");
+                RemoveLoader();
+            },
+            complete: function (data) {
+                $("#btnUpdateMobNo").html(btnhtml);
+                $("#btnUpdateMobNo").removeAttr("disabled");
+                RemoveLoader();
+            }
+        });
+    }
+        function UpdateUser() {
+            $("#toaster").remove();
+            var btnhtml = $("#btnUpdateUser").html();
+            $("#btnUpdateUser").html("Wait.. <i class='fa fa-spinner fa-spin'></i>");
+            $("#btnUpdateUser").attr("disabled", "disabled");
+            var FirstName = $.trim($("#Data_FirstName").val());
+            var LastName = $.trim($("#Data_LastName").val());
+            var Email = $.trim($("#Data_Email").val());
+            var DOB = $.trim($("#Data_DOB").val());
+            var Gender = $.trim($("#Data_Gender option:selected").val());
+            Gender = Gender == "" ? -1 : Gender;
+
+            AddLoader();
+            $.ajax({
+            type: "POST",
+            url: '@Url.Action("UpdateUser", "Manage", new {area= "" })',
+            data: {
+                FirstName: FirstName, LastName: LastName, Email: Email, DOB: DOB,Gender: Gender
+            },
+            success: function (data) {
+                $("#btnUpdateMobNo").html(btnhtml);
+                $("#btnUpdateMobNo").removeAttr("disabled");
+                if (data.StatusCode == 200) {
+                    
+                    $.toaster({ priority: 'success', title: " Success! ", message: data.Message });
+                    var html = '<tr> <td style="width:140px;">Name</td><td> ' + FirstName + ' ' + LastName+'</td></tr>'
+                    + '<tr> <td>Email</td><td>' + LastName + '</td></tr>'
+                    + '<tr> <td>  DOB </td><td>  ' + DOB + '</td></tr>'
+                    + '<tr><td>Gender</td> <td>' + $("#Data_Gender option:selected").text() + '   </td></tr>'
+                    $("#tblUD").html(html) 
+                    CancelUpdateUser();
+                    RemoveLoader();
+                }
+                else {
+                    $.toaster({ priority: 'danger', title: " Error! ", message: data.Message });
+                    RemoveLoader();
+                }
+            },
+            error: function (data) {
+                $("#btnUpdateUser").html(btnhtml);
+                $("#btnUpdateUser").removeAttr("disabled");
+                RemoveLoader();
+            },
+            complete: function (data) {
+                $("#btnUpdateUser").html(btnhtml);
+                $("#btnUpdateUser").removeAttr("disabled");
+                RemoveLoader();
+            }
+        });
+    }
+
+
+        $(function () {
+            $("#Data_DOB").val('@DOB');
+
+            $(document).ajaxSend(function (event, xhr, settings) {
+                $(".jsLoading").attr("disabled", "disabled");
+            });
+
+            $(document).ajaxComplete(function (event, xhr, settings) {
+                 $(".jsLoading").removeAttr("disabled");
+            });
+
+            $(document).on("submit", "#frmUpdatePhNo", function (e) {
+                e.preventDefault();
+                UpdateMobileNo();
+            });
+            $(document).on("submit", "#frmUpdateUser", function (e) {
+                e.preventDefault();
+                UpdateUser();
+            });
+        })
+</script>
+    }
+}

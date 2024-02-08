@@ -1,0 +1,91 @@
+﻿@model DC.Web.App.Models.RegisterUserModel
+@{
+    var DOB = Model.DOB != null ? ((DateTime)Model.DOB).ToString("yyyy-MM-dd") : "";
+    var strDOB = Model.DOB != null ? ((DateTime)Model.DOB).ToString("dd-MMM-yyyy") : "N/A";
+    Layout = null;
+    ViewBag.Title = "Register New User";
+    var genderList = DC.Web.App.Models.EnumHelper.ToSelectLists<DC.Gender>().Where(m => m.Value != "-1");
+    var gender = genderList.FirstOrDefault(m => m.Value == Convert.ToString(Model.Gender.GetHashCode()));
+    var sgender = gender == null ? "N/A" : gender.Text;
+    var status = DC.Web.App.Models.EnumHelper.GetEnumDescription(Model.Status);
+
+    var css = Model.Status == DC.Status.Active ? "" : "td-inactive";
+}
+ 
+    <div class="row ">
+        <div class="col-lg-12"  >
+            <table class="table table-bordered">
+                <tr class="@css">
+                    <th width="15%">@Html.LabelFor(m => m.FirstName)</th>
+                    <th width="1%" class="text-center">:</th>
+                    <td width="84%"> @Html.DisplayFor(t => t.FirstName)</td>
+                </tr>
+                <tr class="@css">
+                    <th>@Html.LabelFor(m => m.LastName)</th>
+                    <th class="text-center">:</th>
+                    <td>   @Html.DisplayFor(t => t.LastName)</td>
+                </tr>
+                <tr class="@css">
+                    <th> @Html.LabelFor(m => m.PhoneNumber)</th>
+                    <th class="text-center">:</th>
+                    <td> @Html.DisplayFor(t => t.PhoneNumber)</td>
+                </tr>
+                <tr class="@css">
+                    <th>  @Html.LabelFor(m => m.Email)</th>
+                    <th class="text-center">:</th>
+                    <td>@Html.DisplayFor(t => t.Email)</td>
+                </tr>
+                <tr class="@css">
+                    <th> @Html.LabelFor(m => m.Password)</th>
+                    <th class="text-center">:</th>
+                    <td>  @Html.DisplayFor(t => t.Password)</td>
+                </tr>
+                <tr class="@css">
+                    <th>@Html.LabelFor(m => m.DOB)</th>
+                    <th class="text-center">:</th>
+                    <td>@strDOB</td>
+                </tr>
+                <tr class="@css">
+                    <th> @Html.LabelFor(m => m.Gender)</th>
+                    <th class="text-center">:</th>
+                    <td id="txtGender">@sgender</td>
+                </tr>
+                <tr class="@css">
+                    <th> @Html.LabelFor(m => m.RoleId)</th>
+                    <th class="text-center">:</th>
+                    <td id="txtRole">---</td>
+                </tr>
+                <tr class="@css">
+                    <th> @Html.LabelFor(m => m.Status)</th>
+                    <th class="text-center">:</th>
+                    <td id="txtRole">@status</td>
+                </tr>
+            </table>
+        </div>
+    </div>
+ 
+<style type="text/css">
+    .modal-dialog {
+        max-width: 80% !important;
+        margin: 1.75rem auto;
+    }
+
+    .modal-footer {
+        text-align: center;
+    }
+</style>
+@Scripts.Render("~/bundles/jqueryval")
+<script src="~/Scripts/Common.js"></script>
+<script>
+    $("#pageAdd").html("");
+    var title = $(".modal-title");
+    var header = $(".modal-header");
+    var html = '<h4 class="modal-title">' + title[0].innerHTML + '</h4> <button type="button" class="bootbox-close-button close" onclick=" bootbox.hideAll();" aria-hidden="true">×</button>';
+    $(header[0]).html(html);
+    
+ 
+    $("#txtRole").text($("#DatatId option[value='@Model.RoleId']").text())
+
+</script>
+
+

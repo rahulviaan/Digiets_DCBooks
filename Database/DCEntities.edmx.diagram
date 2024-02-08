@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="fc55004209394a9aa443fcd699f3893f" Name="Diagram1">
+        <EntityTypeShape EntityType="DCModel.C__MigrationHistory" Width="1.5" PointX="0.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="DCModel.AspNetRole" Width="1.5" PointX="0.75" PointY="28.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="DCModel.AspNetUserClaim" Width="1.5" PointX="5.25" PointY="13.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="DCModel.AspNetUserLogin" Width="1.5" PointX="5.25" PointY="16.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="DCModel.AspNetUser" Width="1.5" PointX="3" PointY="23.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="DCModel.MasterBoard" Width="1.5" PointX="5.25" PointY="19.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="DCModel.MasterBook" Width="1.5" PointX="9.75" PointY="24.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="DCModel.MasterCategory" Width="1.5" PointX="5.25" PointY="24.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="DCModel.MasterClass" Width="1.5" PointX="5.25" PointY="31.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="DCModel.MasterSery" Width="1.5" PointX="7.5" PointY="35.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="DCModel.MasterSubject" Width="1.5" PointX="5.25" PointY="35.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="DCModel.MyLibrary" Width="1.5" PointX="15" PointY="27.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="DCModel.School" Width="1.5" PointX="7.5" PointY="24.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="DCModel.UserBook" Width="1.5" PointX="2.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="DCModel.UserDetail" Width="1.5" PointX="12.75" PointY="24.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="DCModel.UserExcelData" Width="1.5" PointX="10.5" PointY="35.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="DCModel.UserExcelMetaData" Width="1.5" PointX="5.25" PointY="47.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="DCModel.History_UserExcelData" Width="1.5" PointX="4.75" PointY="0.75" IsExpanded="true" />
+        <AssociationConnector Association="DCModel.FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId" ManuallyRouted="false" />
+        <AssociationConnector Association="DCModel.FK_dbo_AspNetUserLogins_dbo_AspNetUsers_UserId" ManuallyRouted="false" />
+        <AssociationConnector Association="DCModel.FK_MasterBoard_AspNetUsers1" ManuallyRouted="false" />
+        <AssociationConnector Association="DCModel.FK_MasterBooks_AspNetUsers" ManuallyRouted="false" />
+        <AssociationConnector Association="DCModel.FK_MasterBooks_AspNetUsers1" ManuallyRouted="false" />
+        <AssociationConnector Association="DCModel.FK_MasterCategory_AspNetUsers" ManuallyRouted="false" />
+        <AssociationConnector Association="DCModel.FK_MasterCategory_AspNetUsers1" ManuallyRouted="false" />
+        <AssociationConnector Association="DCModel.FK_MasterClass_AspNetUsers" ManuallyRouted="false" />
+        <AssociationConnector Association="DCModel.FK_MasterClass_AspNetUsers1" ManuallyRouted="false" />
+        <AssociationConnector Association="DCModel.FK_MasterSubject_AspNetUsers1" ManuallyRouted="false" />
+        <AssociationConnector Association="DCModel.FK_MyLibrary_AspNetUsers" ManuallyRouted="false" />
+        <AssociationConnector Association="DCModel.FK_MyLibrary_AspNetUsers1" ManuallyRouted="false" />
+        <AssociationConnector Association="DCModel.FK_School_AspNetUsers" ManuallyRouted="false" />
+        <AssociationConnector Association="DCModel.FK_School_AspNetUsers1" ManuallyRouted="false" />
+        <AssociationConnector Association="DCModel.FK_UserDetail_AspNetUsers" ManuallyRouted="false" />
+        <AssociationConnector Association="DCModel.FK_UserDetail_AspNetUsers1" ManuallyRouted="false" />
+        <AssociationConnector Association="DCModel.FK_UserDetail_AspNetUsers2" ManuallyRouted="false" />
+        <AssociationConnector Association="DCModel.FK_UserExcelData_AspNetUsers" ManuallyRouted="false" />
+        <AssociationConnector Association="DCModel.FK_UserExcelData_AspNetUsers1" ManuallyRouted="false" />
+        <AssociationConnector Association="DCModel.FK_UserExcelMetaData_AspNetUsers" ManuallyRouted="false" />
+        <AssociationConnector Association="DCModel.FK_UserExcelMetaData_AspNetUsers1" ManuallyRouted="false" />
+        <AssociationConnector Association="DCModel.FK_UserExcelMetaData_AspNetUsers2" ManuallyRouted="false" />
+        <AssociationConnector Association="DCModel.FK_MasterBooks_MasterBoard" ManuallyRouted="false" />
+        <AssociationConnector Association="DCModel.FK_School_MasterBoard" ManuallyRouted="false" />
+        <AssociationConnector Association="DCModel.FK_UserDetail_MasterBoard" ManuallyRouted="false" />
+        <AssociationConnector Association="DCModel.FK_MasterBooks_MasterCategory" ManuallyRouted="false" />
+        <AssociationConnector Association="DCModel.FK_MasterBooks_MasterClass" ManuallyRouted="false" />
+        <AssociationConnector Association="DCModel.FK_MasterBooks_MasterSeries" ManuallyRouted="false" />
+        <AssociationConnector Association="DCModel.FK_MasterBooks_MasterSubject" ManuallyRouted="false" />
+        <AssociationConnector Association="DCModel.FK_MyLibrary_MasterBooks" ManuallyRouted="false" />
+        <AssociationConnector Association="DCModel.FK_MasterCategory_MasterCategory" ManuallyRouted="false" />
+        <AssociationConnector Association="DCModel.FK_UserDetail_MasterClass" ManuallyRouted="false" />
+        <AssociationConnector Association="DCModel.FK_MasterSeries_MasterSubject" ManuallyRouted="false" />
+        <AssociationConnector Association="DCModel.FK_UserDetail_School" ManuallyRouted="false" />
+        <AssociationConnector Association="DCModel.FK_UserExcelData_UserExcelMetaData" ManuallyRouted="false" />
+        <AssociationConnector Association="DCModel.AspNetUserRoles" ManuallyRouted="false" />
+        <EntityTypeShape EntityType="DCModel.UserCart" Width="1.5" PointX="5.25" PointY="41.125" />
+        <EntityTypeShape EntityType="DCModel.UserCartItem" Width="1.5" PointX="13" PointY="32.625" />
+        <AssociationConnector Association="DCModel.FK_UserCart_AspNetUsers" />
+        <AssociationConnector Association="DCModel.FK_UserCart_AspNetUsers1" />
+        <AssociationConnector Association="DCModel.FK_UserCart_AspNetUsers2" />
+        <AssociationConnector Association="DCModel.FK_UserCartItem_AspNetUsers" />
+        <AssociationConnector Association="DCModel.FK_UserCartItem_AspNetUsers1" />
+        <AssociationConnector Association="DCModel.FK_UserCartItem_MasterBooks" />
+        <AssociationConnector Association="DCModel.FK_UserCartItem_UserCart" />
+        <AssociationConnector Association="DCModel.FK_UserCartItem_UserCartItem" />
+        <EntityTypeShape EntityType="DCModel.CartStatus" Width="1.5" PointX="7.375" PointY="1.375" />
+        <EntityTypeShape EntityType="DCModel.CustomerCart" Width="1.5" PointX="9.625" PointY="1" />
+        <AssociationConnector Association="DCModel.FK__CustomerC__CartS__2EDAF651" />
+        <EntityTypeShape EntityType="DCModel.PaymentDetails" Width="1.5" PointX="7.75" PointY="4.75" />
+        <EntityTypeShape EntityType="DCModel.OrderDetails" Width="1.5" PointX="3" PointY="8" />
+        <EntityTypeShape EntityType="DCModel.PaymentStatus" Width="1.5" PointX="0.75" PointY="8.5" />
+        <AssociationConnector Association="DCModel.FK__OrderDeta__Payme__56E8E7AB" />
+        <EntityTypeShape EntityType="DCModel.Orders" Width="1.5" PointX="3" PointY="12.125" />
+        <AssociationConnector Association="DCModel.FK__Orders__PaymentS__625A9A57" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

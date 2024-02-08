@@ -1,0 +1,786 @@
+﻿@model DC.LibraryVM
+@{
+    Layout = null;
+    var title = string.IsNullOrWhiteSpace(ViewBag.Title) ? "Malyalam Padavali" : ViewBag.Title;
+}
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link href="~/Content/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
+    <script src="~/Content/bootstrap/js/popper.js"></script>
+    <script src="~/Scripts/jquery-3.3.1.min.js"></script>
+    <script src="~/Content/bootstrap/js/bootstrap.min.js"></script>
+    @*<script src="~/Scripts/eBook/aie_textsound.js"></script>
+        <script src="~/Scripts/eBook/LAB.min.js"></script>*@
+    <script src="~/Scripts/eBook/zuriets.audio.js"></script>
+    <script src="~/Scripts/jquery.toaster.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css">
+
+    <link href="~/Content/viewer.css" rel="stylesheet" />
+    <link href="~/Content/my_library.css" rel="stylesheet" />
+    <link rel="icon" type="image/png" href="~/images/favicon.png" sizes="32x32" />
+    <title>@title</title>
+    <style>
+        .prevent-select {
+            -webkit-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+        }
+    </style>
+</head>
+
+<body id="fullscreen" onselectstart='return false' oncontextmenu='return false' oncopy='return false' onpaste='return false' class='prevent-select'>
+    <div class="container">
+        <div class="panel-body">
+            <div class="row">
+                @Html.Hidden("CurrentIndex", Model.startindex + 1)
+                <div class="col-lg-12 col-md-12 col-sm-12 topNav">
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-xs-12 col-sm-6 col-md-2">
+                                <button type="button" class="btn btn-header mrg-right" id="idback" onclick="history.go(-1)" title="Back">
+                                    <i class="fa fa-backward"></i>&nbsp;Back
+                                </button>
+                            </div>
+                            <div class="col-xs-12 col-sm-6 col-md-7">
+                                <h3 class="text-center">
+                                    <span id="title" style="font-size:x-large;"></span>
+                                    @*<span class="pull-right">
+                                            <a href="#" class="btn btn-secondary btn-lg" onclick="openNav_1()"><i class="fa fa-book" title="BookMark" aria-hidden="true"></i></a>
+                                            <a href="#" class="btn btn-secondary btn-lg" onclick="openNav()"><i class="fa fa-file-text-o" title="Notes" aria-hidden="true"></i></a>
+                                        </span>*@
+                                </h3>
+                            </div>
+                            <div class="col-xs-12 col-sm-6 col-md-3 text-right">
+                                @*<a href="#" class="btn btn-secondary" onclick="openNav()"><i class="fa fa-file-text-o" title="Notes" aria-hidden="true"></i></a>*@
+
+                                <div class="btn-group" style="display:none">
+                                    <button class="btn btn-header dropdown-toggle" data-toggle="dropdown" data-hover="dropdown"><i class="fa fa-bookmark"></i></button>
+                                    <ul class="dropdown-menu">
+                                        <li>
+                                            <a href="JavaScript:Void(0)" onclick="BookMarkValidity()">Add BookMark</a>
+                                        </li>
+                                        <li>
+                                            <a href="JavaScript:Void(0)" onclick="GetBookMarks()">View BookMarks</a>
+                                        </li>
+                                    </ul>
+                                </div>
+                                <div class="btn-group" style="display:none">
+                                    <button class="btn btn-header dropdown-toggle" data-toggle="dropdown" data-hover="dropdown"> <i class="fa fa-clipboard"></i></button>
+                                    <ul class="dropdown-menu">
+                                        <li>
+                                            <a href="JavaScript:Void(0)" data-toggle="modal" data-target="#DetailsModal">Add Notes</a>
+                                        </li>
+                                        <li>
+                                            <a href="JavaScript:Void(0)" onclick="GetNotes()">View Notes</a>
+                                        </li>
+                                    </ul>
+                                </div>
+
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-12 col-md-12 col-sm-12">
+                    @*<div class="panel-body" id="resultDiv" style="margin-top:5%">
+                        @Html.Raw(System.Web.HttpUtility.HtmlDecode(ViewBag.Ebook))
+                    </div>*@
+                    
+                    <div class="panel-body" id="resultDiv" style="margin-top:5%">
+                            <meta name="viewport" content="width=626.00, height=806.00">
+
+                            <link href="/Ebooks/FixedLayout/Science In Life Today/OEBPS/css/style.css" type="text/css" rel="stylesheet">
+                            <div id="dvBodyMain" class="aie-audio-text-rw col-lg-12">
+                                <div>
+                                    <img src="/Ebooks/FixedLayout/Science In Life Today/OEBPS/images/p016.jpg" alt="">
+                                </div>
+                                <div class="new">
+                                    <div id="_idContainer338" class="Basic-Text-Frame">
+                                        <div style="width:10440px;height:1296px;position:absolute;top:-2px;left:0px;-webkit-transform-origin: 0% 0%; -webkit-transform: translate(0px,4.77px) rotate(0deg) scale(0.05);transform-origin: 0% 0%; transform: translate(0px,4.77px) rotate(0deg) scale(0.05);">
+                                            <p class="Heading-2 ParaOverride-1"><span class="CharOverride-55" style="position:absolute;top:-42.58px;left:0px;-webkit-transform-origin: 0% 287.27px;-webkit-transform:matrix(0.9,0,0,1,0,0);transform-origin: 0% 287.27px;transform:matrix(0.9,0,0,1,0,0);"><span class="audio word" id="word1" style="background: transparent;">Oil</span> </span><span class="CharOverride-55" style="position:absolute;top:-42.58px;left:540.14px;-webkit-transform-origin: 0% 287.27px;-webkit-transform:matrix(0.9,0,0,1,0,0);transform-origin: 0% 287.27px;transform:matrix(0.9,0,0,1,0,0);"><span class="audio word" id="word2" style="background: transparent;">from</span> </span><span class="CharOverride-55" style="position:absolute;top:-42.58px;left:1405.83px;-webkit-transform-origin: 0% 287.27px;-webkit-transform:matrix(0.9,0,0,1,0,0);transform-origin: 0% 287.27px;transform:matrix(0.9,0,0,1,0,0);"><span class="audio word" id="word3" style="background: transparent;">Plants</span></span></p>
+                                            <p class="body-text ParaOverride-1"><span class="CharOverride-26" style="position:absolute;top:409.69px;left:0px;letter-spacing:-2.55px;"><span class="audio word" id="word4" style="background: transparent;">The</span> </span><span class="CharOverride-26" style="position:absolute;top:409.69px;left:556.91px;letter-spacing:-2.83px;"><span class="audio word" id="word5" style="background: transparent;">seeds</span> </span><span class="CharOverride-26" style="position:absolute;top:409.69px;left:1376.47px;letter-spacing:-2.55px;"><span class="audio word" id="word6" style="background: transparent;">and</span> </span><span class="CharOverride-26" style="position:absolute;top:409.69px;left:1940.03px;letter-spacing:-2.91px;"><span class="audio word" id="word7" style="background: transparent;">fruits</span> </span><span class="CharOverride-26" style="position:absolute;top:409.69px;left:2699.07px;letter-spacing:-2.27px;"><span class="audio word" id="word8" style="background: transparent;">of</span> </span><span class="CharOverride-26" style="position:absolute;top:409.69px;left:3028.96px;letter-spacing:-3.36px;"><span class="audio word" id="word9" style="background: transparent;">plants</span> </span><span class="CharOverride-26" style="position:absolute;top:409.69px;left:3904.05px;letter-spacing:-3.38px;"><span class="audio word" id="word10" style="background: transparent;">give</span> </span><span class="CharOverride-26" style="position:absolute;top:409.69px;left:4501.56px;letter-spacing:-2.27px;"><span class="audio word" id="word11" style="background: transparent;">us</span> </span><span class="CharOverride-26" style="position:absolute;top:409.69px;left:4860px;letter-spacing:-2.72px;"><span class="audio word" id="word12" style="background: transparent;">oil.</span> </span><span class="CharOverride-37" style="position:absolute;top:409.69px;left:5321.21px;letter-spacing:-4.01px;"><span class="audio word" id="word13" style="background: transparent;">Groundnut</span><span class="CharOverride-26" style="position:absolute;top:409.69px;left:6804.5px;letter-spacing:-1.7px;">, </span></span><span class="CharOverride-37" style="position:absolute;top:409.69px;left:6939.56px;letter-spacing:-4.21px;"><span class="audio word" id="word14" style="background: transparent;">coconut</span><span class="CharOverride-26" style="position:absolute;top:409.69px;left:8027.41px;letter-spacing:-3.4px;">,</span></span><span class="CharOverride-37" style="position:absolute;top:409.69px;left:8108.84px;"> </span><span class="CharOverride-37" style="position:absolute;top:409.69px;left:8162.47px;letter-spacing:-5.2px;"><span class="audio word" id="word15" style="background: transparent;">mustard</span><span class="CharOverride-26" style="position:absolute;top:409.69px;left:9283.18px;letter-spacing:-3.4px;">,</span></span><span class="CharOverride-37" style="position:absolute;top:409.69px;left:9364.61px;"> </span><span class="CharOverride-37" style="position:absolute;top:409.69px;left:9418.24px;letter-spacing:-2.43px;"><span class="audio word" id="word16" style="background: transparent;">sesame</span> </span><span class="CharOverride-26" style="position:absolute;top:829.69px;left:0px;letter-spacing:-2.55px;"><span class="audio word" id="word17" style="background: transparent;">and</span> </span><span class="CharOverride-37" style="position:absolute;top:829.69px;left:583.39px;text-rendering:optimizeLegibility;letter-spacing:-3.35px;"><span class="audio word" id="word18" style="background: transparent;">sunflower</span> </span><span class="CharOverride-26" style="position:absolute;top:829.69px;left:2003.6px;letter-spacing:-3.38px;"><span class="audio word" id="word19" style="background: transparent;">give</span> </span><span class="CharOverride-26" style="position:absolute;top:829.69px;left:2620.95px;letter-spacing:-2.27px;"><span class="audio word" id="word20" style="background: transparent;">us</span> </span><span class="CharOverride-26" style="position:absolute;top:829.69px;left:2999.22px;letter-spacing:-2.91px;"><span class="audio word" id="word21" style="background: transparent;">edible</span> </span><span class="CharOverride-26" style="position:absolute;top:829.69px;left:3903.95px;letter-spacing:-2.72px;"><span class="audio word" id="word22" style="background: transparent;">oils</span> </span><span class="CharOverride-26" style="position:absolute;top:829.69px;left:4432.15px;letter-spacing:-2.83px;"><span class="audio word" id="word23" style="background: transparent;">which</span> </span><span class="CharOverride-26" style="position:absolute;top:829.69px;left:5310.72px;letter-spacing:-3.67px;"><span class="audio word" id="word24" style="background: transparent;">are</span> </span><span class="CharOverride-26" style="position:absolute;top:829.69px;left:5820.07px;letter-spacing:-2.72px;"><span class="audio word" id="word25" style="background: transparent;">used</span> </span><span class="CharOverride-26" style="position:absolute;top:829.69px;left:6539.35px;letter-spacing:-4.33px;"><span class="audio word" id="word26" style="background: transparent;">for</span> </span><span class="CharOverride-26" style="position:absolute;top:829.69px;left:6997.07px;letter-spacing:-3.33px;"><span class="audio word" id="word27" style="background: transparent;">cooking.</span></span></p>
+                                        </div>
+                                    </div>
+                                    <div id="_idContainer344">
+                                        <div id="_idContainer341" class="Basic-Text-Frame">
+                                            <div style="width:10440px;height:811.39px;position:absolute;top:-2px;left:0px;-webkit-transform-origin: 0% 0%; -webkit-transform: translate(0px,4.77px) rotate(0deg) scale(0.05);transform-origin: 0% 0%; transform: translate(0px,4.77px) rotate(0deg) scale(0.05);">
+                                                <p class="Heading-2 ParaOverride-1"><span class="CharOverride-55" style="position:absolute;top:-42.58px;left:0px;-webkit-transform-origin: 0% 287.27px;-webkit-transform:matrix(0.9,0,0,1,0,0);transform-origin: 0% 287.27px;transform:matrix(0.9,0,0,1,0,0);"><span class="audio word" id="word28" style="background: transparent;">Medicines</span> </span><span class="CharOverride-55" style="position:absolute;top:-42.58px;left:1697.62px;-webkit-transform-origin: 0% 287.27px;-webkit-transform:matrix(0.9,0,0,1,0,0);transform-origin: 0% 287.27px;transform:matrix(0.9,0,0,1,0,0);"><span class="audio word" id="word29" style="background: transparent;">from</span> </span><span class="CharOverride-55" style="position:absolute;top:-42.58px;left:2563.31px;-webkit-transform-origin: 0% 287.27px;-webkit-transform:matrix(0.9,0,0,1,0,0);transform-origin: 0% 287.27px;transform:matrix(0.9,0,0,1,0,0);"><span class="audio word" id="word30" style="background: transparent;">Plants</span></span></p>
+                                                <p class="body-text ParaOverride-1"><span class="CharOverride-37" style="position:absolute;top:409.69px;left:0px;letter-spacing:-3.4px;"><span class="audio word" id="word31" style="background: transparent;">Neem</span><span class="CharOverride-26" style="position:absolute;top:409.69px;left:815.81px;letter-spacing:-3.4px;">,</span></span><span class="CharOverride-37" style="position:absolute;top:409.69px;left:897.25px;"> </span><span class="CharOverride-37" style="position:absolute;top:409.69px;left:947.09px;letter-spacing:-3.4px;"><span class="audio word" id="word32" style="background: transparent;">tulsi</span><span class="CharOverride-26" style="position:absolute;top:409.69px;left:1511.64px;letter-spacing:-3.4px;">,</span></span><span class="CharOverride-37" style="position:absolute;top:409.69px;left:1593.08px;"> </span><span class="CharOverride-37" style="position:absolute;top:409.69px;left:1642.92px;letter-spacing:-4.19px;"><span class="audio word" id="word33" style="background: transparent;">mint</span><span class="CharOverride-26" style="position:absolute;top:409.69px;left:2268.31px;letter-spacing:-3.4px;">,</span></span><span class="CharOverride-37" style="position:absolute;top:409.69px;left:2349.75px;"> </span><span class="CharOverride-37" style="position:absolute;top:409.69px;left:2399.59px;letter-spacing:-3.64px;"><span class="audio word" id="word34" style="background: transparent;">clove</span> </span><span class="CharOverride-26" style="position:absolute;top:409.69px;left:3151.45px;letter-spacing:-2.55px;"><span class="audio word" id="word35" style="background: transparent;">and</span> </span><span class="CharOverride-37" style="position:absolute;top:409.69px;left:3711.22px;letter-spacing:-3.02px;"><span class="audio word" id="word36" style="background: transparent;">turmeric</span> </span><span class="CharOverride-26" style="position:absolute;top:409.69px;left:4926.02px;letter-spacing:-3.36px;"><span class="audio word" id="word37" style="background: transparent;">plants</span> </span><span class="CharOverride-26" style="position:absolute;top:409.69px;left:5797.33px;letter-spacing:-3.67px;"><span class="audio word" id="word38" style="background: transparent;">are</span> </span><span class="CharOverride-26" style="position:absolute;top:409.69px;left:6283.05px;letter-spacing:-3.34px;"><span class="audio word" id="word39" style="background: transparent;">useful</span> </span><span class="CharOverride-26" style="position:absolute;top:409.69px;left:7150.71px;letter-spacing:-4.33px;"><span class="audio word" id="word40" style="background: transparent;">for</span> </span><span class="CharOverride-26" style="position:absolute;top:409.69px;left:7584.81px;letter-spacing:-2.83px;"><span class="audio word" id="word41" style="background: transparent;">their</span> </span><span class="CharOverride-26" style="position:absolute;top:409.69px;left:8275.9px;letter-spacing:-3.06px;"><span class="audio word" id="word42" style="background: transparent;">medicinal</span> </span><span class="CharOverride-26" style="position:absolute;top:409.69px;left:9633.89px;letter-spacing:-3.66px;"><span class="audio word" id="word43" style="background: transparent;">value.</span></span></p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div id="_idContainer345" class="Basic-Text-Frame">
+                                        <div style="width:10440px;height:1382.4px;position:absolute;top:-2px;left:0px;-webkit-transform-origin: 0% 0%; -webkit-transform: translate(0px,4.77px) rotate(0deg) scale(0.05);transform-origin: 0% 0%; transform: translate(0px,4.77px) rotate(0deg) scale(0.05);">
+                                            <p class="Heading-2 ParaOverride-1"><span class="CharOverride-55" style="position:absolute;top:-42.58px;left:0px;-webkit-transform-origin: 0% 287.27px;-webkit-transform:matrix(0.9,0,0,1,0,0);transform-origin: 0% 287.27px;transform:matrix(0.9,0,0,1,0,0);"><span class="audio word" id="word44" style="background: transparent;">Coffee,</span> </span><span class="CharOverride-55" style="position:absolute;top:-42.58px;left:1234.4px;-webkit-transform-origin: 0% 287.27px;-webkit-transform:matrix(0.9,0,0,1,0,0);transform-origin: 0% 287.27px;transform:matrix(0.9,0,0,1,0,0);"><span class="audio word" id="word45" style="background: transparent;">Tea</span> </span><span class="CharOverride-55" style="position:absolute;top:-42.58px;left:1912.78px;-webkit-transform-origin: 0% 287.27px;-webkit-transform:matrix(0.9,0,0,1,0,0);transform-origin: 0% 287.27px;transform:matrix(0.9,0,0,1,0,0);"><span class="audio word" id="word46" style="background: transparent;">and</span> </span><span class="CharOverride-55" style="position:absolute;top:-42.58px;left:2610.14px;-webkit-transform-origin: 0% 287.27px;-webkit-transform:matrix(0.9,0,0,1,0,0);transform-origin: 0% 287.27px;transform:matrix(0.9,0,0,1,0,0);"><span class="audio word" id="word47" style="background: transparent;">Sugar</span> </span><span class="CharOverride-55" style="position:absolute;top:-42.58px;left:3655.26px;-webkit-transform-origin: 0% 287.27px;-webkit-transform:matrix(0.9,0,0,1,0,0);transform-origin: 0% 287.27px;transform:matrix(0.9,0,0,1,0,0);"><span class="audio word" id="word48" style="background: yellow;">from</span> </span><span class="CharOverride-55" style="position:absolute;top:-42.58px;left:4520.95px;letter-spacing:0px;-webkit-transform-origin: 0% 287.27px;-webkit-transform:matrix(0.9,0,0,1,0,0);transform-origin: 0% 287.27px;transform:matrix(0.9,0,0,1,0,0);"><span class="audio word" id="word49">Plants</span></span></p>
+                                            <p class="body-text ParaOverride-1"><span class="CharOverride-26" style="position:absolute;top:409.69px;left:0px;letter-spacing:-6.42px;"><span class="audio word" id="word50">We</span> </span><span class="CharOverride-26" style="position:absolute;top:409.69px;left:525.86px;letter-spacing:-3.71px;"><span class="audio word" id="word51">get</span> </span><span class="CharOverride-26" style="position:absolute;top:409.69px;left:1027.58px;text-rendering:optimizeLegibility;letter-spacing:-4.04px;"><span class="audio word" id="word52">coffee</span> </span><span class="CharOverride-26" style="position:absolute;top:409.69px;left:1932.55px;letter-spacing:-3.82px;"><span class="audio word" id="word53">from</span> </span><span class="CharOverride-37" style="position:absolute;top:409.69px;left:2660.13px;text-rendering:optimizeLegibility;letter-spacing:-3.48px;"><span class="audio word" id="word54">coffee-</span><span class="audio word" id="word55">seeds</span> </span><span class="CharOverride-26" style="position:absolute;top:409.69px;left:4431.72px;letter-spacing:-2.55px;"><span class="audio word" id="word56">and</span> </span><span class="CharOverride-26" style="position:absolute;top:409.69px;left:5015.11px;letter-spacing:-3.46px;"><span class="audio word" id="word57">tea</span> </span><span class="CharOverride-26" style="position:absolute;top:409.69px;left:5520.64px;letter-spacing:-3.82px;"><span class="audio word" id="word58">from</span> </span><span class="CharOverride-37" style="position:absolute;top:409.69px;left:6248.22px;letter-spacing:-4.32px;"><span class="audio word" id="word59">tea-</span><span class="audio word" id="word60">leaves.</span></span></p>
+                                            <p class="text-body--25 ParaOverride-1"><span class="CharOverride-26" style="position:absolute;top:901.69px;left:360px;letter-spacing:-1.05px;"><span class="audio word" id="word61">Sugar</span> </span><span class="CharOverride-26" style="position:absolute;top:901.69px;left:1206.85px;"><span class="audio word" id="word62">is</span> </span><span class="CharOverride-26" style="position:absolute;top:901.69px;left:1494.72px;letter-spacing:-0.63px;"><span class="audio word" id="word63">obtained</span> </span><span class="CharOverride-26" style="position:absolute;top:901.69px;left:2805.08px;letter-spacing:-1.1px;"><span class="audio word" id="word64">from</span> </span><span class="CharOverride-26" style="position:absolute;top:901.69px;left:3549.66px;"><span class="audio word" id="word65">the</span> </span><span class="CharOverride-26" style="position:absolute;top:901.69px;left:4088.21px;letter-spacing:-1.25px;"><span class="audio word" id="word66">stems</span> </span><span class="CharOverride-26" style="position:absolute;top:901.69px;left:4978.22px;"><span class="audio word" id="word67">of</span> </span><span class="CharOverride-37" style="position:absolute;top:901.69px;left:5338.14px;letter-spacing:-1.57px;"><span class="audio word" id="word68">sugarcane</span></span><span class="CharOverride-26" style="position:absolute;top:901.69px;left:6731.51px;"> </span><span class="CharOverride-26" style="position:absolute;top:901.69px;left:6808.38px;letter-spacing:-0.53px;"><span class="audio word" id="word69">plant.</span></span></p>
+                                        </div>
+                                    </div>
+
+                                    <div id="_idContainer334" class="Basic-Text-Frame">
+                                        <div style="width:1839.69px;height:359.92px;position:absolute;top:-2px;left:0px;-webkit-transform-origin: 0% 0%; -webkit-transform: translate(0px,1px) rotate(0deg) scale(0.05);transform-origin: 0% 0%; transform: translate(0px,1px) rotate(0deg) scale(0.05);">
+                                            <p class="ParaOverride-1"><span class="CharOverride-1" style="position:absolute;top:83.05px;left:0px;letter-spacing:-3.78px;">Science </span><span class="CharOverride-1" style="position:absolute;top:83.05px;left:738.83px;letter-spacing:-2.88px;">in </span><span class="CharOverride-1" style="position:absolute;top:83.05px;left:925.41px;letter-spacing:-4.08px;">Life </span><span class="CharOverride-1" style="position:absolute;top:83.05px;left:1260.8px;letter-spacing:-7.25px;">Today</span></p>
+                                        </div>
+                                    </div>
+                                    <div id="_idContainer335" class="Basic-Text-Frame">
+                                        <div style="width:737.28px;height:359.92px;position:absolute;top:-2px;left:0px;-webkit-transform-origin: 0% 0%; -webkit-transform: translate(0px,1px) rotate(0deg) scale(0.05);transform-origin: 0% 0%; transform: translate(0px,1px) rotate(0deg) scale(0.05);">
+                                            <p class="ParaOverride-1"><span class="CharOverride-2" style="position:absolute;top:83.05px;left:0px;letter-spacing:-1.06px;">Class–2</span></p>
+                                        </div>
+                                    </div>
+                                    <div id="_idContainer337" class="Basic-Text-Frame">
+                                        <div style="width:540px;height:394.12px;position:absolute;top:-2px;left:0px;-webkit-transform-origin: 0% 0%; -webkit-transform: translate(0px,1.34px) rotate(0deg) scale(0.05);transform-origin: 0% 0%; transform: translate(0px,1.34px) rotate(0deg) scale(0.05);">
+                                            <p class="ParaOverride-1"><span class="CharOverride-3" style="position:absolute;top:20.4px;left:89.81px;-webkit-transform-origin: 0% 307.71px;-webkit-transform:matrix(0.9,0,0,1,0,0);transform-origin: 0% 307.71px;transform:matrix(0.9,0,0,1,0,0);">16</span></p>
+                                        </div>
+                                    </div>
+                                    <div id="_idContainer340" class="Basic-Text-Frame">
+                                        <div style="width:10274.4px;height:230.4px;position:absolute;top:-2px;left:0px;-webkit-transform-origin: 0% 0%; -webkit-transform: translate(0px,4.33px) rotate(0deg) scale(0.05);transform-origin: 0% 0%; transform: translate(0px,4.33px) rotate(0deg) scale(0.05);">
+                                            <p class="Caption ParaOverride-1"><span class="CharOverride-38" style="position:absolute;top:-30.51px;left:0px;">Mustard	</span><span class="CharOverride-38" style="position:absolute;top:-30.51px;left:1703.83px;">Groundnut	</span><span class="CharOverride-38" style="position:absolute;top:-30.51px;left:3600px;text-rendering:optimizeLegibility;">Sunflower	</span><span class="CharOverride-38" style="position:absolute;top:-30.51px;left:5760px;">Coconut	</span><span class="CharOverride-38" style="position:absolute;top:-30.51px;left:8620.38px;">Edible </span><span class="CharOverride-38" style="position:absolute;top:-30.51px;left:9350.74px;">oils</span></p>
+                                        </div>
+                                    </div>
+                                    <div id="_idContainer344a">
+                                        <div id="_idContainer343" class="Basic-Text-Frame">
+                                            <div style="width:10274.4px;height:230.4px;position:absolute;top:-2px;left:0px;-webkit-transform-origin: 0% 0%; -webkit-transform: translate(0px,4.33px) rotate(0deg) scale(0.05);transform-origin: 0% 0%; transform: translate(0px,4.33px) rotate(0deg) scale(0.05);">
+                                                <p class="Caption-up ParaOverride-1"><span class="CharOverride-27" style="position:absolute;top:-30.51px;left:0px;">	</span><span class="CharOverride-27" style="position:absolute;top:-30.51px;left:360px;">Tulsi	</span><span class="CharOverride-27" style="position:absolute;top:-30.51px;left:2880px;">Neem	</span><span class="CharOverride-27" style="position:absolute;top:-30.51px;left:5435.74px;">Mint	</span><span class="CharOverride-27" style="position:absolute;top:-30.51px;left:7397.87px;">Clove	</span><span class="CharOverride-27" style="position:absolute;top:-30.51px;left:8995.23px;">Turmeric</span></p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div id="_idContainer347" class="Basic-Text-Frame">
+                                        <div style="width:9964.8px;height:259.2px;position:absolute;top:-2px;left:0px;-webkit-transform-origin: 0% 0%; -webkit-transform: translate(0px,4.33px) rotate(0deg) scale(0.05);transform-origin: 0% 0%; transform: translate(0px,4.33px) rotate(0deg) scale(0.05);">
+                                            <p class="Caption ParaOverride-1"><span class="CharOverride-38" style="position:absolute;top:-30.51px;left:0px;">	</span><span class="CharOverride-38" style="position:absolute;top:-30.51px;left:755.74px;">Coffee </span><span class="CharOverride-38" style="position:absolute;top:-30.51px;left:1486.1px;">plant	</span><span class="CharOverride-38" style="position:absolute;top:-30.51px;left:3600px;">Tea </span><span class="CharOverride-38" style="position:absolute;top:-30.51px;left:4053.21px;">plant	</span><span class="CharOverride-38" style="position:absolute;top:-30.51px;left:7661.34px;">Sugarcane</span></p>
+                                        </div>
+                                    </div>
+                                    <div id="_idContainer348" class="Basic-Text-Frame">
+                                        <div style="width:1353.6px;height:259.2px;position:absolute;top:-2px;left:0px;-webkit-transform-origin: 0% 0%; -webkit-transform: translate(0px,4.33px) rotate(0deg) scale(0.05);transform-origin: 0% 0%; transform: translate(0px,4.33px) rotate(0deg) scale(0.05);">
+                                            <p class="Caption ParaOverride-1"><span class="CharOverride-38" style="position:absolute;top:-30.51px;left:344.6px;">Coffee</span></p>
+                                        </div>
+                                    </div>
+                                    <div id="_idContainer349" class="Basic-Text-Frame">
+                                        <div style="width:1411.2px;height:547.2px;position:absolute;top:-2px;left:0px;-webkit-transform-origin: 0% 0%; -webkit-transform: translate(0px,4.33px) rotate(0deg) scale(0.05);transform-origin: 0% 0%; transform: translate(0px,4.33px) rotate(0deg) scale(0.05);">
+                                            <p class="Caption ParaOverride-1"><span class="CharOverride-38" style="position:absolute;top:-30.51px;left:393.16px;">Sugar</span></p>
+                                        </div>
+                                    </div>
+                                    <div id="_idContainer350" class="Basic-Text-Frame">
+                                        <div style="width:1353.6px;height:259.2px;position:absolute;top:-2px;left:0px;-webkit-transform-origin: 0% 0%; -webkit-transform: translate(0px,4.33px) rotate(0deg) scale(0.05);transform-origin: 0% 0%; transform: translate(0px,4.33px) rotate(0deg) scale(0.05);">
+                                            <p class="Caption ParaOverride-1"><span class="CharOverride-38" style="position:absolute;top:-30.51px;left:483.17px;">Tea</span></p>
+                                        </div>
+                                    </div>
+                                    <div id="_idContainer351" class="Basic-Text-Frame">
+                                        <div style="width:3024px;height:230.4px;position:absolute;top:-2px;left:0px;-webkit-transform-origin: 0% 0%; -webkit-transform: translate(0px,4.33px) rotate(0deg) scale(0.05);transform-origin: 0% 0%; transform: translate(0px,4.33px) rotate(0deg) scale(0.05);">
+                                            <p class="Caption ParaOverride-1"><span class="CharOverride-38" style="position:absolute;top:-30.51px;left:321.87px;">Some </span><span class="CharOverride-38" style="position:absolute;top:-30.51px;left:959.85px;">medicinal </span><span class="CharOverride-38" style="position:absolute;top:-30.51px;left:2042.13px;">plants</span></p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div id="dvAudioFooter">
+                                    <script>
+
+                                        var allData = [
+                                            {
+                                                "start": "0",
+                                                "end": "1.34436",
+                                                "text": "word1"
+                                            },
+                                            {
+                                                "start": "1.34436",
+                                                "end": "1.701722",
+                                                "text": "word2"
+                                            },
+                                            {
+                                                "start": "1.701722",
+                                                "end": "2.603634",
+                                                "text": "word3"
+                                            },
+                                            {
+                                                "start": "2.603634",
+                                                "end": "3.250289",
+                                                "text": "word4"
+                                            },
+                                            {
+                                                "start": "3.250289",
+                                                "end": "3.658702",
+                                                "text": "word5"
+                                            },
+                                            {
+                                                "start": "3.658702",
+                                                "end": "3.999046",
+                                                "text": "word6"
+                                            },
+                                            {
+                                                "start": "3.999046",
+                                                "end": "4.356408",
+                                                "text": "word7"
+                                            },
+                                            {
+                                                "start": "4.356408",
+                                                "end": "4.577631",
+                                                "text": "word8"
+                                            },
+                                            {
+                                                "start": "4.577631",
+                                                "end": "5.224286",
+                                                "text": "word9"
+                                            },
+                                            {
+                                                "start": "5.224286",
+                                                "end": "5.632699",
+                                                "text": "word10"
+                                            },
+                                            {
+                                                "start": "5.632699",
+                                                "end": "5.904974",
+                                                "text": "word11"
+                                            },
+                                            {
+                                                "start": "5.904974",
+                                                "end": "6.78987",
+                                                "text": "word12"
+                                            },
+                                            {
+                                                "start": "6.78987",
+                                                "end": "8.151247",
+                                                "text": "word13"
+                                            },
+                                            {
+                                                "start": "8.151247",
+                                                "end": "9.393504",
+                                                "text": "word14"
+                                            },
+                                            {
+                                                "start": "9.393504",
+                                                "end": "10.652778",
+                                                "text": "word15"
+                                            },
+                                            {
+                                                "start": "10.652778",
+                                                "end": "11.843983",
+                                                "text": "word16"
+                                            },
+                                            {
+                                                "start": "11.843983",
+                                                "end": "12.28643",
+                                                "text": "word17"
+                                            },
+                                            {
+                                                "start": "12.28643",
+                                                "end": "13.171326",
+                                                "text": "word18"
+                                            },
+                                            {
+                                                "start": "13.171326",
+                                                "end": "13.579739",
+                                                "text": "word19"
+                                            },
+                                            {
+                                                "start": "13.579739",
+                                                "end": "13.834997",
+                                                "text": "word20"
+                                            },
+                                            {
+                                                "start": "13.834997",
+                                                "end": "14.362531",
+                                                "text": "word21"
+                                            },
+                                            {
+                                                "start": "14.362531",
+                                                "end": "15.026202",
+                                                "text": "word22"
+                                            },
+                                            {
+                                                "start": "15.026202",
+                                                "end": "15.315495",
+                                                "text": "word23"
+                                            },
+                                            {
+                                                "start": "15.315495",
+                                                "end": "15.621805",
+                                                "text": "word24"
+                                            },
+                                            {
+                                                "start": "15.621805",
+                                                "end": "16.013201",
+                                                "text": "word25"
+                                            },
+                                            {
+                                                "start": "16.013201",
+                                                "end": "16.319511",
+                                                "text": "word26"
+                                            },
+                                            {
+                                                "start": "16.319511",
+                                                "end": "17.765974",
+                                                "text": "word27"
+                                            },
+                                            {
+                                                "start": "17.765974",
+                                                "end": "19.518747",
+                                                "text": "word28"
+                                            },
+                                            {
+                                                "start": "19.518747",
+                                                "end": "19.80804",
+                                                "text": "word29"
+                                            },
+                                            {
+                                                "start": "19.80804",
+                                                "end": "20.675918",
+                                                "text": "word30"
+                                            },
+                                            {
+                                                "start": "20.675918",
+                                                "end": "21.986244",
+                                                "text": "word31"
+                                            },
+                                            {
+                                                "start": "21.986244",
+                                                "end": "23.143414",
+                                                "text": "word32"
+                                            },
+                                            {
+                                                "start": "23.143414",
+                                                "end": "24.096378",
+                                                "text": "word33"
+                                            },
+                                            {
+                                                "start": "24.096378",
+                                                "end": "25.015308",
+                                                "text": "word34"
+                                            },
+                                            {
+                                                "start": "25.015308",
+                                                "end": "25.49179",
+                                                "text": "word35"
+                                            },
+                                            {
+                                                "start": "25.49179",
+                                                "end": "26.070376",
+                                                "text": "word36"
+                                            },
+                                            {
+                                                "start": "26.070376",
+                                                "end": "26.461771",
+                                                "text": "word37"
+                                            },
+                                            {
+                                                "start": "26.461771",
+                                                "end": "26.734047",
+                                                "text": "word38"
+                                            },
+                                            {
+                                                "start": "26.734047",
+                                                "end": "27.32965",
+                                                "text": "word39"
+                                            },
+                                            {
+                                                "start": "27.32965",
+                                                "end": "27.857183",
+                                                "text": "word40"
+                                            },
+                                            {
+                                                "start": "27.857183",
+                                                "end": "28.214545",
+                                                "text": "word41"
+                                            },
+                                            {
+                                                "start": "28.214545",
+                                                "end": "28.963302",
+                                                "text": "word42"
+                                            },
+                                            {
+                                                "start": "28.963302",
+                                                "end": "30.069421",
+                                                "text": "word43"
+                                            },
+                                            {
+                                                "start": "30.069421",
+                                                "end": "31.635005",
+                                                "text": "word44"
+                                            },
+                                            {
+                                                "start": "31.635005",
+                                                "end": "32.724107",
+                                                "text": "word45"
+                                            },
+                                            {
+                                                "start": "32.724107",
+                                                "end": "33.115503",
+                                                "text": "word46"
+                                            },
+                                            {
+                                                "start": "33.115503",
+                                                "end": "33.523916",
+                                                "text": "word47"
+                                            },
+                                            {
+                                                "start": "33.523916",
+                                                "end": "33.881278",
+                                                "text": "word48"
+                                            },
+                                            {
+                                                "start": "33.881278",
+                                                "end": "34.834242",
+                                                "text": "word49"
+                                            },
+                                            {
+                                                "start": "34.834242",
+                                                "end": "35.617034",
+                                                "text": "word50"
+                                            },
+                                            {
+                                                "start": "35.617034",
+                                                "end": "35.82124",
+                                                "text": "word51"
+                                            },
+                                            {
+                                                "start": "35.82124",
+                                                "end": "36.450877",
+                                                "text": "word52"
+                                            },
+                                            {
+                                                "start": "36.450877",
+                                                "end": "36.808239",
+                                                "text": "word53"
+                                            },
+                                            {
+                                                "start": "36.808239",
+                                                "end": "37.267704",
+                                                "text": "word54"
+                                            },
+                                            {
+                                                "start": "37.267704",
+                                                "end": "37.812255",
+                                                "text": "word55"
+                                            },
+                                            {
+                                                "start": "37.812255",
+                                                "end": "38.220668",
+                                                "text": "word56"
+                                            },
+                                            {
+                                                "start": "38.220668",
+                                                "end": "38.475926",
+                                                "text": "word57"
+                                            },
+                                            {
+                                                "start": "38.475926",
+                                                "end": "38.952408",
+                                                "text": "word58"
+                                            },
+                                            {
+                                                "start": "38.952408",
+                                                "end": "39.360821",
+                                                "text": "word59"
+                                            },
+                                            {
+                                                "start": "39.360821",
+                                                "end": "40.160631",
+                                                "text": "word60"
+                                            },
+                                            {
+                                                "start": "40.160631",
+                                                "end": "41.096577",
+                                                "text": "word61"
+                                            },
+                                            {
+                                                "start": "41.096577",
+                                                "end": "41.317801",
+                                                "text": "word62"
+                                            },
+                                            {
+                                                "start": "41.317801",
+                                                "end": "41.930421",
+                                                "text": "word63"
+                                            },
+                                            {
+                                                "start": "41.930421",
+                                                "end": "42.287783",
+                                                "text": "word64"
+                                            },
+                                            {
+                                                "start": "42.287783",
+                                                "end": "42.543041",
+                                                "text": "word65"
+                                            },
+                                            {
+                                                "start": "42.543041",
+                                                "end": "42.866368",
+                                                "text": "word66"
+                                            },
+                                            {
+                                                "start": "42.866368",
+                                                "end": "43.257764",
+                                                "text": "word67"
+                                            },
+                                            {
+                                                "start": "43.257764",
+                                                "end": "44.193711",
+                                                "text": "word68"
+                                            },
+                                            {
+                                                "start": "44.193711",
+                                                "end": "45.41895",
+                                                "text": "word69"
+                                            }
+                                        ];
+
+                                    </script>
+                                    <audio class="audioPlayer" id="audioPlayer1" src="/Ebooks/FixedLayout/Science In Life Today/OEBPS/audio/p016.mp3"></audio>
+
+                                </div>
+                            </div>
+                        </div>
+                </div>
+                <div class="col-lg-12 col-md-12 col-sm-12 footNav">
+                    <div class="container" style="width:100%; margin:0 auto;text-align: center;">
+                        <div class="col-xs-12 col-sm-12 col-md-12">
+                            <span style="font-size:16px;">Page :</span> @Html.DropDownList("PageList", ViewBag.PageList as SelectList)
+                            <button type="button" class="btn button btn-sm" id="previous" title="Previous">
+                                <i class="fa fa-backward" aria-hidden="true"></i>
+                            </button>
+                            <button type="button" class="btn button btn-sm" id="next" title="Next">
+                                <i class="fa fa-forward" aria-hidden="true"></i>
+                            </button>
+                            <button type="button" class="btn button btn-sm" id="Zoom-In" title="Zoom-In">
+                                <i class="fa fa-plus" aria-hidden="true"></i>
+                            </button>
+                            <button type="button" class="btn button btn-sm" id="Zoom-Out" title="Zoom-Out">
+                                <i class="fa fa-minus" aria-hidden="true"></i>
+                            </button>
+                            <span style="display: inline-flex;height: 13px;"><input type="range" id="idslider" class="custom-range" onchange="ZoomInOut(this.value)" min="25" max="200" value="100" style="display: inline-flex;width:200px;" /> <span id="idspanslider">100%</span></span>
+                            <button type="button" class="btn button btn-sm" title="Full Screen" onclick="openFullscreen();">
+
+                                <i class="fa fa-maximize" aria-hidden="true"></i>
+                            </button>
+
+                            <button type="button" class="btn button btn-sm" title="Fit Width" onclick="resizeWin()">
+                                <i class="fa fa-minimize" aria-hidden="true"></i>
+                            </button>
+                            <button onclick="PlayPauseAudio(this)" type="button" class="btn button btn-sm play" id="playAudio" title="Play">
+                                <i class="fa fa-play" aria-hidden="true"></i>
+                            </button>
+                            <button onclick="StopAudio(this)" type="button" class="btn button btn-sm stop" id="stopAudio" title="Stop">
+                                <i class="fa fa-stop" aria-hidden="true"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+</body>
+</html>
+
+
+<script>
+    var PgNumber = 1;
+    var elem = document.getElementById("fullscreen");
+    function openFullscreen() {
+        if (elem.requestFullscreen) {
+            elem.requestFullscreen();
+        } else if (elem.mozRequestFullScreen) { /* Firefox */
+            elem.mozRequestFullScreen();
+        } else if (elem.webkitRequestFullscreen) { /* Chrome, Safari & Opera */
+            elem.webkitRequestFullscreen();
+        } else if (elem.msRequestFullscreen) { /* IE/Edge */
+            elem.msRequestFullscreen();
+        }
+    }
+    function ZoomInOut(id) {
+            //var pagesize = $("resultDiv").css("zoom",id/100);
+            $("#resultDiv").css("zoom", id / 100);
+            //$("#resultDiv").addClass("zoom");
+            $("#idspanslider").text(id + "%");
+    }
+    function IsAudio() {
+        $("#dvAudio").html("");
+        $.ajax({
+            type: "Get",
+            url: '@Url.Action("IsAudio", "Dashboard")',
+            success: function (data) {
+                if (data.IsAudio) {
+                    $("#playAudio").removeAttr("disabled");
+                    $("#stopAudio").removeAttr("disabled");
+
+                }
+                else {
+                    $("#playAudio").attr("disabled", "disabled");
+                    $("#stopAudio").attr("disabled", "disabled");
+                }
+                
+            }
+        });
+    }
+    function updateDropdownList(pageid) {
+        $("#PageList").val(pageid)
+    }
+    function EnableDisableNextPrev(id) {
+        //var currentindex = parse.parseInt($("#CurrentIndex").val());
+
+        if (@Model.startindex == id || id==1) {
+            $("#previous").attr("disabled", true);
+        }
+                else {
+            $("#previous").attr("disabled", false);
+        }
+
+
+        if (@Model.endindex == id) {
+            $("#next").attr("disabled", true);
+        }
+                else {
+            $("#next").attr("disabled", false);
+        }
+    }
+    function LoadPage(id) {
+
+        $.ajax({
+            url: '@Url.Action("Loadpage", "Dashboard")',
+            type: 'Get',
+            data: { PageId: id },
+            success: function (data) {
+                IsAudio();
+                $("#resultDiv").html(data);
+                try {
+                    AIE.TextSound.launchTextandSound();
+                } catch (e) {
+
+                }
+            },
+    });
+    }
+
+    function Loadpagewihthtml(obj) {
+        var hmtlpage = $(obj).attr("data-href")
+        $.ajax({
+            url: '@Url.Action("Loadpagewihthtml", "Dashboard")',
+            type: 'Get',
+            data: { hmtlpage: hmtlpage },
+            success: function (data) {
+                IsAudio();
+                $("#resultDiv").html(data);
+
+                $("#PageList").val( $("#hdCurrentpage").val())
+            },
+        });
+    }
+
+
+    function OpenPage(pageNumber) {
+        //documentViewer.setCurrentPageNumber(pageNumber);
+        //LoadPage(pageNumber)
+        LoadPage(pageNumber);
+        if (pageNumber !=@Model.startindex) {
+            pageNumber = pageNumber - 1
+        }
+
+        if (pageNumber !=@Model.endindex) {
+            pageNumber = pageNumber + 1
+        }
+
+        updateDropdownList(pageNumber);
+        EnableDisableNextPrev(pageNumber);
+        $("#CurrentIndex").val(pageNumber);
+        PgNumber = pageNumber;
+
+    }
+    function resizeWin() {
+        const cancellFullScreen = document.exitFullscreen || document.mozCancelFullScreen || document.webkitExitFullscreen || document.msExitFullscreen;
+        cancellFullScreen.call(document);
+    }
+    $(function () {
+        try {
+            AIE.TextSound.launchTextandSound();
+        } catch (e) {
+
+        }
+        //$(document).on("click", ".audio", function (e) {
+        //    alert("ASD")
+        //    var wordid = $(this).id;
+        //    $.each(allData, function (key, item) {
+        //        if (item.id == wordid) {
+        //            WordClick(42.287783)
+
+        //        }
+        //    });
+        //});
+            $(document).ajaxSend(function (event, xhr, settings) {
+                $(".jsLoading").attr("disabled", "disabled");
+            });
+            $(document).ajaxComplete(function (event, xhr, settings) {
+                $(".jsLoading").removeAttr("disabled");
+            });
+
+            $("#title").text('@ViewBag.Title');
+            IsAudio();
+            //$("#previous").attr("disabled", true);
+            EnableDisableNextPrev(1)
+
+            $("#PageList").change(function () {
+
+                var id = parseInt($(this).val());
+                $("#CurrentIndex").val(id);
+                LoadPage(id);
+                EnableDisableNextPrev(id);
+                pageNumber = id;
+            })
+            $('#ContentBtn').click(function (e) {
+                $('#Content').fadeIn('slow');
+
+            });
+            $("#playAudio").click(function () {
+                var audioPlayer = document.getElementById('audioPlayer1');
+                //audioPlayer.play();
+                $("#play1").click();
+
+            })
+            $("#stopAudio").click(function () {
+                var audioPlayer = document.getElementById('audioPlayer1');
+                audioPlayer.pause();
+            })
+            $("#previous").click(function () {
+                var index = parseInt($("#CurrentIndex").val());
+                if (index !=@Model.startindex) {
+                index = index - 1
+            }
+            LoadPage(index);
+            updateDropdownList(index);
+            EnableDisableNextPrev(index);
+            $("#CurrentIndex").val(index);
+            PgNumber = index;
+            })
+            $("#next").click(function () {
+                var index = parseInt($("#CurrentIndex").val());
+
+                if (index !=@Model.endindex) {
+                    index = index + 1
+
+            }
+            LoadPage(index);
+            updateDropdownList(index);
+            EnableDisableNextPrev(index);
+            $("#CurrentIndex").val(index);
+            PgNumber = index;
+            })
+            $("#Zoom-In").click(function () {
+                var val = parseInt($("#idslider").val());
+                val = val + 1;
+                $("#idslider").val(val)
+                ZoomInOut(val)
+            })
+            $("#Zoom-Out").click(function () {
+                var val = parseInt($("#idslider").val());
+                val = val - 1;
+                $("#idslider").val(val)
+                ZoomInOut(val)
+            })
+
+        })
+
+</script>
+
+

@@ -1,0 +1,29 @@
+﻿@model Database.MasterBook
+@{
+    ViewBag.Title = "Read Book :: "+Model.Title;
+
+}
+ 
+<div class="col-md-12">
+   Book Read Here with all Tools
+</div>
+@section Scripts {
+    <style>
+        .groups {
+            border: 1px solid #e6e6e6;
+        }
+    </style>
+    <script src="~/Scripts/jquery.toaster.js"></script>
+    <script src="~/Scripts/bootbox.min.js"></script>
+    <script src="~/Scripts/Common.js"></script>
+    <script>
+        $(function () {
+            $(document).ajaxSend(function (event, xhr, settings) {
+                $(".jsLoading").attr("disabled", "disabled");
+            });
+            $(document).ajaxComplete(function (event, xhr, settings) {
+                $(".jsLoading").removeAttr("disabled");
+            });
+        });
+    </script>
+}

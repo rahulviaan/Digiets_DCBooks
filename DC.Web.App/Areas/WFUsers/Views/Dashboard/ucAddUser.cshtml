@@ -1,0 +1,412 @@
+﻿@model DC.Web.App.Models.RegisterUserModel
+@{
+    var DOB = Model.DOB != null ? ((DateTime)Model.DOB).ToString("yyyy-MM-dd") : "";
+    var strDOB = Model.DOB != null ? ((DateTime)Model.DOB).ToString("dd-MMM-yyyy") : "N/A";
+    Layout = null;
+    ViewBag.Title = "Register New User";
+    var genderList = DC.Web.App.Models.EnumHelper.ToSelectLists<DC.Gender>().Where(m => m.Value != "-1");
+}
+
+<style>
+    .form-control-feedback {
+        position: absolute;
+        right: 18px;
+        z-index: 2;
+        width: 34px;
+        height: 34px;
+        text-align: center;
+        pointer-events: none;
+    }
+
+    label {
+        margin-bottom: 3px;
+        font-weight: 600;
+        color: #6c757d;
+    }
+
+    .form-group {
+        margin-bottom: 5px;
+    }
+    /*.dvMapCSS {
+        pointer-events: none;
+        opacity: .3;
+    }*/
+    #infowindow {
+        align: left;
+        font-size: 90%;
+    }
+
+    .Markerlabels {
+        color: #ffffff;
+        background-color: #000000;
+        font-size: 10px;
+        font-weight: bold;
+        text-align: center;
+        width: 60px;
+        border: 2px solid black;
+        border-radius: 4px;
+        padding: 4px;
+        width: 50%;
+        display: none;
+    }
+
+    .gm-style-cc {
+        display: none;
+    }
+
+    .gm-fullscreen-control {
+        display: none;
+    }
+
+    .gm-svpc {
+        display: none;
+    }
+
+    .gm-style-mtc {
+        display: none;
+    }
+
+    a[href^="http://maps.google.com/maps"] {
+        display: none !important
+    }
+
+    a[href^="https://maps.google.com/maps"] {
+        display: none !important
+    }
+
+    .gmnoprint a, .gmnoprint span, .gm-style-cc {
+        display: none;
+    }
+
+    .gmnoprint div {
+        background: none !important;
+    }
+</style>
+<div class="col-lg-12">
+
+    @using (Html.BeginForm(null, null, FormMethod.Post, new { role = "form", autocomplete = "off", name = "frmAddUser", id = "frmAddUser", }))
+    {
+        @Html.ValidationSummary(true, "", new { @class = "text-danger small" })
+        @Html.AntiForgeryToken()
+        @Html.HiddenFor(m => m.Id)
+        @Html.HiddenFor(m => m.Role)
+        @Html.HiddenFor(m => m.dtmCreate)
+        @Html.HiddenFor(m => m.UserName)
+        @Html.HiddenFor(m => m.Status)
+        @Html.HiddenFor(m => m.IP)
+        <div class="row ">
+            <div class="col-lg-7" style="border-right:#e6e6e6 2px solid;">
+                <div class="form-group">
+                    <h4 id="h3Title">Create New User</h4>
+                    <hr/>
+                </div>
+                <div class="row">
+                    <div class="col-lg-6">
+                        <div class="row">
+                            <div class="col-lg-12">
+                                @Html.LabelFor(m => m.FirstName)
+                                @Html.ValidationMessageFor(m => m.FirstName, "", new { @class = "small text-danger pull-right" })
+                            </div>
+                            <div class="col-lg-12">
+                                <div class="form-group has-feedback " title="@Html.DisplayNameFor(model => model.FirstName).">
+                                    @Html.TextBoxFor(t => t.FirstName, new { maxlength = "200", @class = "form-control", @placeholder = Html.DisplayNameFor(model => model.FirstName) })
+                                    <span class="text-danger fa fa-star-o form-control-feedback"></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-6">
+                        <div class="row">
+                            <div class="col-lg-12">
+                                @Html.LabelFor(m => m.LastName)
+                                @Html.ValidationMessageFor(m => m.FirstName, "", new { style = "color:#fff;", @class = "small " })
+                            </div>
+                            <div class="col-lg-12">
+                                <div class="form-group">
+                                    @Html.TextBoxFor(t => t.LastName, new { maxlength = "150", @class = "form-control", @placeholder = Html.DisplayNameFor(model => model.LastName) })
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="row">
+                    <div class="col-lg-6">
+                        <div class="row">
+                            <div class="col-lg-12">
+                                @Html.LabelFor(m => m.PhoneNumber)
+                                @Html.ValidationMessageFor(m => m.PhoneNumber, "", new { @class = "small text-danger pull-right" })
+                            </div>
+                            <div class="col-lg-12">
+                                <div class="form-group has-feedback " title="* @Html.DisplayNameFor(model => model.PhoneNumber) reuired.">
+                                    @Html.TextBoxFor(t => t.PhoneNumber, new { @class = "form-control", @placeholder = Html.DisplayNameFor(model => model.PhoneNumber) })
+                                    <span class="text-danger fa fa-star-o form-control-feedback"></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-6">
+                        <div class="row">
+                            <div class="col-lg-12">
+                                @Html.LabelFor(m => m.Email)
+                                @Html.ValidationMessageFor(m => m.Email, "", new { @class = "small text-danger pull-right" })
+                            </div>
+                            <div class="col-lg-12">
+                                <div class="form-group has-feedback " title="Enter @Html.DisplayNameFor(model => model.Email).">
+                                    @Html.TextBoxFor(t => t.Email, new { @class = "form-control", @placeholder = Html.DisplayNameFor(model => model.Email) })
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-6 ">
+                        <div class="row">
+                            <div class="col-lg-12">
+                                @Html.LabelFor(m => m.Password)
+                                @Html.ValidationMessageFor(m => m.Password, "", new { @class = "small text-danger pull-right" })
+                            </div>
+
+                            <div class="col-lg-12">
+                                <div class="form-group has-feedback " title="* @Html.DisplayNameFor(model => model.Password) reuired.">
+                                    @Html.PasswordFor(t => t.Password, new { @class = "form-control", @placeholder = Html.DisplayNameFor(model => model.Password) })
+                                    <span class="text-danger fa fa-star-o form-control-feedback"></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-6 ">
+                        <div class="row">
+                            <div class="col-lg-12">
+                                @Html.LabelFor(m => m.ConfirmPassword)
+                                @Html.ValidationMessageFor(t => t.ConfirmPassword, "", new { @class = "small text-danger pull-right" })
+                            </div>
+                            <div class="col-lg-12">
+                                <div class="form-group has-feedback " title="Enter @Html.DisplayNameFor(model => model.ConfirmPassword).">
+                                    @Html.PasswordFor(t => t.ConfirmPassword, new { @class = "form-control", @placeholder = Html.DisplayNameFor(model => model.ConfirmPassword) })
+                                    <span class="text-danger fa fa-star-o form-control-feedback"></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-6">
+                        <div class="row">
+                            <div class="col-lg-12">
+                                @Html.LabelFor(m => m.DOB)
+                                @Html.ValidationMessageFor(t => t.DOB, "", new { @class = "small  pull-right text-danger" })
+                            </div>
+                            <div class="col-lg-12">
+                                <div class="form-group has-feedback " title="@Html.DisplayNameFor(model => model.DOB).">
+                                    <input class="form-control" title="@Html.DisplayNameFor(model => model.DOB)" id="DOB" name="DOB" type="date">
+                                    <span class="fa fa-calendar form-control-feedback"></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-6">
+                        <div class="row">
+                            <div class="col-lg-12">
+                                @Html.LabelFor(m => m.Gender)
+                                @Html.ValidationMessageFor(t => t.Gender, "", new { @class = "small  pull-right text-danger" })
+                            </div>
+                            <div class="col-lg-12">
+                                <div class="form-group has-feedback " title="@Html.DisplayNameFor(model => model.Gender).">
+                                    @Html.DropDownListFor(m => m.Gender, genderList, "--Select Gender--", new { @class = "form-control" })
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="col-lg-6">
+                        <div class="row">
+                            <div class="col-lg-12">
+                                @Html.LabelFor(m => m.RoleId)
+                                @Html.ValidationMessageFor(t => t.RoleId, "", new { @class = "small  pull-right text-danger" })
+                            </div>
+                            <div class="col-lg-12">
+                                @if (!string.IsNullOrWhiteSpace(Model.Id))
+                                {
+                                    <div class="form-group has-feedback " title="* @Html.DisplayNameFor(model => model.RoleId) reuired.">
+                                        @Html.DropDownListFor(t => t.RoleId, Enumerable.Empty<SelectListItem>(), Html.SelectText(Html.DisplayNameFor(model => model.RoleId).ToString()), new { @readonly = "readonly", @disabled = "disabled", @class = "form-control" })
+                                    </div>
+
+                                }
+                                else
+                                {
+                                    <div class="form-group has-feedback " title="* @Html.DisplayNameFor(model => model.RoleId) reuired.">
+                                        @Html.DropDownListFor(t => t.RoleId, Enumerable.Empty<SelectListItem>(), Html.SelectText(Html.DisplayNameFor(model => model.RoleId).ToString()), new {  @class = "form-control" })
+                                    </div>
+                                }
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-lg-12">
+                        <hr />
+                    </div>
+                </div>
+                <div class="row csslast">
+                    <div class="col-lg-12">
+                        <a href="javascript:void(0);" id="btnCancel" class="btn btn-lg   btn-default " onclick="CancelAdd()"> Cancel</a>
+                        @if (!string.IsNullOrWhiteSpace(Model.Id))
+                        {
+                            <button id="btnSubmit" type="submit" class="btn btn-lg btn-primary   ">Update User</button>
+
+                        }
+                        else
+                        {
+                            <button id="btnSubmit" type="submit" class="btn btn-lg btn-primary   ">Create User</button>
+                        }
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-5">
+                <div class="form-group">
+                    <h4>User Detail </h4>
+                    <hr/>
+                </div>
+                <div class="form-group  img-thumbnail dvMapCSS" id="dvMap" style="background:#ffffff;height: 60%; width: 100%">
+
+
+                    <table class="table table-bordered">
+                        <tr>
+                            <th width="15%">@Html.LabelFor(m => m.FirstName)</th>
+                            <th width="1%" class="text-center">:</th>
+                            <td width="84%"> @Html.DisplayFor(t => t.FirstName)</td>
+                        </tr>
+                        <tr>
+                            <th>@Html.LabelFor(m => m.LastName)</th>
+                            <th class="text-center">:</th>
+                            <td>   @Html.DisplayFor(t => t.LastName)</td>
+                        </tr>
+                        <tr>
+                            <th> @Html.LabelFor(m => m.PhoneNumber)</th>
+                            <th class="text-center">:</th>
+                            <td> @Html.DisplayFor(t => t.PhoneNumber)</td>
+                        </tr>
+                        <tr>
+                            <th>  @Html.LabelFor(m => m.Email)</th>
+                            <th class="text-center">:</th>
+                            <td>@Html.DisplayFor(t => t.Email)</td>
+                        </tr>
+                        <tr>
+                            <th> @Html.LabelFor(m => m.Password)</th>
+                            <th class="text-center">:</th>
+                            <td>  @Html.DisplayFor(t => t.Password)</td>
+                        </tr>
+                        <tr>
+                            <th>@Html.LabelFor(m => m.DOB)</th>
+                            <th class="text-center">:</th>
+                            <td>@strDOB</td>
+                        </tr>
+                        <tr>
+                            <th> @Html.LabelFor(m => m.Gender)</th>
+                            <th class="text-center">:</th>
+                            <td id="txtGender">---</td>
+                        </tr>
+                        <tr>
+                            <th> @Html.LabelFor(m => m.RoleId)</th>
+                            <th class="text-center">:</th>
+                            <td id="txtRole">---</td>
+                        </tr>
+                    </table>
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <hr />
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+
+    }
+</div>
+
+@Scripts.Render("~/bundles/jqueryval")
+<script src="~/Scripts/Common.js"></script>
+<script>
+
+    function AddUser() {
+        var btnhtml = $("#btnSubmit").html();
+        $("#btnSubmit").html("Wait.. <i class='fa fa-spinner fa-spin'></i>");
+        $("#btnSubmit").attr("disabled", "disabled");
+        var Id = $.trim($("#Id").val());
+        var FirstName = $.trim($("#FirstName").val());
+        var LastName = $.trim($("#LastName").val());
+        var PhoneNumber = $.trim($("#PhoneNumber").val());
+        var Email = $.trim($("#Email").val());
+        var Password = $.trim($("#Password").val());
+        var ConfirmPassword = $.trim($("#ConfirmPassword").val());
+        var DOB = $.trim($("#DOB").val());
+        var Gender = $.trim($("#Gender option:selected").val());
+
+        Gender = Gender == "" ? -1 : Gender;
+        var RoleId = $.trim($("#RoleId").val());
+        var Role = $.trim($("#RoleId option:selected").text());
+        AddLoader();
+        $.ajax({
+            type: "POST",
+            url: '@Url.Action("Add", "Dashboard", new {area= "WFUsers" })',
+            data: {
+
+                Id: Id, RoleId:RoleId, FirstName:FirstName,LastName:LastName,PhoneNumber:PhoneNumber,Email:Email,
+                Password: Password, DOB: DOB, Gender: Gender, ConfirmPassword: ConfirmPassword, Role: Role
+                },
+            success: function (data) {
+                $("#btnSubmit").html(btnhtml);
+                $("#btnSubmit").removeAttr("disabled");
+                if (data.StatusCode == 200) {
+                    $.toaster({ priority: 'success', title: " Success! ", message: data.Message });
+                    FillData();
+                    CancelAdd();
+                    RemoveLoader();
+                }
+                else {
+                    $.toaster({ priority: 'danger', title: " Error! ", message: data.Message });
+                    RemoveLoader();
+                }
+            },
+            error: function (data) {
+                $("#btnSubmit").html(btnhtml);
+                $("#btnSubmit").removeAttr("disabled");
+                RemoveLoader();
+            },
+            complete: function (data) {
+                $("#btnSubmit").html(btnhtml);
+                $("#btnSubmit").removeAttr("disabled");
+                RemoveLoader();
+            }
+        });
+    }
+    $(function () {
+        $("#FirstName").focus();
+        $("#btnBack").removeClass("hidden");
+        CopyDropDown("DatatId", "RoleId", "@Model.RoleId", "--Select Role--");
+        if ($("#Gender option:selected").val() != "") {
+            $("#txtGender").text($("#Gender option:selected").text())
+
+        }
+        else {
+            $("#txtGender").text("N/A")
+        }
+        if ($("#RoleId option:selected").val() != "") {
+            $("#txtRole").text($("#RoleId option:selected").text())
+        }
+        else {
+            $("#txtRole").text("N/A")
+        }
+        $("#Password").val('@Model.Password');
+        $("#ConfirmPassword").val('@Model.Password');
+        $("#DOB").val('@DOB');
+    });
+</script>
+
+
